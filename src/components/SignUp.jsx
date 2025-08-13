@@ -7,8 +7,11 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Eye, EyeOff } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/contexts/language-context"
+
 
 const SignUp = () => {
+     const { t } = useLanguage()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -129,21 +132,23 @@ const SignUp = () => {
 
   return (
     <Card className="w-full">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">Sign Up</CardTitle>
-        {/* <CardDescription>Enter the information below to create a new account.</CardDescription> */}
+      <CardHeader className="text-center text-black">
+        <CardTitle className="text-2xl font-bold">{t("welcome")}</CardTitle>
+        {/* <p className=" text-sm">{t("welcome")}</p> */}
+            {/* <p className=" text-sm">{t("dontMissAirdrop")}</p> */}
+        <CardDescription>{t("dontMissAirdrop")}</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           {/* Email */}
           <div className="space-y-2">
             <Label htmlFor="email" className="text-sm font-medium">
-              Email <span className="text-red-500">*</span>
+               {t("email")} <span className="text-red-500">*</span>
             </Label>
             <Input
               id="email"
               type="email"
-              placeholder="Email"
+             placeholder={t("email")}
               value={formData.email}
               onChange={(e) => handleInputChange("email", e.target.value)}
               onBlur={() => handleBlur("email")}
@@ -158,13 +163,13 @@ const SignUp = () => {
           {/* Password */}
           <div className="space-y-2">
             <Label htmlFor="password" className="text-sm font-medium">
-              Password <span className="text-red-500">*</span>
+               {t("password")} <span className="text-red-500">*</span>
             </Label>
             <div className="relative">
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="Password"
+                placeholder={t("password")}
                 value={formData.password}
                 onChange={(e) => handleInputChange("password", e.target.value)}
                 onBlur={() => handleBlur("password")}
@@ -182,13 +187,13 @@ const SignUp = () => {
               </button>
             </div>
             {errors.password && touched.password && <p className="text-xs text-red-500">{errors.password}</p>}
-            <p className="text-xs text-gray-500">Please enter at least 6 characters including letters and numbers.</p>
+            <p className="text-xs text-gray-500">{t("passwordRequirement")} .</p>
           </div>
 
           {/* Confirm Password */}
           <div className="space-y-2">
             <Label htmlFor="confirmPassword" className="text-sm font-medium">
-              Confirm Password <span className="text-red-500">*</span>
+             {t("confirmPassword")} <span className="text-red-500">*</span>
             </Label>
             <div className="relative">
               <Input
@@ -221,12 +226,12 @@ const SignUp = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-sm font-medium">
-                Name <span className="text-red-500">*</span>
+                {t("name")} <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="name"
                 type="text"
-                placeholder="Name"
+                placeholder={t("name")}
                 value={formData.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
                 onBlur={() => handleBlur("name")}
@@ -234,12 +239,12 @@ const SignUp = () => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="phoneNumber" className="text-sm font-medium">
-                Phone Number <span className="text-red-500">*</span>
+                 {t("phoneNumber")} <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="phoneNumber"
                 type="tel"
-                placeholder="Phone Number"
+                placeholder= {t("phoneNumber")}
                 value={formData.phoneNumber}
                 onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
                 onBlur={() => handleBlur("phoneNumber")}
@@ -257,12 +262,12 @@ const SignUp = () => {
           {/* Telegram ID */}
           <div className="space-y-2">
             <Label htmlFor="telegramId" className="text-sm font-medium">
-              Telegram ID
+              {t("telegramId")} 
             </Label>
             <Input
               id="telegramId"
               type="text"
-              placeholder="Telegram ID"
+              placeholder={t("telegramId")} 
               value={formData.telegramId}
               onChange={(e) => handleInputChange("telegramId", e.target.value)}
               onBlur={() => handleBlur("telegramId")}
@@ -279,7 +284,7 @@ const SignUp = () => {
               color: isFormValid() ? "white" : "#9ca3af",
             }}
           >
-            Sign Up
+            {t("signUp")}
           </Button>
         </CardFooter>
       </form>

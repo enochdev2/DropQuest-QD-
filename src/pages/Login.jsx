@@ -16,10 +16,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 function Login() {
   return (
     <div
-      className="flex items-center justify-center min-h-screen"
-      style={{
-        background: "linear-gradient(to right, #0d0b3e, #3d2abf, #eceaf5)",
-      }}
+      className="flex items-center justify-center min-h-screen bg-black"
+      
     >
       <div className="flex w-full max-w-lg lg:m-0 m-4 flex-col gap-6 bg-white p-3 lg:p-6 rounded-xl shadow-lg">
         <Tabs defaultValue="login">
