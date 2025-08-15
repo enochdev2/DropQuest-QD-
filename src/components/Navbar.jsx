@@ -52,15 +52,15 @@ export default function Navbar({ user }) {
         {/* Desktop Navigation - Hidden on mobile */}
         <div className="hidden sm:flex items-center gap-6">
           {navLinks.map(({ label, path }) => (
-            <a key={label} href={path} className="text-white hover:text-gray-300 transition text-sm font-medium">
+            <Link key={label} to={path} className="text-white hover:text-gray-300 transition text-sm font-medium">
               {label}
-            </a>
+            </Link>
           ))}
           {user ? (
             <span className="text-white font-medium">{firstName}님</span>
           ) : (
             navButtons.map(({ label, path, variant }) => (
-              <a key={label} href={path}>
+              <Link key={label} to={path}>
                 <Button
                   variant={variant === "outline" ? "outline" : undefined}
                   className="px-4 py-2 text-sm font-medium rounded-full border-white/40 text-white hover:bg-white/10"
@@ -68,7 +68,7 @@ export default function Navbar({ user }) {
                 >
                   {label}
                 </Button>
-              </a>
+              </Link>
             ))
           )}
         </div>
@@ -89,21 +89,21 @@ export default function Navbar({ user }) {
         >
           <div className="flex flex-col items-center gap-6" onClick={(e) => e.stopPropagation()}>
             {navLinks.map(({ label, path }) => (
-              <a
+              <Link
                 key={label}
-                href={path}
+                to={path}
                 onClick={closeMenu}
                 className="text-white text-lg font-medium hover:text-gray-300 transition"
               >
                 {label}
-              </a>
+              </Link>
             ))}
 
             {user ? (
               <span className="text-white text-lg font-medium">{firstName}님</span>
             ) : (
               navButtons.map(({ label, path, variant }) => (
-                <a key={label} href={path} onClick={closeMenu}>
+                <Link key={label} to={path} onClick={closeMenu}>
                   <Button
                     variant={variant === "outline" ? "outline" : undefined}
                     className="w-40 px-4 py-2 text-sm font-medium rounded-full border-white/40 text-white hover:bg-white/10"
@@ -117,7 +117,7 @@ export default function Navbar({ user }) {
                   >
                     {label}
                   </Button>
-                </a>
+                </Link>
               ))
             )}
           </div>

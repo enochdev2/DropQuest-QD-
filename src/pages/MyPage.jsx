@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/navbar";
 import { useLanguage } from "@/contexts/language-context";
 import { Button } from "@/components/ui/button";
 import { Copy, RefreshCw } from "lucide-react";
 import umbrellaCoin from "@/assets/umbrella_coin.png";
+import { getUserProfile, getUserReferralList } from "@/lib/utilityFunction";
 
 // Mock user data
 const mockUser = {
@@ -22,12 +23,20 @@ const mockUser = {
 function MyPage() {
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState("points");
+  const [userProfile, setUserProfile] = useState({});
+  const [userReferralLst, setUserReferralLst] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
+  console.log("🚀 ~ MyPage ~ copySuccess:", copySuccess)
+
+  useEffect(() => {
+    getUserProfileDetails();
+    getUserReferralListDetails();
+  }, []);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await getUserProfileDetails();
     setIsRefreshing(false);
   };
 
@@ -40,6 +49,20 @@ function MyPage() {
     } catch (err) {
       console.error("Failed to copy: ", err);
     }
+  };
+
+  const getUserProfileDetails = async () => {
+    const userInfo = JSON.parse(localStorage.getItem("user"));
+    const user = await getUserProfile(userInfo.email);
+    console.log("🚀 ~ getUserProfileDetails ~ user:", user);
+    setUserProfile(user);
+  };
+
+  const getUserReferralListDetails = async () => {
+    const userInfo = JSON.parse(localStorage.getItem("user"));
+    const userReferralLsts = await getUserReferralList(userInfo.referralCode);
+    console.log("🚀 ~ getUserReferralListDetails ~ user:", userReferralLsts);
+    setUserReferralLst(userReferralLsts);
   };
 
   return (
@@ -91,7 +114,8 @@ function MyPage() {
               {/* Points Display */}
               <div className="bg-white max-w-full text-black rounded-full px-25 py-2 inline-flex items-center gap-3 mb-6">
                 <span className="text-2xl font-bold">
-                  {mockUser.points.toLocaleString()}
+                  {/* {mockUser.points.toLocaleString()} */}
+                  {userProfile.points?.totalPoints.toLocaleString()}
                 </span>
                 <div className="w-8 h-6 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
                   <span className="text-yellow-900 font-bold">$</span>
@@ -122,7 +146,7 @@ function MyPage() {
               <h3 className="font-semibold mb-2">{t("myInvitationLink")}</h3>
               <div className="bg-black rounded p-3 mb-3 flex items-center justify-between">
                 <code className="text-purple-300 text-sm break-all flex-1">
-                  drop-quest.com/referral={mockUser.referralCode}
+                  drop-quest.com/referral={userProfile?.referralCode}
                 </code>
                 <button
                   onClick={handleCopyLink}
@@ -153,40 +177,48 @@ function MyPage() {
                 </span>
               </div>
 
-              {mockUser.referralList.map((referral, index) => (
-                <div
-                  key={referral.id}
-                  className="py-3 border-b border-gray-800 last:border-b-0"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">{index + 1}</span>
-                      <span className="font-medium">{referral.name}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium">
-                        {referral.points.toLocaleString()}
-                      </span>
-                      <div className="w-5 h-5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
-                        <span className="text-yellow-900 font-bold text-xs">
-                          $
+              {!userReferralLst || userReferralLst.length === 0 ? (
+                <div className="text-center py-6 text-gray-400">
+                  {language === "en"
+                    ? "No referrals found."
+                    : "추천인이 없습니다."}
+                </div>
+              ) : (
+                userReferralLst.map((referral, index) => (
+                  <div
+                    key={referral.id}
+                    className="py-3 border-b border-gray-800 last:border-b-0"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium">{index + 1}</span>
+                        <span className="font-medium">{referral.name}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">
+                          {referral.points.toLocaleString()}
                         </span>
+                        <div className="w-5 h-5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
+                          <span className="text-yellow-900 font-bold text-xs">
+                            $
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="mt-1 ml-6">
-                    <span className="text-xs text-gray-400">
-                      {language === "en" ? "Joined: " : "가입일: "}
-                      {referral.joinDate}
-                    </span>
-                  </div>
-                  {/* <div className="mt-1 ml-6">
+                    <div className="mt-1 ml-6">
+                      <span className="text-xs text-gray-400">
+                        {language === "en" ? "Joined: " : "가입일: "}
+                        {referral.joinDate}
+                      </span>
+                    </div>
+                    {/* <div className="mt-1 ml-6">
                     <span className="text-xs text-gray-500">
                       {language === "en" ? "Points Balance" : "포인트 잔액"}
                     </span>
                   </div> */}
-                </div>
-              ))}
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}

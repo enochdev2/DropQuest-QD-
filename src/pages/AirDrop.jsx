@@ -1,40 +1,64 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Navbar from "@/components/navbar"
-import { useLanguage } from "@/contexts/language-context"
-import { Button } from "@/components/ui/button"
-import { ChevronDown } from "lucide-react"
+import { useEffect, useState } from "react";
+import Navbar from "@/components/navbar";
+import { useLanguage } from "@/contexts/language-context";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 // import { useLanguage } from "@/contexts/language-context"
-import umbrellaCoin from "@/assets/umbrella_coin.png"; 
-
-
-const mockUser = {
-  name: "김코인",
-  points: 1000000,
-}
+import umbrellaCoin from "@/assets/umbrella_coin.png";
+import { claimPoints, getUserProfile } from "@/lib/utilityFunction";
 
 // Mock attendance data for the past 3 days
 const attendanceData = [
   { date: "8/6", status: "absent", label: { en: "Absent", ko: "미출석" } },
-  { date: "8/7", status: "completed", label: { en: "Completed", ko: "출석 완료" } },
-  { date: "8/8", status: "completed", label: { en: "Completed", ko: "출석 완료" } },
-]
+  {
+    date: "8/7",
+    status: "completed",
+    label: { en: "Completed", ko: "출석 완료" },
+  },
+  {
+    date: "8/8",
+    status: "completed",
+    label: { en: "Completed", ko: "출석 완료" },
+  },
+];
 
- function AirDrop() {
-  const {  language } = useLanguage()
-  const [showSuccess, setShowSuccess] = useState(false)
-  const [showDropdown, setShowDropdown] = useState(false)
-  const [todayChecked, setTodayChecked] = useState(false)
+function AirDrop() {
+  const { language } = useLanguage();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [todayChecked, setTodayChecked] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    getUserProfileDetails();
+  }, []);
 
   const handleAttendanceCheck = () => {
-    setShowSuccess(true)
-    setTodayChecked(true)
-    // Auto hide success message after 3 seconds
-    setTimeout(() => {
-      setShowSuccess(false)
-    }, 3000)
-  }
+    setShowSuccess(true);
+  };
+
+  const handleCheck = async () => {
+    const success = await claimPoints();
+    console.log("🚀 ~ handleCheck ~ success:", success);
+    setShowSuccess(false);
+
+    setTodayChecked(true);
+  };
+  const getUserProfileDetails = async () => {
+    const userInfo = JSON.parse(localStorage.getItem("user"));
+    const user = await getUserProfile(userInfo.email);
+    console.log("🚀 ~ getUserProfileDetails ~ user:", user);
+    setUserProfile(user);
+    if (user.points?.points === 0) {
+      setTodayChecked(true);
+      setMessage("You have already claimed your point for the day.");
+    } else {
+      setTodayChecked(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -69,13 +93,15 @@ const attendanceData = [
           <div className="mb-8">
             <div className="relative">
               {/* Parachute */}
-             <img
-          src={umbrellaCoin}
-          alt="Airdrop Icon"
-          className="w-50 sm:w-32  drop-shadow-lg"
-        />
+              <img
+                src={umbrellaCoin}
+                alt="Airdrop Icon"
+                className="w-50 sm:w-32  drop-shadow-lg"
+              />
             </div>
           </div>
+          {message && <p className="text-red-500 font-semibold mb-2 text-xs mt-2">{message}</p>}
+
 
           {/* Attendance Check Button */}
           <Button
@@ -85,6 +111,7 @@ const attendanceData = [
           >
             {language === "en" ? "Attendance Check" : "출석 체크"}
           </Button>
+          
 
           {/* Attendance Status */}
           <div className="flex items-center gap-6 mb-4">
@@ -92,12 +119,20 @@ const attendanceData = [
               <div key={index} className="flex flex-col items-center">
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center text-xs font-medium ${
-                    day.status === "completed" ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-400"
+                    day.status === "completed"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-700 text-gray-400"
                   }`}
                 >
                   {day.date}
                 </div>
-                <span className={`text-xs mt-1 ${day.status === "completed" ? "text-blue-400" : "text-gray-500"}`}>
+                <span
+                  className={`text-xs mt-1 ${
+                    day.status === "completed"
+                      ? "text-blue-400"
+                      : "text-gray-500"
+                  }`}
+                >
                   {day.label[language]}
                 </span>
               </div>
@@ -117,7 +152,9 @@ const attendanceData = [
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
             <div className="bg-blue-500 rounded-2xl p-6 text-center max-w-sm w-full">
               <h3 className="text-white text-lg font-semibold mb-4">
-                {language === "en" ? "Today's attendance has been completed!!" : "오늘의 출석이 완료되었습니다!!"}
+                {language === "en"
+                  ? "Today's attendance has been completed!!"
+                  : "오늘의 출석이 완료되었습니다!!"}
               </h3>
 
               <div className="flex items-center justify-center gap-2 mb-4">
@@ -128,7 +165,7 @@ const attendanceData = [
               </div>
 
               <Button
-                onClick={() => setShowSuccess(false)}
+                onClick={handleCheck}
                 className="bg-white text-blue-600 hover:bg-gray-100 px-6 py-2 rounded-full font-medium"
               >
                 {language === "en" ? "Check" : "확인"}
@@ -138,9 +175,7 @@ const attendanceData = [
         )}
       </div>
     </div>
-  )
+  );
 }
 
-
-
-export default AirDrop
+export default AirDrop;
