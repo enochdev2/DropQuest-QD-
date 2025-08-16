@@ -5,7 +5,7 @@ import Navbar from "@/components/navbar";
 import { useLanguage } from "@/contexts/language-context";
 import { Button } from "@/components/ui/button";
 import { Copy, RefreshCw } from "lucide-react";
-import umbrellaCoin from "@/assets/umbrella_coin.png";
+import umbrellaCoin from "@/assets/dqLogo.png";
 import { getUserProfile, getUserReferralList } from "@/lib/utilityFunction";
 
 // Mock user data

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import umbrellaCoin from "@/assets/umbrella_coin.png";
+import umbrellaCoin from "@/assets/dqLogo.png";
 import { useLanguage } from "@/contexts/language-context";
 import { Link } from "react-router-dom";
 
@@ -10,14 +10,19 @@ export default function DropQuestLanding() {
     <div className="min-h-screen flex flex-col bg-black text-white">
       {/* HERO SECTION */}
       <section className="flex flex-col items-center text-center px-4 sm:px-6 py-10 sm:py-12">
-        <img
-          src={umbrellaCoin}
-          alt="Airdrop Icon"
-          className="w-50 sm:w-32 mb-6 drop-shadow-lg"
-        />
-        <h1 className="text-2xl sm:text-4xl font-bold mb-3">
-          {t("clickAndEarn")}
-        </h1>
+        <div className="flex gap-4 justify-between w-full px-4 pr-16">
+          <div className="flex flex-col space-y-3 text-2xl text-left">
+            <p> Airdrop</p>
+            <p>Click and</p>
+            <p>Earn</p>
+          </div>
+
+          <img
+            src={umbrellaCoin}
+            alt="Airdrop Icon"
+            className="w-36 sm:w-32 mb-6 drop-shadow-lg"
+          />
+        </div>
         {/* <p className="text-gray-300 text-sm sm:text-base max-w-md mb-6">
            {t("connectingUsers")}
             <br />
@@ -25,20 +30,18 @@ export default function DropQuestLanding() {
         </p> */}
 
         <Button
-          className="max-w-full  px-24 sm:px-10 py-3 text-base sm:text-lg font-semibold rounded-full"
-          style={{
-            background: "linear-gradient(to right, #0d0b3e, #3d2abf)",
-          }}
+          className="max-w-full bg-amber-50 text-black  px-24 sm:px-10 py-3 text-base sm:text-lg font-semibold rounded-full"
+          // style={{
+          //   background: "linear-gradient(to right, #0d0b3e, #3d2abf)",
+          // }}
         >
-          <Link to="/air-drop">
-          {t("goToAirdrop")}
-          </Link>
+          <Link to="/air-drop">{t("goToAirdrop")}</Link>
         </Button>
       </section>
 
       {/* ROADMAP SECTION */}
       <section className="px-4 sm:px-6 pb-12">
-        <h2 className="text-xl sm:text-2xl font-bold text-center mb-6 sm:mb-8">
+        <h2 className="text-4xl  font- text-center mb-6 sm:mb-8">
           Roadmap
         </h2>
         {/* <h3 className="text-base font-semibold mb-2">{t("connectingUsers")}</h3>
