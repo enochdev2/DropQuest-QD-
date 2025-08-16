@@ -4,71 +4,71 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 // Korean announcements data with enhanced information
-const announcements = [
-  {
-    id: 10,
-    title: "2024년도 적립금 안내사항 안내",
-    isNew: true,
-    // date: "2024-01-15",
-    // category: "적립금",
-    description: "새로운 적립금 정책에 대한 상세 안내사항입니다.",
-  },
-  {
-    id: 9,
-    title: "5월 시스템 점검 안내",
-    isNew: false,
-    // date: "2024-01-12",
-    // category: "시스템",
-    description: "정기 시스템 점검으로 인한 서비스 일시 중단 안내입니다.",
-  },
-  {
-    id: 8,
-    title: "업체별 적립금액 지급기준 안내",
-    isNew: true,
-    // date: "2024-01-10",
-    // category: "적립금",
-    description: "파트너 업체별 적립금 지급 기준이 업데이트되었습니다.",
-  },
-  {
-    id: 7,
-    title: "출시 수정사항 공지",
-    isNew: true,
-    // date: "2024-01-08",
-    // category: "업데이트",
-    description: "최신 버전 출시에 따른 주요 수정사항을 안내드립니다.",
-  },
-  {
-    id: 6,
-    title: "5월 구독자 혜택 안내",
-    isNew: true,
-    // date: "2024-01-05",
-    // category: "혜택",
-    description: "구독자 전용 특별 혜택과 이벤트를 확인하세요.",
-  },
-  {
-    id: 5,
-    title: "신용등 적립 교환 지급 안내",
-    isNew: false,
-    // date: "2024-01-03",
-    // category: "적립금",
-    description: "신용등급별 적립금 교환 및 지급 방법 안내입니다.",
-  },
-  {
-    id: 4,
-    title: "더퀘스트 출시 2018년 4월 업데이트",
-    isNew: false,
-    // date: "2024-01-01",
-    // category: "업데이트",
-    description: "DropQuest 플랫폼의 주요 기능 업데이트 소식입니다.",
-  },
-  {
-    id: 3,
-    title: "2018년 어린이날 대축제 출시 혜택 안내",
-    isNew: true,
-    // category: "이벤트",
-    description: "어린이날 특별 이벤트와 한정 혜택을 놓치지 마세요.",
-  },
-];
+// const announcements = [
+//   {
+//     id: 10,
+//     title: "2024년도 적립금 안내사항 안내",
+//     isNew: true,
+//     // date: "2024-01-15",
+//     // category: "적립금",
+//     description: "새로운 적립금 정책에 대한 상세 안내사항입니다.",
+//   },
+//   {
+//     id: 9,
+//     title: "5월 시스템 점검 안내",
+//     isNew: false,
+//     // date: "2024-01-12",
+//     // category: "시스템",
+//     description: "정기 시스템 점검으로 인한 서비스 일시 중단 안내입니다.",
+//   },
+//   {
+//     id: 8,
+//     title: "업체별 적립금액 지급기준 안내",
+//     isNew: true,
+//     // date: "2024-01-10",
+//     // category: "적립금",
+//     description: "파트너 업체별 적립금 지급 기준이 업데이트되었습니다.",
+//   },
+//   {
+//     id: 7,
+//     title: "출시 수정사항 공지",
+//     isNew: true,
+//     // date: "2024-01-08",
+//     // category: "업데이트",
+//     description: "최신 버전 출시에 따른 주요 수정사항을 안내드립니다.",
+//   },
+//   {
+//     id: 6,
+//     title: "5월 구독자 혜택 안내",
+//     isNew: true,
+//     // date: "2024-01-05",
+//     // category: "혜택",
+//     description: "구독자 전용 특별 혜택과 이벤트를 확인하세요.",
+//   },
+//   {
+//     id: 5,
+//     title: "신용등 적립 교환 지급 안내",
+//     isNew: false,
+//     // date: "2024-01-03",
+//     // category: "적립금",
+//     description: "신용등급별 적립금 교환 및 지급 방법 안내입니다.",
+//   },
+//   {
+//     id: 4,
+//     title: "더퀘스트 출시 2018년 4월 업데이트",
+//     isNew: false,
+//     // date: "2024-01-01",
+//     // category: "업데이트",
+//     description: "DropQuest 플랫폼의 주요 기능 업데이트 소식입니다.",
+//   },
+//   {
+//     id: 3,
+//     title: "2018년 어린이날 대축제 출시 혜택 안내",
+//     isNew: true,
+//     // category: "이벤트",
+//     description: "어린이날 특별 이벤트와 한정 혜택을 놓치지 마세요.",
+//   },
+// ];
 
 function AnnouncementsPage() {
   const { language } = useLanguage();

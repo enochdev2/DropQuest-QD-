@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Navbar from "@/components/navbar";
-import { useLanguage } from "@/contexts/language-context";
-import { Button } from "@/components/ui/button";
-import { Copy, RefreshCw } from "lucide-react";
 import umbrellaCoin from "@/assets/dqLogo.png";
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
 import { getUserProfile, getUserReferralList } from "@/lib/utilityFunction";
+import { Copy, RefreshCw } from "lucide-react";
+import { useEffect, useState } from "react";
 
 // Mock user data
 const mockUser = {
