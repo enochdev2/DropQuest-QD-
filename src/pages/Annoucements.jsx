@@ -1,5 +1,7 @@
-import { useLanguage } from "@/contexts/language-context"
-import { useState } from "react"
+import { useLanguage } from "@/contexts/language-context";
+import { getAnnouncement } from "@/lib/utilityFunction";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 // Korean announcements data with enhanced information
 const announcements = [
@@ -66,22 +68,32 @@ const announcements = [
     // category: "이벤트",
     description: "어린이날 특별 이벤트와 한정 혜택을 놓치지 마세요.",
   },
-]
+];
 
 function AnnouncementsPage() {
-  const { language } = useLanguage()
-  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null)
+  const { language } = useLanguage();
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
 
-//   const getCategoryColor = (category) => {
-//     const colors = {
-//       적립금: "bg-gradient-to-r from-emerald-500 to-teal-600",
-//       시스템: "bg-gradient-to-r from-blue-500 to-indigo-600",
-//       업데이트: "bg-gradient-to-r from-purple-500 to-violet-600",
-//       혜택: "bg-gradient-to-r from-pink-500 to-rose-600",
-//       이벤트: "bg-gradient-to-r from-orange-500 to-amber-600",
-//     }
-//     return colors[category] || "bg-gray-500"
-//   }
+  //   const getCategoryColor = (category) => {
+  //     const colors = {
+  //       적립금: "bg-gradient-to-r from-emerald-500 to-teal-600",
+  //       시스템: "bg-gradient-to-r from-blue-500 to-indigo-600",
+  //       업데이트: "bg-gradient-to-r from-purple-500 to-violet-600",
+  //       혜택: "bg-gradient-to-r from-pink-500 to-rose-600",
+  //       이벤트: "bg-gradient-to-r from-orange-500 to-amber-600",
+  //     }
+  //     return colors[category] || "bg-gray-500"
+  //   }
+
+  useEffect(() => {
+    handleAnnouncementClick();
+  }, []);
+
+  const handleAnnouncementClick = async () => {
+    const announcementDetails = await getAnnouncement();
+    console.log("🚀 ~ getUserProfileDetails ~ :", announcementDetails);
+    setSelectedAnnouncement(announcementDetails);
+  };
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -117,7 +129,7 @@ function AnnouncementsPage() {
         </div>
 
         <div className="grid gap-4 sm:gap-6 lg:grid-cols-2 xl:grid-cols-3">
-          {announcements.map((announcement, index) => (
+          {selectedAnnouncement?.map((announcement) => (
             <div
               key={announcement.id}
               className="bg-gray-800 rounded-lg p-4 sm:p-6 border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
@@ -128,6 +140,7 @@ function AnnouncementsPage() {
                 </div>
 
                 <div className="flex-1 min-w-0">
+                  <Link to={`/announcements/${announcement._id}`}>
                   <div className="flex items-start justify-between mb-0">
                     <div className="flex-1 pr-2">
                       <h3 className="text-sm  sm:text-lg font-semibold text-white mb-2 hover:text-blue-300 transition-colors duration-300 line-clamp-2">
@@ -135,7 +148,7 @@ function AnnouncementsPage() {
                       </h3>
 
                       <p className="text-gray-300 text-xs sm:text-sm mb-0 leading-relaxed line-clamp-2 lg:line-clamp-3">
-                        {announcement.description}
+                        {announcement.content}
                       </p>
 
                       {/* <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 text-xs">
@@ -157,7 +170,6 @@ function AnnouncementsPage() {
                           {announcement.date}
                         </span>
                       </div> */}
-                      
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-center gap-2 ml-2">
@@ -168,7 +180,12 @@ function AnnouncementsPage() {
                       )}
 
                       <button className="p-1.5 sm:p-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-400 hover:text-white transition-all duration-300 flex-shrink-0">
-                        <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg
+                          className="w-3 h-3 sm:w-4 sm:h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -179,13 +196,14 @@ function AnnouncementsPage() {
                       </button>
                     </div>
                   </div>
+                  </Link>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {announcements.length === 0 && (
+        {selectedAnnouncement?.length === 0 && (
           <div className="text-center py-12 sm:py-16 lg:py-20">
             <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
               <svg
@@ -203,7 +221,9 @@ function AnnouncementsPage() {
               </svg>
             </div>
             <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-white">
-              {language === "en" ? "No Announcements Yet" : "아직 공지사항이 없습니다"}
+              {language === "en"
+                ? "No Announcements Yet"
+                : "아직 공지사항이 없습니다"}
             </h3>
             <p className="text-gray-300 text-base sm:text-lg lg:text-xl max-w-sm lg:max-w-md mx-auto">
               {language === "en"
@@ -214,8 +234,7 @@ function AnnouncementsPage() {
         )}
       </div>
     </div>
-  )
+  );
 }
-
 
 export default AnnouncementsPage;

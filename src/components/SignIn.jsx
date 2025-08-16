@@ -9,7 +9,9 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+// import { useAuth } from "../lib/AuthProvider";
 const SignIn = () => {
+  // const {  setUser } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -65,6 +67,10 @@ const SignIn = () => {
       if (response.ok) {
         //  setUser(data.user);
         console.log("You have Logged in successfully!");
+         localStorage.setItem("token", data.token);
+        // setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("isLoggedIn", "true");
         navigate("/my-page");
       } else {
         const errorData = await response.json();
