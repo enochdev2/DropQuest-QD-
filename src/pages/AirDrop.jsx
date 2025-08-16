@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "@/components/navbar";
 import { useLanguage } from "@/contexts/language-context";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
@@ -29,7 +28,7 @@ function AirDrop() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [todayChecked, setTodayChecked] = useState(false);
-  const [userProfile, setUserProfile] = useState({});
+  const [, setUserProfile] = useState({});
   const [message, setMessage] = useState("");
 
   useEffect(() => {
