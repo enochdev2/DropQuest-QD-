@@ -9,6 +9,7 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 // import { useAuth } from "../lib/AuthProvider";
 const SignIn = () => {
   // const {  setUser } = useAuth();
@@ -55,30 +56,34 @@ const SignIn = () => {
       };
 
       // Make signup request to backend
-      const response = await fetch("https://dropquest-qd-backend.onrender.com/api/v1/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser),
-      });
+      const response = await fetch(
+        "https://dropquest-qd-backend.onrender.com/api/v1/user/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newUser),
+        }
+      );
       const data = await response.json();
-      console.log("🚀 ~ handleSubmit ~ data:", data)
+      console.log("🚀 ~ handleSubmit ~ data:", data);
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       if (response.ok) {
         //  setUser(data.user);
         console.log("You have Logged in successfully!");
-         localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.token);
         // setUser(data.user);
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("isLoggedIn", "true");
         navigate("/my-page");
+        toast.success("Login successful")
       } else {
         const errorData = await response.json();
         console.log(errorData.message || "Sign-up failed.");
 
-        const errorMsg = errorData.error || errorData.message || "Failed to register user";
+        const errorMsg =
+          errorData.error || errorData.message || "Failed to register user";
         console.log(errorMsg);
-
       }
     } catch (error) {
       console.error("Error during loggign-in:", error);
@@ -123,11 +128,15 @@ const SignIn = () => {
           <Button
             className="w-full text-base font-medium text-white"
             style={{
-              background: "linear-gradient(to right, #0d0b3e, #3d2abf)",
+              background: isFormValid()
+                ? "linear-gradient(to right, #0d0b3e, #3d2abf)"
+                : "#e5e7eb",
+              color: isFormValid() ? "white" : "#9ca3af",
             }}
             onClick={handleSubmit}
+            disabled={isLoading || !isFormValid()}
           >
-            Login
+            {isLoading ? "Logging in..." : "Login"}
           </Button>
         </CardFooter>
       </Card>
