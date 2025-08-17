@@ -2,8 +2,8 @@ export const getUserProfile = async (email) => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://localhost:3000/api/v1/user/users/${email}`,
-      // `https://tether-p2p-exchang-backend.onrender.com/api/v1/user/users/${user?.nickname}`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${email}`,
+      // `http://localhost:3000/api/v1/user/users/${email}`,
       {
         method: "GET",
         headers: {
@@ -34,8 +34,7 @@ export const getUserReferralList = async (referralCode) => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://localhost:3000/api/v1/user/${referralCode}`,
-      // `https://tether-p2p-exchang-backend.onrender.com/api/v1/user/users/${user?.nickname}`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/user/${referralCode}`,
       {
         method: "GET",
         headers: {
@@ -66,8 +65,7 @@ export const claimPoints = async () => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://localhost:3000/api/v1/point/points/claim`,
-      // `https://tether-p2p-exchang-backend.onrender.com/api/v1/user/users/${user?.nickname}`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/point/points/claim`,
       {
         method: "POST",
         headers: {
@@ -102,8 +100,8 @@ export const getAnnouncement = async () => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://localhost:3000/api/v1/announcement/announcements`,
-      // `https://tether-p2p-exchang-backend.onrender.com/api/v1/user/users/${user?.nickname}`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/announcement/announcements`,
+      // `http://localhost:3000/api/v1/announcement/announcements`,
       {
         method: "GET",
         headers: {
@@ -134,8 +132,7 @@ export const getAnnouncementDetails = async (announcementId) => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://localhost:3000/api/v1/announcement/${announcementId}`,
-      // `https://tether-p2p-exchang-backend.onrender.com/api/v1/user/users/${user?.nickname}`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/announcement/${announcementId}`,
       {
         method: "GET",
         headers: {

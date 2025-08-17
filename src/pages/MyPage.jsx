@@ -1,6 +1,7 @@
 "use client";
 
 import umbrellaCoin from "@/assets/dqLogo.png";
+import coin from "@/assets/dqcoin.png";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/language-context";
 import { getUserProfile, getUserReferralList } from "@/lib/utilityFunction";
@@ -116,9 +117,8 @@ function MyPage() {
                   {/* {mockUser.points.toLocaleString()} */}
                   {userProfile.points?.totalPoints.toLocaleString()}
                 </span>
-                <div className="w-8 h-6 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
-                  <span className="text-yellow-900 font-bold">$</span>
-                </div>
+                  <img src={coin} alt="coin" className="w-10 h-8 justify-self-end" />
+               
               </div>
 
               <div className="flex  justify-center">

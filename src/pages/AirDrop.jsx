@@ -5,7 +5,7 @@ import { useLanguage } from "@/contexts/language-context";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 // import { useLanguage } from "@/contexts/language-context"
-import umbrellaCoin from "@/assets/umbrella_coin.png";
+import umbrellaCoin from "@/assets/dqLogo.png";
 import { claimPoints, getUserProfile } from "@/lib/utilityFunction";
 
 // Mock attendance data for the past 3 days
@@ -95,7 +95,7 @@ function AirDrop() {
               <img
                 src={umbrellaCoin}
                 alt="Airdrop Icon"
-                className="w-50 sm:w-32  drop-shadow-lg"
+                className="w-36 sm:w-32  drop-shadow-lg"
               />
             </div>
           </div>
