@@ -100,7 +100,7 @@ export default function UserManagement() {
   }
 
   return (
-    <Card className="bg-gradient-to-br from-white to-slate-50 shadow-xl border-slate-200">
+    <Card className="bg-black shadow-xl brder-slate-200">
       <CardHeader className="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-t-lg">
         <CardTitle className="text-2xl font-bold text-slate-800" style={{ fontFamily: "DM Sans, sans-serif" }}>
           User Management

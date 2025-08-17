@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import logo from "../assets/dq.png";
 
 export default function Navbar() {
-  
   const [menuOpen, setMenuOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
@@ -33,27 +32,20 @@ export default function Navbar() {
   return (
     <header className="flex bg-black justify-between items-center px-4 py-4 border-b border-white/10">
       {/* Logo */}
-      <div className="text-lg sm:text-xl font-bold  flex items-center gap-2">
+      <div className="text-lg sm:text-xl   flex items-center gap-2">
         <Link
           to="/"
           className="flex items-center gap-2 hover:opacity-80 transition"
         >
-          <img src={logo} alt="" className=" w-14  h-8" />
+          <img src={logo} alt="" className=" w-10  h-6" />
           {/* <span className="text-white">DQ</span> */}
-          <span className="text-gray-300 font-bold">DropQuest</span>
+          <span className="text-gray-300 -ml- -mb-3 fon text-lg">
+            DropQuest
+          </span>
         </Link>
       </div>
 
       <div className="flex items-center gap-2">
-        {/* <Button
-          variant="ghost"
-          size="xs"
-          onClick={() => setLanguage(language === "en" ? "ko" : "en")}
-          className="text-white hover:bg-white/10 px-2"
-        >
-          <Globe size={16} className="mr-1" />
-          {language === "en" ? "한국어" : "English"}
-        </Button> */}
         {!user ? (
           <Button
             variant="ghost"
@@ -62,6 +54,8 @@ export default function Navbar() {
           >
             <Link to={"/Login"}>signIn</Link>
           </Button>
+        ) : user?.admin ? (
+          <Link to="/admin" className="text-black font-semibold  py-2 rounded-2xl px-3 bg-white">Admin</Link>
         ) : (
           <Button
             variant="ghost"
@@ -113,6 +107,15 @@ export default function Navbar() {
             {menuOpen ? <X size={26} /> : <Menu size={36} />}
           </button>
         </div>
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={() => setLanguage(language === "en" ? "ko" : "en")}
+          className="text-white flex flex-col hover:bg-white/10"
+        >
+          <Globe size={16} className="" />
+          {/* {language === "en" ? "한국어" : "En"} */}
+        </Button>
       </div>
 
       {/* Mobile Menu Overlay */}
