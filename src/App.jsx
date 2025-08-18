@@ -33,6 +33,14 @@ function App() {
           }
         />
         <Route
+          path="/signin"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
           path="/signup"
           element={
             <PublicRoute>
