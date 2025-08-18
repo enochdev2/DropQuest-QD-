@@ -7,18 +7,19 @@ import { useLanguage } from "@/contexts/language-context";
 import { getUserProfile, getUserReferralList } from "@/lib/utilityFunction";
 import { Copy, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 // Mock user data
-const mockUser = {
-  name: "김코인",
-  points: 1000000,
-  referralCode: "1248soeniu13",
-  referralList: [
-    { id: 1, name: "박코인", points: 6000, joinDate: "2024-01-10" },
-    { id: 2, name: "이코인", points: 4500, joinDate: "2024-01-12" },
-    { id: 3, name: "최코인", points: 3200, joinDate: "2024-01-15" },
-  ],
-};
+// const mockUser = {
+//   name: "김코인",
+//   points: 1000000,
+//   referralCode: "1248soeniu13",
+//   referralList: [
+//     { id: 1, name: "박코인", points: 6000, joinDate: "2024-01-10" },
+//     { id: 2, name: "이코인", points: 4500, joinDate: "2024-01-12" },
+//     { id: 3, name: "최코인", points: 3200, joinDate: "2024-01-15" },
+//   ],
+// };
 
 function MyPage() {
   const { t, language } = useLanguage();
@@ -41,10 +42,12 @@ function MyPage() {
   };
 
   const handleCopyLink = async () => {
-    const inviteLink = `drop-quest.com/login?referral=${userProfile?.referralCode}`;
+    // const inviteLink = `http://localhost:5173/Login?referral=${userProfile?.referralCode}`;
+    const inviteLink = `https://www.drop-quest.com/Login?referral=${userProfile?.referralCode}`;
     try {
       await navigator.clipboard.writeText(inviteLink);
       setCopySuccess(true);
+      toast.success("Invitation link copied to clipboard!");
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
       console.error("Failed to copy: ", err);

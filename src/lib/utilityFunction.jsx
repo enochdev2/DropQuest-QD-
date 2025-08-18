@@ -65,7 +65,8 @@ export const claimPoints = async () => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `https://dropquest-qd-backend.onrender.com/api/v1/point/points/claim`,
+      // `https://dropquest-qd-backend.onrender.com/api/v1/point/points/claim`,
+      `http://localhost:3000/api/v1/point/points/claim`,
       {
         method: "POST",
         headers: {
