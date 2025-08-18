@@ -41,7 +41,7 @@ function MyPage() {
   };
 
   const handleCopyLink = async () => {
-    const inviteLink = `drop-quest.com/referral=${mockUser.referralCode}`;
+    const inviteLink = `drop-quest.com/login?referral=${userProfile?.referralCode}`;
     try {
       await navigator.clipboard.writeText(inviteLink);
       setCopySuccess(true);
