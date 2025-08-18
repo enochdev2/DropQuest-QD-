@@ -65,8 +65,8 @@ export const claimPoints = async () => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      // `https://dropquest-qd-backend.onrender.com/api/v1/point/points/claim`,
-      `http://localhost:3000/api/v1/point/points/claim`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/point/points/claim`,
+      // `http://localhost:3000/api/v1/point/points/claim`,
       {
         method: "POST",
         headers: {
@@ -164,8 +164,8 @@ export const getTotalUser = async () => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://localhost:3000/api/v1/user/totalUsers`,
-      // `https://dropquest-qd-backend.onrender.com/api/v1/user/totalUsers`,
+      // `http://localhost:3000/api/v1/user/totalUsers`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/user/totalUsers`,
       {
         method: "GET",
         headers: {
@@ -197,7 +197,8 @@ export const getAllUser = async () => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://localhost:3000/api/v1/user/users`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/user/users`,
+      // `http://localhost:3000/api/v1/user/users`,
       {
         method: "GET",
         headers: {
