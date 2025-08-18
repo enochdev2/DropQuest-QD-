@@ -1,10 +1,23 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
@@ -13,21 +26,22 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
-import { Search, Plus, Edit, Trash2 } from "lucide-react"
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Search, Plus, Edit, Trash2 } from "lucide-react";
+import { getAnnouncement } from "@/lib/utilityFunction";
 
 export default function AnnouncementsManagement() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [editingAnnouncement, setEditingAnnouncement] = useState(null)
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [editingAnnouncement, setEditingAnnouncement] = useState(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editForm, setEditForm] = useState({
     title: "",
     content: "",
     priority: "normal",
-  })
+  });
 
   const [announcements, setAnnouncements] = useState([
     {
@@ -102,42 +116,60 @@ export default function AnnouncementsManagement() {
       content: "Mass airdrop distribution event details.",
       priority: "urgent",
     },
-  ])
+  ]);
+
+  useEffect(() => {
+    handleAnnouncementClick();
+  }, []);
+
+  const handleAnnouncementClick = async () => {
+    const announcementDetails = await getAnnouncement();
+    console.log("🚀 ~ getUserProfileDetails ~ :", announcementDetails);
+    setAnnouncements(announcementDetails);
+  };
 
   const handleEditClick = (announcement) => {
-    setEditingAnnouncement(announcement)
+    setEditingAnnouncement(announcement);
     setEditForm({
       title: announcement.title,
       content: announcement.content || "",
       priority: announcement.priority || "normal",
-    })
-    setIsEditDialogOpen(true)
-  }
+    });
+    setIsEditDialogOpen(true);
+  };
 
   const handleSaveEdit = () => {
     if (editingAnnouncement) {
       setAnnouncements((prev) =>
         prev.map((announcement) =>
-          announcement.id === editingAnnouncement.id ? { ...announcement, ...editForm } : announcement,
-        ),
-      )
-      setIsEditDialogOpen(false)
-      setEditingAnnouncement(null)
-      setEditForm({ title: "", content: "", priority: "normal" })
+          announcement.id === editingAnnouncement.id
+            ? { ...announcement, ...editForm }
+            : announcement
+        )
+      );
+      setIsEditDialogOpen(false);
+      setEditingAnnouncement(null);
+      setEditForm({ title: "", content: "", priority: "normal" });
     }
-  }
+  };
 
   const filteredAnnouncements = announcements.filter((announcement) =>
-    announcement.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+    announcement.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <Card className="bg-gradient-to-br from-white to-slate-50 shadow-xl border-slate-200">
-      <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-t-lg">
-        <CardTitle className="text-2xl font-bold text-slate-800" style={{ fontFamily: "DM Sans, sans-serif" }}>
+    <Card className="bg-gradient-to-br from-white/5 to-slate-50/5 shadow-xl border-slate-600">
+      <CardHeader className="bg-gradient-to-r from-purple-50/20 to-blue-50/20 rounded-t-lg">
+        <CardTitle
+          className="text-2xl font-bold text-slate-100"
+          style={{ fontFamily: "DM Sans, sans-serif" }}
+        >
           Announcements
         </CardTitle>
-        <CardDescription className="text-slate-600" style={{ fontFamily: "DM Sans, sans-serif" }}>
+        <CardDescription
+          className="text-slate-100 text-lg"
+          style={{ fontFamily: "DM Sans, sans-serif" }}
+        >
           Keep users informed with important updates and communications
         </CardDescription>
       </CardHeader>
@@ -149,7 +181,7 @@ export default function AnnouncementsManagement() {
               placeholder="Search announcements..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500 transition-all duration-300"
+              className="pl-10 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500 transition-all text-white duration-300"
             />
           </div>
           <Dialog>
@@ -162,20 +194,30 @@ export default function AnnouncementsManagement() {
             <DialogContent className="max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Create New Announcement</DialogTitle>
-                <DialogDescription>Create a new announcement that will be visible to all users.</DialogDescription>
+                <DialogDescription>
+                  Create a new announcement that will be visible to all users.
+                </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="title" className="text-right">
                     Title
                   </Label>
-                  <Input id="title" placeholder="Announcement title" className="col-span-3" />
+                  <Input
+                    id="title"
+                    placeholder="Announcement title"
+                    className="col-span-3"
+                  />
                 </div>
                 <div className="grid grid-cols-4 items-start gap-4">
                   <Label htmlFor="content" className="text-right mt-2">
                     Content
                   </Label>
-                  <Textarea id="content" placeholder="Announcement content..." className="col-span-3 min-h-[100px]" />
+                  <Textarea
+                    id="content"
+                    placeholder="Announcement content..."
+                    className="col-span-3 min-h-[100px]"
+                  />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="priority" className="text-right">
@@ -204,7 +246,9 @@ export default function AnnouncementsManagement() {
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>Edit Announcement</DialogTitle>
-              <DialogDescription>Update the announcement details.</DialogDescription>
+              <DialogDescription>
+                Update the announcement details.
+              </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
@@ -214,7 +258,9 @@ export default function AnnouncementsManagement() {
                 <Input
                   id="edit-title"
                   value={editForm.title}
-                  onChange={(e) => setEditForm((prev) => ({ ...prev, title: e.target.value }))}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, title: e.target.value }))
+                  }
                   className="col-span-3"
                 />
               </div>
@@ -225,7 +271,12 @@ export default function AnnouncementsManagement() {
                 <Textarea
                   id="edit-content"
                   value={editForm.content}
-                  onChange={(e) => setEditForm((prev) => ({ ...prev, content: e.target.value }))}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({
+                      ...prev,
+                      content: e.target.value,
+                    }))
+                  }
                   className="col-span-3 min-h-[100px]"
                 />
               </div>
@@ -236,7 +287,12 @@ export default function AnnouncementsManagement() {
                 <select
                   id="edit-priority"
                   value={editForm.priority}
-                  onChange={(e) => setEditForm((prev) => ({ ...prev, priority: e.target.value }))}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({
+                      ...prev,
+                      priority: e.target.value,
+                    }))
+                  }
                   className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
                   <option value="normal">Normal</option>
@@ -246,7 +302,10 @@ export default function AnnouncementsManagement() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+              <Button
+                variant="outline"
+                onClick={() => setIsEditDialogOpen(false)}
+              >
                 Cancel
               </Button>
               <Button
@@ -262,35 +321,59 @@ export default function AnnouncementsManagement() {
         <div className="rounded-xl border border-slate-200 overflow-hidden shadow-lg">
           <Table>
             <TableHeader>
-              <TableRow className="bg-gradient-to-r from-slate-50 to-slate-100">
-                <TableHead className="font-semibold text-slate-700">ID</TableHead>
-                <TableHead className="font-semibold text-slate-700">Title</TableHead>
-                <TableHead className="font-semibold text-slate-700">Status</TableHead>
-                <TableHead className="font-semibold text-slate-700">Date</TableHead>
-                <TableHead className="font-semibold text-slate-700">Author</TableHead>
-                <TableHead className="font-semibold text-slate-700">Actions</TableHead>
+              <TableRow className="bg-gradient-to-r from-blue-500 to-slate-700">
+                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
+                  ID
+                </TableHead>
+                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20  ">
+                  Title
+                </TableHead>
+                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20 *:">
+                  Status
+                </TableHead>
+                <TableHead className="font-semibold    text-slate-100 text-lg bg-black/20">
+                  Date
+                </TableHead>
+                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
+                  Author
+                </TableHead>
+                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
+                  Actions
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredAnnouncements.map((announcement) => (
                 <TableRow
                   key={announcement.id}
-                  className="hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 transition-all duration-300"
+                  className="hover:bg-gradient-to-r hover:from-purple-50/20 hover:to-blue-50/20 transition-all  duration-300"
                 >
-                  <TableCell className="font-medium">{announcement.id}</TableCell>
-                  <TableCell className="max-w-xs truncate font-medium text-slate-800">{announcement.title}</TableCell>
+                  <TableCell className="font-medium text-white">
+                    {announcement._id?.slice(20, 24)}
+                  </TableCell>
+                  <TableCell className="max-w-xs truncate font-medium text-white">
+                    {announcement.title}
+                  </TableCell>
                   <TableCell>
                     {announcement.isNew ? (
                       <Badge className="bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 hover:from-blue-200 hover:to-cyan-200 font-semibold">
                         NEW
                       </Badge>
                     ) : (
-                      <Badge variant="secondary" className="bg-slate-100 text-slate-600">
+                      <Badge
+                        variant="secondary"
+                        className="bg-slate-100 text-slate-600"
+                      >
                         Published
                       </Badge>
                     )}
                   </TableCell>
-                  <TableCell>{announcement.date}</TableCell>
+                  <TableCell className="text-white">
+                    {" "}
+                    {new Date(announcement.createdAt).toLocaleDateString(
+                      "en-US"
+                    )}
+                  </TableCell>
                   <TableCell>{announcement.author}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
@@ -300,7 +383,7 @@ export default function AnnouncementsManagement() {
                         onClick={() => handleEditClick(announcement)}
                         className="hover:bg-cyan-50 hover:border-cyan-300 transition-all duration-300 bg-transparent"
                       >
-                        <Edit className="w-3 h-3" />
+                        <Edit className="w-3 h-3 text-blue-500" />
                       </Button>
                       <Button
                         size="sm"
@@ -318,5 +401,5 @@ export default function AnnouncementsManagement() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

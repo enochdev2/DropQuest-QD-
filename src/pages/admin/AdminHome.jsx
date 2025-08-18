@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,13 +17,25 @@ import PointsManagement from "@/components/AdminDashboard/PointsManagement";
 import AnnouncementsManagement from "@/components/AdminDashboard/AnnouncementsManagement";
 import UserManagement from "@/components/AdminDashboard/UserManagement";
 import { Link } from "react-router-dom";
+import { getTotalUser } from "@/lib/utilityFunction";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("users");
   const [isLoading, setIsLoading] = useState(false);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
 
-  const totalUsers = 4;
-  const totalPoints = 1013700;
+  useEffect(() => {
+    getTotalUsers();
+  }, []);
+
+  const getTotalUsers = async () => {
+    const user = await getTotalUser();
+    console.log("🚀 ~ getUserProfileDetails ~ user:", user);
+    setTotalUsers(user.totalUsers);
+    setTotalPoints(user.totalPoints);
+  };
+
   const activeSessions = Math.floor(Math.random() * 50) + 20;
 
   const handleRefresh = () => {
@@ -77,17 +89,17 @@ export default function AdminDashboard() {
       <div className="py-6 px-24 ">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <Card className=" bg-gray-100 from-white to-cyan-50 border-cyan-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-            <CardContent className="p-6">
+            <CardContent className="p-6 py-0">
               <div className="flex items-center justify-between">
-                <div>
+                <div className="space-y-5">
                   <p
-                    className="text-sm font-medium text-slate-100"
+                    className="text-xl font-bold text-slate-600"
                     style={{ fontFamily: "DM Sans, sans-serif" }}
                   >
                     Total Users
                   </p>
                   <p
-                    className="text-3xl font-bold text-cyan-100"
+                    className="text-3xl font-bold text-cyan-800"
                     style={{ fontFamily: "DM Sans, sans-serif" }}
                   >
                     {totalUsers}
@@ -101,11 +113,11 @@ export default function AdminDashboard() {
           </Card>
 
           <Card className="bg-gradient-to-br from-white to-blue-50 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-            <CardContent className="p-6">
+            <CardContent className="p-6 py-0">
               <div className="flex items-center justify-between">
-                <div>
+                <div className="space-y-3">
                   <p
-                    className="text-sm font-medium text-slate-600"
+                    className="text-2xl font-bold text-slate-600"
                     style={{ fontFamily: "DM Sans, sans-serif" }}
                   >
                     Active Sessions
@@ -125,9 +137,9 @@ export default function AdminDashboard() {
           </Card>
 
           <Card className="bg-gradient-to-br from-white to-emerald-50 border-emerald-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-            <CardContent className="p-6">
+            <CardContent className="p-6 py-0">
               <div className="flex items-center justify-between">
-                <div>
+                <div className="space-y-5">
                   <p
                     className="text-sm font-medium text-slate-600"
                     style={{ fontFamily: "DM Sans, sans-serif" }}
@@ -155,7 +167,7 @@ export default function AdminDashboard() {
               value="users"
               className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-blue-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
             >
-              <Users className="w-4 h-4" />
+              <Users className="w-10 h-10" size={26} />
               User Management
             </TabsTrigger>
             <TabsTrigger

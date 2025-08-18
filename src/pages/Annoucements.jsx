@@ -96,10 +96,10 @@ function AnnouncementsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen  bg-gray-900">
       {/* <Navbar /> */}
 
-      <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-7xl mx-auto">
+      <div className="px-4 sm:px-6 sm:w-[400px] lg:px-8 py-6 max-w-7xl mx-auto border border-gray-700">
         <div className="mb-8 text-center">
           <div className="inline-flex items-center gap-3 mb-4">
             <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-blue-600 rounded-full flex items-center justify-center">
@@ -128,7 +128,7 @@ function AnnouncementsPage() {
           </p>
         </div>
 
-        <div className="grid gap-4 sm:gap-6 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 lg:grid- rounded-2xl">
           {selectedAnnouncement?.map((announcement) => (
             <div
               key={announcement.id}

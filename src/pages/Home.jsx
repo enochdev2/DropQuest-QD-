@@ -2,18 +2,21 @@ import { Button } from "@/components/ui/button";
 import umbrellaCoin from "@/assets/dqLogo.png";
 import { useLanguage } from "@/contexts/language-context";
 import { Link } from "react-router-dom";
+import { ArrowBigLeftIcon, ArrowRight, ArrowRightFromLine } from "lucide-react";
 
 export default function DropQuestLanding() {
   const { t } = useLanguage();
 
   return (
-    <div className="min-h-screen flex flex-col bg-black text-white">
+    <div className="min-h-screen flex flex-col items-center bg-black text-white">
+      <div className="sm:w-[400px] border border-gray-700 rounded-lg">
+
       {/* HERO SECTION */}
-      <section className="flex flex-col items-center text-center px-4 sm:px-6 py-10 sm:py-12">
-        <div className="flex gap-4 justify-between w-full px-4 pr-16">
-          <div className="flex flex-col space-y-3 text-2xl text-left">
+      <section className="flex flex-col X items-center  text-center px-4 sm:px-6 py-10 sm:py-12">
+        <div className="flex sm:w-[400px] gap-4 justify-between w-full px-4 pr-10">
+          <div className="flex flex-col  space-y-3 text-2xl text-left">
             <p> Airdrop</p>
-            <p>Click and</p>
+            <p className="text-blue-600">Click and</p>
             <p>Earn</p>
           </div>
 
@@ -35,7 +38,7 @@ export default function DropQuestLanding() {
           //   background: "linear-gradient(to right, #0d0b3e, #3d2abf)",
           // }}
         >
-          <Link to="/air-drop">{t("goToAirdrop")}</Link>
+          <Link to="/air-drop" className="flex items-center space-x-3">{t("goToAirdrop")} <ArrowRight className="w-20" size={60}/> </Link>
         </Button>
       </section>
 
@@ -70,6 +73,7 @@ export default function DropQuestLanding() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }

@@ -1,10 +1,23 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
@@ -13,15 +26,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
-import { Search, Award } from "lucide-react"
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Search, Award } from "lucide-react";
+import { getAllUser } from "@/lib/utilityFunction";
 
 export default function PointsManagement() {
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const [users] = useState([
+  const [users, setUsers] = useState([
     {
       id: 1,
       name: "John Kim",
@@ -62,21 +76,39 @@ export default function PointsManagement() {
       joinDate: "2024-01-18",
       walletAddress: "",
     },
-  ])
+  ]);
+  console.log("🚀 ~ PointsManagement ~ users:", users);
+
+  useEffect(() => {
+    getTotalUsers();
+  }, []);
+
+  const getTotalUsers = async () => {
+    const user = await getAllUser();
+    console.log("🚀 ~ getUserProfileDetails ~ user:", user);
+    setUsers(user);
+    // setTotalPoints(user.totalPoints);
+  };
 
   const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <Card className="bg-gradient-to-br from-white to-slate-50 shadow-xl border-slate-200">
-      <CardHeader className="bg-gradient-to-r from-emerald-50 to-cyan-50 rounded-t-lg">
-        <CardTitle className="text-2xl font-bold text-slate-800" style={{ fontFamily: "DM Sans, sans-serif" }}>
+    <Card className="bg-gradient-to-br from-white/5 to-slate-50/5 shadow-xl border-slate-200/40">
+      <CardHeader className="bg-gradient-to-r from-blue-500/10 to-cyan-50 rounded-t-lg">
+        <CardTitle
+          className="text-3xl font-bold text-slate-100"
+          style={{ fontFamily: "DM Sans, sans-serif" }}
+        >
           Points Management
         </CardTitle>
-        <CardDescription className="text-slate-600" style={{ fontFamily: "DM Sans, sans-serif" }}>
+        <CardDescription
+          className="text-slate-100 text-lg"
+          style={{ fontFamily: "DM Sans, sans-serif" }}
+        >
           Monitor and adjust user points with ease for better decision-making
         </CardDescription>
       </CardHeader>
@@ -101,7 +133,9 @@ export default function PointsManagement() {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Allocate Points</DialogTitle>
-                <DialogDescription>Grant or deduct points for a specific user.</DialogDescription>
+                <DialogDescription>
+                  Grant or deduct points for a specific user.
+                </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -123,13 +157,22 @@ export default function PointsManagement() {
                   <Label htmlFor="points" className="text-right">
                     Points
                   </Label>
-                  <Input id="points" type="number" placeholder="Enter points (+ or -)" className="col-span-3" />
+                  <Input
+                    id="points"
+                    type="number"
+                    placeholder="Enter points (+ or -)"
+                    className="col-span-3"
+                  />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="reason" className="text-right">
                     Reason
                   </Label>
-                  <Input id="reason" placeholder="Reason for adjustment" className="col-span-3" />
+                  <Input
+                    id="reason"
+                    placeholder="Reason for adjustment"
+                    className="col-span-3"
+                  />
                 </div>
               </div>
               <DialogFooter>
@@ -141,38 +184,56 @@ export default function PointsManagement() {
           </Dialog>
         </div>
 
-        <div className="rounded-xl border border-slate-200 overflow-hidden shadow-lg">
+        <div className="rounded-xl border border-slate-200 overflow-hidden text-white shadow-lg">
           <Table>
             <TableHeader>
-              <TableRow className="bg-gradient-to-r from-slate-50 to-slate-100">
-                <TableHead className="font-semibold text-slate-700">ID</TableHead>
-                <TableHead className="font-semibold text-slate-700">Name</TableHead>
-                <TableHead className="font-semibold text-slate-700">Email</TableHead>
-                <TableHead className="font-semibold text-slate-700">Current Points</TableHead>
-                <TableHead className="font-semibold text-slate-700">Join Date</TableHead>
-                <TableHead className="font-semibold text-slate-700">Actions</TableHead>
+              <TableRow className="bg-gradient-to-r from-blue-500 to-slate-100 ">
+                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
+                  ID
+                </TableHead>
+                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
+                  Name
+                </TableHead>
+                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
+                  Email
+                </TableHead>
+                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
+                  Current Points
+                </TableHead>
+                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
+                  Join Date
+                </TableHead>
+                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
+                  Actions
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredUsers.map((user) => (
                 <TableRow
-                  key={user.id}
-                  className="hover:bg-gradient-to-r hover:from-emerald-50 hover:to-cyan-50 transition-all duration-300"
+                  key={user._id}
+                  className="hover:bg-gradient-to-r hover:from-emerald-50/30 hover:to-cyan-50/20 transition-all duration-300 "
                 >
-                  <TableCell className="font-medium">{user.id}</TableCell>
-                  <TableCell className="font-medium text-slate-800">{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
+                  <TableCell className="font-medium ">{user._id?.slice(20,23)}</TableCell>
+                  <TableCell className="font-semibold text-slate-100">
+                    {user.name}
+                  </TableCell>
+                  <TableCell className="text-base">{user.email}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Badge
                         variant="outline"
-                        className="bg-gradient-to-r from-yellow-50 to-amber-50 text-amber-700 border-amber-200 font-semibold"
+                        className="bg--to-r from-yellow-50/10 to-amber-50/10 font-bold text-amber-100 border--200/50 text-lg"
                       >
-                        {user.points.toLocaleString()}
+                        {user?.points?.totalPoints?.toLocaleString()}
                       </Badge>
                     </div>
                   </TableCell>
-                  <TableCell>{user.joinDate}</TableCell>
+                  <TableCell className="text-xs">
+                    {new Date(
+                      user.createdAt ?? user.joinDate
+                    ).toLocaleDateString("en-US")}
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Button
@@ -198,5 +259,5 @@ export default function PointsManagement() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

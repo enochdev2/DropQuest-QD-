@@ -30,7 +30,8 @@ export default function Navbar() {
   const firstName = user?.name?.split(" ")[0] || "";
 
   return (
-    <header className="flex bg-black justify-between items-center px-4 py-4 border-b border-white/10">
+    <header className="flex bg-black justify-center items-center px-4  border-b border-white/10">
+      <div className=" sm:w-[400px] flex bg-black justify-between items-center px-4 py-4  border-white/10 border">
       {/* Logo */}
       <div className="text-lg sm:text-xl   flex items-center gap-2">
         <Link
@@ -102,7 +103,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Hamburger */}
-        <div className="sm:hidden">
+        <div className="sm:">
           <button className="text-white" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X size={26} /> : <Menu size={36} />}
           </button>
@@ -117,11 +118,10 @@ export default function Navbar() {
           {/* {language === "en" ? "한국어" : "En"} */}
         </Button>
       </div>
-
       {/* Mobile Menu Overlay */}
       {menuOpen && (
         <div
-          className="sm:hidden fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center gap-6"
+          className="sm: fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center gap-6"
           onClick={closeMenu}
         >
           <div
@@ -166,6 +166,10 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      </div>
+      
+
     </header>
   );
 }
