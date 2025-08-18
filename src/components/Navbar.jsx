@@ -53,7 +53,7 @@ export default function Navbar() {
             size="sm"
             className="text-gray-800 rounded-4xl hover:bg-white/10 py-5 px-3 bg-gray-200 text-lg font-semibold"
           >
-            <Link to={"/Login"}>signIn</Link>
+            <Link to={"/login"}>signIn</Link>
           </Button>
         ) : user?.admin ? (
           <Link to="/admin" className="text-black font-semibold  py-2 rounded-2xl px-3 bg-white">Admin</Link>
