@@ -43,7 +43,7 @@ function MyPage() {
 
   const handleCopyLink = async () => {
     // const inviteLink = `http://localhost:5173/Login?referral=${userProfile?.referralCode}`;
-    const inviteLink = `https://www.drop-quest.com/Login?referral=${userProfile?.referralCode}`;
+    const inviteLink = `https://www.drop-quest.com/login?referral=${userProfile?.referralCode}`;
     try {
       await navigator.clipboard.writeText(inviteLink);
       setCopySuccess(true);
