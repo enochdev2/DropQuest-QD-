@@ -145,7 +145,7 @@ function MyPage() {
               <h3 className="font-semibold mb-2">{t("myInvitationLink")}</h3>
               <div className="bg-black rounded p-3 mb-3 flex items-center justify-between">
                 <code className="text-purple-300 text-sm break-all flex-1">
-                  drop-quest.com/referral={userProfile?.referralCode}
+                  drop-quest.com/login?referral={userProfile?.referralCode}
                 </code>
                 <button
                   onClick={handleCopyLink}

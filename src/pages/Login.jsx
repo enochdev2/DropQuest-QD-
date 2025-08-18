@@ -9,7 +9,7 @@ function Login() {
       
     >
       <div className="flex w-full max-w-lg lg:m-0 m-4 flex-col gap-6 bg-white p-3 lg:p-6 rounded-xl shadow-lg">
-        <Tabs defaultValue="login">
+        <Tabs defaultValue="signup">
           <TabsList className="w-full">
             <TabsTrigger value="login" className="text-[#0d0b3e] w-1/2">
               Login

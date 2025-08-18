@@ -22,7 +22,7 @@ const SignUp = () => {
   const { t } = useLanguage();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const referralCode = queryParams.get("ref");
+  const referralCode = queryParams.get("referral");
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -38,6 +38,8 @@ const SignUp = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [touched, setTouched] = useState({});
+  // const referralCode = getReferralCodeFromUrl();
+  console.log("🚀 ~ SignUp ~ referralCode:", referralCode)
 
   // Validation functions
   const validateEmail = (email) => {
@@ -178,7 +180,7 @@ const SignUp = () => {
         name: formData.name,
         phone: formData.phoneNumber,
         telegramId: formData.telegramId || "",
-        referredBy: referralCode || null, // Include referral code if available
+        referralCode: referralCode || null, // Include referral code if available
       };
 
       // Make signup request to backend

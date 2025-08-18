@@ -222,3 +222,18 @@ export const getAllUser = async () => {
     console.error("Error during user update:", error);
   }
 };
+
+// Function to get the referral code from the URL
+export const getReferralCodeFromUrl = async () =>{
+  const urlParams = new URLSearchParams(window.location.search);
+  const referralCode = urlParams.get('referral'); // Extract the referral code
+
+  if (referralCode) {
+    console.log("Referral Code:", referralCode); // You can replace this with your handling logic
+    // Here, you can use the referral code for any logic you need (e.g., storing it, autofilling a form, etc.)
+    return referralCode;
+  } else {
+    console.log("No referral code found.");
+    return null; // No referral code found
+  }
+}
