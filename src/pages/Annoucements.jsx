@@ -73,7 +73,7 @@ import { Link } from "react-router-dom";
 function AnnouncementsPage() {
   const { language } = useLanguage();
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
-
+   const [loading, setLoading] = useState(true);
   //   const getCategoryColor = (category) => {
   //     const colors = {
   //       적립금: "bg-gradient-to-r from-emerald-500 to-teal-600",
@@ -93,13 +93,22 @@ function AnnouncementsPage() {
     const announcementDetails = await getAnnouncement();
     console.log("🚀 ~ getUserProfileDetails ~ :", announcementDetails);
     setSelectedAnnouncement(announcementDetails);
+    setLoading(false)
   };
+
+   if (loading) {
+    return (
+      <div className="flex bg-gray-900 justify-center items-center min-h-screen">
+        <div className="spinner"></div> {/* Spinner component */}
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen  bg-gray-900">
       {/* <Navbar /> */}
 
-      <div className="px-4 sm:px-6 sm:w-[400px] lg:px-8 py-6 max-w-7xl mx-auto border border-gray-700">
+      <div className="px-4 sm:px-6 sm:w-[400px] lg:px-8 py-6 max-w-7xl mx-auto sm:border border-gray-700">
         <div className="mb-8 text-center">
           <div className="inline-flex items-center gap-3 mb-4">
             <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-blue-600 rounded-full flex items-center justify-center">

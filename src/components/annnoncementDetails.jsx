@@ -30,8 +30,12 @@ const AnnouncementDetail = () => {
     // @ts-ignore
   }, [id]);
 
-  if (loading) {
-    return <div>Loading...</div>;
+   if (loading) {
+    return (
+      <div className="flex bg-gray-900 justify-center items-center min-h-screen">
+        <div className="spinner"></div> {/* Spinner component */}
+      </div>
+    );
   }
 
   if (error) {
@@ -44,7 +48,7 @@ const AnnouncementDetail = () => {
 
   return (
     <div className="min-h-screen flex justify-center bg-gray-900">
-      <div className="min-h-screen sm:w-[400px] border border-slate-600 bg-gray-900">
+      <div className="min-h-screen sm:w-[400px] sm:border border-slate-600 bg-gray-900">
         <div className="px-4 sm:px-6 lg:px-4 py-6 max-w-4xl mx-auto">
           <button
             onClick={() => router(-1)}
