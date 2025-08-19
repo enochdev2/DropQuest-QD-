@@ -10,6 +10,8 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import LoadingSpinner from "./LoadingSpinner";
+import { Eye, EyeOff } from "lucide-react";
 // import { useAuth } from "../lib/AuthProvider";
 const SignIn = () => {
   // const {  setUser } = useAuth();
@@ -18,6 +20,7 @@ const SignIn = () => {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // Check if form is valid for submit button
@@ -64,26 +67,19 @@ const SignIn = () => {
           body: JSON.stringify(newUser),
         }
       );
-      const data = await response.json();
-      console.log("🚀 ~ handleSubmit ~ data:", data);
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      if (response.ok) {
-        //  setUser(data.user);
-        console.log("You have Logged in successfully!");
-        localStorage.setItem("token", data.token);
-        // setUser(data.user);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("isLoggedIn", "true");
-        navigate("/my-page");
-        toast.success("Login successful")
-      } else {
+      if (!response.ok) {
         const errorData = await response.json();
-        console.log(errorData.message || "Sign-up failed.");
 
         const errorMsg =
           errorData.error || errorData.message || "Failed to register user";
-        console.log(errorMsg);
+        toast.error(errorMsg);
+      } else {
+        const data = await response.json();
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        console.log("You have Logged in successfully!");
+        navigate("/my-page");
+        toast.success("Login successful");
       }
     } catch (error) {
       console.error("Error during loggign-in:", error);
@@ -115,13 +111,23 @@ const SignIn = () => {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="login-password">Password</Label>
-            <Input
-              id="login-password"
-              type="password"
-              placeholder="••••••••"
-              value={formData.password}
-              onChange={(e) => handleInputChange("password", e.target.value)}
-            />
+
+            <div className="relative">
+              <Input
+                id="login-password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={(e) => handleInputChange("password", e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
           </div>
         </CardContent>
         <CardFooter>
@@ -136,7 +142,7 @@ const SignIn = () => {
             onClick={handleSubmit}
             disabled={isLoading || !isFormValid()}
           >
-            {isLoading ? "Logging in..." : "Login"}
+            {isLoading ? <LoadingSpinner /> : "Login"}
           </Button>
         </CardFooter>
       </Card>

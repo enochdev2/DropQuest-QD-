@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/language-context";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import LoadingSpinner from "./LoadingSpinner";
 
 const SignUp = () => {
   const { t } = useLanguage();
@@ -193,17 +194,17 @@ const SignUp = () => {
           body: JSON.stringify(newUser),
         }
       );
-
+      console.log("🚀 ~ handleSubmit ~ response:", response)
       if (!response.ok) {
-        toast.error("User with this Email already exists.");
-      }
-      if (response.ok) {
-        console.log("Registration successful!");
-        navigate("/login");
-        toast.success("Registration successful!");
-      } else {
         const errorData = await response.json();
-        console.log(errorData.message || "Sign-up failed.");
+         const errorMsg =
+                  errorData.error || errorData.message || "Failed to register user";
+                toast.error(errorMsg)
+        
+      } else {
+        console.log("Registration successful!");
+        navigate("/my-page");
+        toast.success("Registration successful!");
       }
     } catch (error) {
       console.error("Error during sign-up:", error);
@@ -392,27 +393,7 @@ const SignUp = () => {
           >
             {isLoading ? (
               <>
-                <svg
-                  className="animate-spin h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                  ></path>
-                </svg>
-                Signing up...
+               <LoadingSpinner/>
               </>
             ) : (
               t("signUp")
