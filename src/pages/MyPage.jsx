@@ -188,7 +188,7 @@ function MyPage() {
               ) : (
                 userReferralLst.map((referral, index) => (
                   <div
-                    key={referral.id}
+                    key={referral._id}
                     className="py-3 border-b border-gray-800 last:border-b-0"
                   >
                     <div className="flex items-center justify-between">
@@ -198,13 +198,13 @@ function MyPage() {
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="font-medium">
-                          {referral.points.toLocaleString()}
+                          {referral?.points?.totalPoints?.toLocaleString()}
                         </span>
-                        <div className="w-5 h-5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
+                        {/* <div className="w-5 h-5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
                           <span className="text-yellow-900 font-bold text-xs">
                             $
                           </span>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <div className="mt-1 ml-6">

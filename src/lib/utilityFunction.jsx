@@ -35,6 +35,7 @@ export const getUserReferralList = async (referralCode) => {
     const token = localStorage.getItem("token");
     const response = await fetch(
       `https://dropquest-qd-backend.onrender.com/api/v1/user/${referralCode}`,
+      // `http://localhost:3000/api/v1/user/${referralCode}`,
       {
         method: "GET",
         headers: {
