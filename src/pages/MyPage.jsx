@@ -27,8 +27,7 @@ function MyPage() {
   const [userProfile, setUserProfile] = useState({});
   const [userReferralLst, setUserReferralLst] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [copySuccess, setCopySuccess] = useState(false);
-  console.log("🚀 ~ MyPage ~ copySuccess:", copySuccess);
+  const [, setCopySuccess] = useState(false);
 
   useEffect(() => {
     getUserProfileDetails();
@@ -57,14 +56,13 @@ function MyPage() {
   const getUserProfileDetails = async () => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const user = await getUserProfile(userInfo.email);
-    console.log("🚀 ~ getUserProfileDetails ~ user:", user);
+    // console.log("🚀 ~ getUserProfileDetails ~ user:", user);
     setUserProfile(user);
   };
 
   const getUserReferralListDetails = async () => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const userReferralLsts = await getUserReferralList(userInfo.referralCode);
-    console.log("🚀 ~ getUserReferralListDetails ~ user:", userReferralLsts);
     setUserReferralLst(userReferralLsts);
   };
 

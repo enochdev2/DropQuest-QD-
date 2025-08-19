@@ -177,7 +177,6 @@ export const getTotalUser = async () => {
     );
 
     const data = await response.json();
-    console.log("🚀 ~ getTotalUser ~ data:", data)
     if (!response.ok) {
       const errorMsg = data.error || data.message || "Failed to register user";
       if (errorMsg === "Invalid or expired token") {
