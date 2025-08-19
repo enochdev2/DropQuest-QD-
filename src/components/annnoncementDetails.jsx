@@ -32,7 +32,7 @@ const AnnouncementDetail = () => {
 
    if (loading) {
     return (
-      <div className="flex bg-gray-900 justify-center items-center min-h-screen">
+      <div className="flex bg-gray-950 justify-center items-center min-h-screen">
         <div className="spinner"></div> {/* Spinner component */}
       </div>
     );
@@ -47,8 +47,8 @@ const AnnouncementDetail = () => {
   }
 
   return (
-    <div className="min-h-screen flex justify-center bg-gray-900">
-      <div className="min-h-screen sm:w-[400px] sm:border border-slate-600 bg-gray-900">
+    <div className="min-h-screen flex justify-center bg-gray-950">
+      <div className="min-h-screen sm:w-[400px] sm:border border-slate-600 bg-gray-950">
         <div className="px-4 sm:px-6 lg:px-4 py-6 max-w-4xl mx-auto">
           <button
             onClick={() => router(-1)}
@@ -71,7 +71,7 @@ const AnnouncementDetail = () => {
           </button>
 
           {/* Announcement Detail */}
-          <div className="bg-gray-800 rounded-lg p-3 sm:p-3 border border-gray-700">
+          <div className="bg-gray-900 rounded-lg p-3 sm:p-3 border border-gray-700">
             <div className="mb-6">
               <h1 className="text-2xl sm:text-3xl font-bold text-white mb-4">
                 {announcement?.title}

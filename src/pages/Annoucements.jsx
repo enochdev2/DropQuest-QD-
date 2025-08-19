@@ -98,14 +98,14 @@ function AnnouncementsPage() {
 
    if (loading) {
     return (
-      <div className="flex bg-gray-900 justify-center items-center min-h-screen">
+      <div className="flex bg-gray-950 justify-center items-center min-h-screen">
         <div className="spinner"></div> {/* Spinner component */}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen  bg-gray-900">
+    <div className="min-h-screen  bg-gray-950">
       {/* <Navbar /> */}
 
       <div className="px-4 sm:px-6 sm:w-[400px] lg:px-8 py-6 max-w-7xl mx-auto sm:border border-gray-700">
