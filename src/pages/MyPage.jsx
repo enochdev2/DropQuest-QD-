@@ -28,7 +28,7 @@ function MyPage() {
   const [userReferralLst, setUserReferralLst] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
-  console.log("🚀 ~ MyPage ~ copySuccess:", copySuccess)
+  console.log("🚀 ~ MyPage ~ copySuccess:", copySuccess);
 
   useEffect(() => {
     getUserProfileDetails();
@@ -120,8 +120,11 @@ function MyPage() {
                   {/* {mockUser.points.toLocaleString()} */}
                   {userProfile.points?.totalPoints.toLocaleString()}
                 </span>
-                  <img src={coin} alt="coin" className="w-10 h-8 justify-self-end" />
-               
+                <img
+                  src={coin}
+                  alt="coin"
+                  className="w-10 h-8 justify-self-end"
+                />
               </div>
 
               <div className="flex  justify-center">
@@ -210,7 +213,9 @@ function MyPage() {
                     <div className="mt-1 ml-6">
                       <span className="text-xs text-gray-400">
                         {language === "en" ? "Joined: " : "가입일: "}
-                        {referral.joinDate}
+                        {new Date(referral.createdAt).toLocaleDateString(
+                          "en-US"
+                        )}
                       </span>
                     </div>
                     {/* <div className="mt-1 ml-6">
