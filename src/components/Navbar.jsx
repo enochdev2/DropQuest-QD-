@@ -37,8 +37,8 @@ export default function Navbar() {
   const firstName = user?.name?.split(" ")[0] || "";
 
   return (
-    <header className="flex bg-black justify-center items-center px-4  border-b border-white/10">
-      <div className=" sm:w-[400px] flex bg-black justify-between items-center px-4 py-4  border-white/10 border">
+    <header className="flex bg-black justify-center items-center   border-b border-white/10">
+      <div className="w-full sm:w-[400px] flex bg-black justify-between items-center px-2  py-4  sm:border-white/10 sm:border">
         {/* Logo */}
         <div className="text-lg sm:text-xl   flex items-center gap-2">
           <Link
@@ -120,7 +120,7 @@ export default function Navbar() {
               className="text-white"
               onClick={() => setMenuOpen(!menuOpen)}
             >
-              {menuOpen ? <X size={26} /> : <Menu size={36} />}
+              {menuOpen ? <X size={36} color="white" className="text-white" /> : <Menu size={36} />}
             </button>
           </div>
           <Button
@@ -136,9 +136,14 @@ export default function Navbar() {
         {/* Mobile Menu Overlay */}
         {menuOpen && (
           <div
-            className="sm: fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center gap-6"
+            className="sm:w-[400px] h-[500px] mx-auto fixed inset-0 bg-gray-950 opacity-95 z-50 flex flex-col items-center justify-center gap-6 rounded-b-2xl"
             onClick={closeMenu}
           >
+            <div className=" absolute top-5 right-10 cursor-pointer "
+            onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <X color="white" size={36}/>
+            </div>
             <div
               className="flex flex-col items-center gap-6"
               onClick={(e) => e.stopPropagation()}
@@ -148,14 +153,14 @@ export default function Navbar() {
                   key={label}
                   to={path}
                   onClick={closeMenu}
-                  className="text-white text-lg font-medium hover:text-gray-300 transition"
+                  className="text-white text-lg font-medium hover:text-gray-300 transition hover:bg-blue-800 px-5 py-1 rounded-2xl"
                 >
                   {label}
                 </Link>
               ))}
 
               {user ? (
-                <span className="text-white text-lg font-medium">
+                <span className="text-white text-lg font-medium hover:bg-blue-800 px-5 py-1 rounded-2xl">
                   {firstName}님
                 </span>
               ) : (
@@ -181,7 +186,7 @@ export default function Navbar() {
             </div>
             {user && (
               <div
-                className=" text-white flex items-center gap-2 mt-3 font-bold cursor-pointer"
+                className=" text-white flex items-center gap-2 mt-3 font-bold cursor-pointer hover:bg-blue-800 px-5 py-1 rounded-2xl"
                 onClick={logout}
               >
                 <LogOutIcon /> log-out

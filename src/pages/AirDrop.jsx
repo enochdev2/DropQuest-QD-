@@ -30,6 +30,7 @@ function AirDrop() {
   const [todayChecked, setTodayChecked] = useState(false);
   const [, setUserProfile] = useState({});
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     getUserProfileDetails();

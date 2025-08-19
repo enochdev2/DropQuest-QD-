@@ -20,7 +20,7 @@ function App() {
   // Hide navbar for admin routes
   const hideNavbar = location.pathname.startsWith("/admin");
   return (
-    <div>
+    <div className="overflow-x-hidden">
       {!hideNavbar && <Navbar />}
 
       <Routes>
