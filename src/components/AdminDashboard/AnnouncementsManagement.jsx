@@ -145,8 +145,9 @@ export default function AnnouncementsManagement() {
         content: editForm.content,
       };
     
-    await addannouncement( newAnnouncement);
-    SuccessToast("new announcement created")
+    const announce = await addannouncement( newAnnouncement);
+    announce && SuccessToast("new announcement created");
+    setIsEditDialogOpen(false);
     
   }
 
