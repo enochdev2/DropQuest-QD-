@@ -7,9 +7,11 @@ import { ChevronDown } from "lucide-react";
 // import { useLanguage } from "@/contexts/language-context"
 import umbrellaCoin from "@/assets/dqLogo.png";
 import { claimPoints, getUserProfile } from "@/lib/utilityFunction";
+import { SuccessToast } from "@/components/Success";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 // Mock attendance data for the past 3 days
-const attendanceData = [
+let attendanceData = [
   { date: "8/6", status: "absent", label: { en: "Absent", ko: "미출석" } },
   {
     date: "8/7",
@@ -28,9 +30,9 @@ function AirDrop() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [todayChecked, setTodayChecked] = useState(false);
-  const [, setUserProfile] = useState({});
+  const [userProfile, setUserProfile] = useState({});
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getUserProfileDetails();
@@ -41,17 +43,39 @@ function AirDrop() {
   };
 
   const handleCheck = async () => {
+    setLoading(true);
     const success = await claimPoints();
     console.log("🚀 ~ handleCheck ~ success:", success);
+
     setShowSuccess(false);
+    setLoading(false);
+    SuccessToast("you have successfully claim your airdrop for the day");
 
     setTodayChecked(true);
+    // Redirect after 30 seconds
+    setTimeout(() => {
+      window.location.href = "/my-page"; // replace with your page URL
+    }, 3000); // 30000ms = 30 seconds
   };
+
   const getUserProfileDetails = async () => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const user = await getUserProfile(userInfo.email);
     console.log("🚀 ~ getUserProfileDetails ~ user:", user);
     setUserProfile(user);
+    attendanceData = [
+      { date: "5/7", status: "absent", label: { en: "Absent", ko: "미출석" } },
+      {
+        date: "6/7",
+        status: "completed",
+        label: { en: "Completed", ko: "출석 완료" },
+      },
+      {
+        date: "7/7",
+        status: "completed",
+        label: { en: "Completed", ko: "출석 완료" },
+      },
+    ];
     if (user.points?.points === 0) {
       setTodayChecked(true);
       setMessage("You have already claimed your point for the day.");
@@ -100,8 +124,11 @@ function AirDrop() {
               />
             </div>
           </div>
-          {message && <p className="text-red-500 font-semibold mb-2 text-xs mt-2">{message}</p>}
-
+          {message && (
+            <p className="text-red-500 font-semibold mb-2 text-xs mt-2">
+              {message}
+            </p>
+          )}
 
           {/* Attendance Check Button */}
           <Button
@@ -111,7 +138,6 @@ function AirDrop() {
           >
             {language === "en" ? "Attendance Check" : "출석 체크"}
           </Button>
-          
 
           {/* Attendance Status */}
           <div className="flex items-center gap-6 mb-4">
@@ -166,9 +192,10 @@ function AirDrop() {
 
               <Button
                 onClick={handleCheck}
+                disabled={loading}
                 className="bg-white text-blue-600 hover:bg-gray-100 px-6 py-2 rounded-full font-medium"
               >
-                {language === "en" ? "Check" : "확인"}
+                {loading ? <LoadingSpinner /> : "Check"}
               </Button>
             </div>
           </div>

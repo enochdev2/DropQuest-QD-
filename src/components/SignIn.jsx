@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import LoadingSpinner from "./LoadingSpinner";
 import { Eye, EyeOff } from "lucide-react";
+import { SuccessToast } from "./Success";
 // import { useAuth } from "../lib/AuthProvider";
 const SignIn = () => {
   // const {  setUser } = useAuth();
@@ -79,7 +80,7 @@ const SignIn = () => {
         localStorage.setItem("user", JSON.stringify(data.user));
         console.log("You have Logged in successfully!");
         navigate("/my-page");
-        toast.success("Login successful");
+        SuccessToast("Login successful");
       }
     } catch (error) {
       console.error("Error during loggign-in:", error);

@@ -31,7 +31,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, Edit, Trash2 } from "lucide-react";
-import { getAnnouncement } from "@/lib/utilityFunction";
+import { addannouncement, getAnnouncement } from "@/lib/utilityFunction";
+import { SuccessToast } from "../Success";
 
 export default function AnnouncementsManagement() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -138,6 +139,17 @@ export default function AnnouncementsManagement() {
     setIsEditDialogOpen(true);
   };
 
+  const creatAnnouncement  = async () => {
+   const newAnnouncement = {
+        title: editForm.title,
+        content: editForm.content,
+      };
+    
+    await addannouncement( newAnnouncement);
+    SuccessToast("new announcement created")
+    
+  }
+
   const handleSaveEdit = () => {
     if (editingAnnouncement) {
       setAnnouncements((prev) =>
@@ -206,6 +218,10 @@ export default function AnnouncementsManagement() {
                   <Input
                     id="title"
                     placeholder="Announcement title"
+                    value={editForm.title}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, title: e.target.value }))
+                  }
                     className="col-span-3"
                   />
                 </div>
@@ -216,6 +232,10 @@ export default function AnnouncementsManagement() {
                   <Textarea
                     id="content"
                     placeholder="Announcement content..."
+                    value={editForm.content}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, content: e.target.value }))
+                  }
                     className="col-span-3 min-h-[100px]"
                   />
                 </div>
@@ -234,7 +254,7 @@ export default function AnnouncementsManagement() {
                 </div>
               </div>
               <DialogFooter>
-                <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
+                <Button onClick={creatAnnouncement} className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
                   Publish Announcement
                 </Button>
               </DialogFooter>
@@ -345,17 +365,17 @@ export default function AnnouncementsManagement() {
             <TableBody>
               {filteredAnnouncements.map((announcement) => (
                 <TableRow
-                  key={announcement.id}
+                  key={announcement._id}
                   className="hover:bg-gradient-to-r hover:from-purple-50/20 hover:to-blue-50/20 transition-all  duration-300"
                 >
                   <TableCell className="font-medium text-white">
                     {announcement._id?.slice(20, 24)}
                   </TableCell>
                   <TableCell className="max-w-xs truncate font-medium text-white">
-                    {announcement.title}
+                    {announcement?.title}
                   </TableCell>
                   <TableCell>
-                    {announcement.isNew ? (
+                    {announcement?.isNew ? (
                       <Badge className="bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 hover:from-blue-200 hover:to-cyan-200 font-semibold">
                         NEW
                       </Badge>
