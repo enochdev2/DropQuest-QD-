@@ -31,13 +31,19 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, Edit, Trash2 } from "lucide-react";
-import { addannouncement, getAnnouncement } from "@/lib/utilityFunction";
+import {
+  addannouncement,
+  Changeannouncement,
+  getAnnouncement,
+  removeannouncement,
+} from "@/lib/utilityFunction";
 import { SuccessToast } from "../Success";
 
 export default function AnnouncementsManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingAnnouncement, setEditingAnnouncement] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [editForm, setEditForm] = useState({
     title: "",
     content: "",
@@ -139,17 +145,37 @@ export default function AnnouncementsManagement() {
     setIsEditDialogOpen(true);
   };
 
-  const creatAnnouncement  = async () => {
-   const newAnnouncement = {
-        title: editForm.title,
-        content: editForm.content,
-      };
-    
-    const announce = await addannouncement( newAnnouncement);
+  const creatAnnouncement = async () => {
+    const newAnnouncement = {
+      title: editForm.title,
+      content: editForm.content,
+    };
+
+    const announce = await addannouncement(newAnnouncement);
+    handleAnnouncementClick();
+
     announce && SuccessToast("new announcement created");
-    setIsEditDialogOpen(false);
-    
-  }
+    setIsModalOpen(false);
+  };
+
+  const EditAnnouncement = async (announcementId) => {
+    const newAnnouncement = {
+      title: editForm.title,
+      content: editForm.content,
+    };
+
+    const announce = await Changeannouncement(newAnnouncement, announcementId);
+    handleAnnouncementClick();
+
+    announce && SuccessToast("new announcement created");
+    setIsModalOpen(false);
+  };
+
+  const deleteAnnouncement = async (announcementId) => {
+    console.log("🚀 ~ deleteAnnouncement ~ announcementId:", announcementId);
+    const announce = await removeannouncement(announcementId);
+    handleAnnouncementClick();
+  };
 
   const handleSaveEdit = () => {
     if (editingAnnouncement) {
@@ -197,7 +223,7 @@ export default function AnnouncementsManagement() {
               className="pl-10 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500 transition-all text-white duration-300"
             />
           </div>
-          <Dialog>
+          <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 <Plus className="w-4 h-4 mr-2" />
@@ -220,9 +246,12 @@ export default function AnnouncementsManagement() {
                     id="title"
                     placeholder="Announcement title"
                     value={editForm.title}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({ ...prev, title: e.target.value }))
-                  }
+                    onChange={(e) =>
+                      setEditForm((prev) => ({
+                        ...prev,
+                        title: e.target.value,
+                      }))
+                    }
                     className="col-span-3"
                   />
                 </div>
@@ -234,9 +263,12 @@ export default function AnnouncementsManagement() {
                     id="content"
                     placeholder="Announcement content..."
                     value={editForm.content}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({ ...prev, content: e.target.value }))
-                  }
+                    onChange={(e) =>
+                      setEditForm((prev) => ({
+                        ...prev,
+                        content: e.target.value,
+                      }))
+                    }
                     className="col-span-3 min-h-[100px]"
                   />
                 </div>
@@ -255,7 +287,10 @@ export default function AnnouncementsManagement() {
                 </div>
               </div>
               <DialogFooter>
-                <Button onClick={creatAnnouncement} className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
+                <Button
+                  onClick={creatAnnouncement}
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white cursor-pointer"
+                >
                   Publish Announcement
                 </Button>
               </DialogFooter>
@@ -331,6 +366,7 @@ export default function AnnouncementsManagement() {
               </Button>
               <Button
                 onClick={handleSaveEdit}
+                // onClick={()=> EditAnnouncement(announcement?._id)}
                 className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
               >
                 Save Changes
@@ -409,7 +445,8 @@ export default function AnnouncementsManagement() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="hover:bg-red-50 hover:border-red-300 text-red-600 transition-all duration-300 bg-transparent"
+                        onClick={() => deleteAnnouncement(announcement?._id)}
+                        className="hover:bg-red-50 hover:border-red-300 text-red-600 transition-all duration-300 bg-transparent cursor-pointer"
                       >
                         <Trash2 className="w-3 h-3" />
                       </Button>

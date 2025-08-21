@@ -1,3 +1,6 @@
+import { SuccessToast } from "@/components/Success";
+import toast from "react-hot-toast";
+
 export const getUserProfile = async (email) => {
   try {
     const token = localStorage.getItem("token");
@@ -250,6 +253,80 @@ export const addannouncement = async (newAnnouncement) => {
       `http://localhost:3000/api/v1/announcement/announcements`,
       {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newAnnouncement),
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      const errorMsg = data.error || data.message || "Failed to register user";
+      if (errorMsg === "Invalid or expired token") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("isLoggedIn");
+      }
+      // ErrorToast(errorMsg);
+    }
+
+    return data; // Return updated user data
+  } catch (error) {
+    console.error("Error during user update:", error);
+  }
+};
+
+export const removeannouncement = async (announcementId) => {
+  console.log("🚀 ~ addannouncement ~ announcementId:", announcementId)
+  try {
+    const token = localStorage.getItem("token");
+    
+    const response = await fetch(
+      // `https://dropquest-qd-backend.onrender.com/api/v1/point/points/claim`,
+      `http://localhost:3000/api/v1/announcement/announcements/${announcementId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      // body: JSON.stringify(newAnnouncement),
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      const errorMsg = data.error || data.message || "Failed to register user";
+      if (errorMsg === "Invalid or expired token") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("isLoggedIn");
+      }
+      toast.error(errorMsg);
+    }else{
+      SuccessToast(data.message);
+    }
+
+    await getAnnouncement();
+
+    return data; // Return updated user data
+  } catch (error) {
+    console.error("Error during user update:", error);
+  }
+};
+
+export const Changeannouncement = async (newAnnouncement, announcementId ) => {
+  console.log("🚀 ~ addannouncement ~ newAnnouncement:", newAnnouncement)
+  try {
+    const token = localStorage.getItem("token");
+    
+    const response = await fetch(
+      // `https://dropquest-qd-backend.onrender.com/api/v1/point/points/claim`,
+      `http://localhost:3000/api/v1/announcement/announcements/${announcementId}`,
+      {
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
