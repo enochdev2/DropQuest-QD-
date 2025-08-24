@@ -111,7 +111,7 @@ function AnnouncementsPage() {
       <div className="px-4 sm:px-6 sm:w-[400px] lg:px-8 py-6 max-w-7xl mx-auto sm:border border-gray-700">
         <div className="mb-8 text-center">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-blue-600 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12  bg-blue-600 rounded-full flex items-center justify-center">
               <svg
                 className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white"
                 fill="none"
@@ -126,7 +126,7 @@ function AnnouncementsPage() {
                 />
               </svg>
             </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
+            <h1 className="text-lg sm:text-3xl font-bold text-white">
               {language === "en" ? "Annoucements" : "최신 에어드롭 소식"}
             </h1>
           </div>
@@ -141,10 +141,10 @@ function AnnouncementsPage() {
           {selectedAnnouncement?.map((announcement) => (
             <div
               key={announcement.id}
-              className="bg-gray-800 rounded-lg p-4 sm:p-6 border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
+              className="bg-gray-800 rounded-lg p-4  border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
             >
               <div className="flex items-start gap-3 sm:gap-4">
-                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm sm:text-lg">
+                <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm sm:text-lg">
                   {announcement.id}
                 </div>
 
@@ -152,7 +152,7 @@ function AnnouncementsPage() {
                   <Link to={`/announcements/${announcement._id}`}>
                   <div className="flex items-start justify-between mb-0">
                     <div className="flex-1 pr-2">
-                      <h3 className="text-sm  sm:text-lg font-semibold text-white mb-2 hover:text-blue-300 transition-colors duration-300 line-clamp-2">
+                      <h3 className="text-md  font-semibold text-white mb-2 hover:text-blue-300 transition-colors duration-300 line-clamp-2">
                         {announcement.title}
                       </h3>
 

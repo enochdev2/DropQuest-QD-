@@ -11,7 +11,8 @@ const translations = {
     airdrop: "Airdrop",
 
     // Landing Page
-    clickAndEarn: "Click and Earn",
+    clickAnd: "Click and",
+    Earn: "Earn",
     connectingUsers: "Connecting users with potential opportunities",
     earnAirdrops: "You can earn airdrops and generate income through missions.",
     connectingUsersToUsers: "Connecting users with other users",
@@ -19,7 +20,8 @@ const translations = {
     goToAirdrop: "Go to Receive Airdrop",
     welcome: "Welcome!",
     dontMissAirdrop: "Don't miss airdrops, start right now!",
-    soon: "SOON",
+    roadmap: "Roadmap",
+    comingSoon: "Coming Soon",
 
     // Auth
     signUp: "Sign Up",
@@ -65,7 +67,8 @@ const translations = {
     airdrop: "에어드랍",
 
     // Landing Page
-    clickAndEarn: "클릭해서 벌",
+    clickAnd: "클릭해서 ",
+    Earn: "벌",
     connectingUsers: "잠재적인 기회와 사용자를 연결합니다",
     earnAirdrops: "미션을 통해 에어드랍을 획득하고 수익을 창출할 수 있습니다.",
     connectingUsersToUsers: "사용자와 다른 사용자 연결",
@@ -73,7 +76,8 @@ const translations = {
     goToAirdrop: "에어드랍 받으러 가기",
     welcome: "환영합니다!",
     dontMissAirdrop: "에어드랍, 놓치지 말고 지금 바로 시작해보세요.",
-    soon: "SOON",
+    roadmap: "로드맵",
+    comingSoon: "출시 예정",
 
     // Auth
     signUp: "회원가입",

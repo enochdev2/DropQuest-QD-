@@ -73,7 +73,7 @@ const AnnouncementDetail = () => {
           {/* Announcement Detail */}
           <div className="bg-gray-900 rounded-lg p-3 sm:p-3 border border-gray-700">
             <div className="mb-6">
-              <h1 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+              <h1 className="text-xl font-bold text-white mb-4">
                 {announcement?.title}
               </h1>
 
@@ -119,11 +119,16 @@ const AnnouncementDetail = () => {
               </div>
             </div>
 
-            <div className="prose prose-invert max-w-none">
-              <div className="text-gray-300 leading-relaxed text-base sm:text-lg">
-                <p className="mb-4 text-justify">{announcement?.content}</p>
-              </div>
+           <div className="prose prose-invert max-w-none">
+            <div
+              className={`text-gray-300 leading-relaxed text-base ${
+                announcement?.content?.length > 300 ? "max-h-70 overflow-y-auto" : ""
+              }`}
+            >
+              <p className="mb-4 text-justify">{announcement?.content}</p>
             </div>
+          </div>
+
           </div>
         </div>
       </div>

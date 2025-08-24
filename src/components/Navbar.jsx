@@ -58,9 +58,9 @@ export default function Navbar() {
             <Button
               variant="ghost"
               size="sm"
-              className="text-gray-800 rounded-4xl hover:bg-white/10 py-5 px-3 bg-gray-200 text-lg font-semibold"
+              className="text-gray-800 rounded-4xl hover:bg-white/10 py-4 px-3 bg-gray-200 text-md font-semibold"
             >
-              <Link to={"/login"}>signIn</Link>
+              <Link to={"/login"}>{t("signIn")}</Link>
             </Button>
           ) : user?.admin ? (
             <Link
@@ -120,7 +120,7 @@ export default function Navbar() {
               className="text-white"
               onClick={() => setMenuOpen(!menuOpen)}
             >
-              {menuOpen ? <X size={36} color="white" className="text-white" /> : <Menu size={36} />}
+              {menuOpen ? <X size={30} color="white" className="text-white" /> : <Menu size={30} />}
             </button>
           </div>
           <Button
@@ -134,6 +134,7 @@ export default function Navbar() {
           </Button>
         </div>
         {/* Mobile Menu Overlay */}
+        
         {menuOpen && (
           <div
             className="sm:w-[400px] h-[500px] mx-auto fixed inset-0 bg-gray-950 opacity-95 z-50 flex flex-col items-center justify-center gap-6 rounded-b-2xl"

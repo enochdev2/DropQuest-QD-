@@ -15,9 +15,9 @@ export default function DropQuestLanding() {
       <section className="flex flex-col X items-center  text-center px-4 sm:px-6 py-10 sm:py-12">
         <div className="w-[90%] flex   sm:w-[400px] gap-4 justify-between  px-4 sm:pr-10 pr-8">
           <div className="flex flex-col  space-y-3 text-2xl text-left">
-            <p> Airdrop</p>
-            <p className="text-blue-600">Click and</p>
-            <p>Earn</p>
+            <p> {t("airdrop")}</p>
+            <p className="text-blue-600">{t("clickAnd")}</p>
+            <p>{t("Earn")}</p>
           </div>
 
           <img
@@ -45,7 +45,7 @@ export default function DropQuestLanding() {
       {/* ROADMAP SECTION */}
       <section className="px-4 sm:px-6 pb-12">
         <h2 className="text-4xl  font- text-center mb-6 sm:mb-8">
-          Roadmap
+          {t("roadmap")}
         </h2>
         {/* <h3 className="text-base font-semibold mb-2">{t("connectingUsers")}</h3>
             <p className="text-gray-200 text-sm">{t("earnAirdrops")}</p> */}
@@ -59,7 +59,7 @@ export default function DropQuestLanding() {
             </p>
           </div>
           <div className="bg-gray-800 p-4 sm:p-5 rounded-2xl shadow-lg text-center">
-            <h3 className="text-base sm:text-lg font-semibold">Coming Soon</h3>
+            <h3 className="text-base sm:text-lg font-semibold">{t("comingSoon")}</h3>
           </div>
           <div className="bg-gradient-to-r from-[#0d0b3e] to-[#3d2abf] p-4 sm:p-5 rounded-2xl shadow-lg">
             {/* <h3 className="text-base font-semibold mb-2">{t("connectingUsersToUsers")}</h3>
