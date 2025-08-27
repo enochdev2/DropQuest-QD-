@@ -249,8 +249,8 @@ export const addannouncement = async (newAnnouncement) => {
     const token = localStorage.getItem("token");
     
     const response = await fetch(
-      // `https://dropquest-qd-backend.onrender.com/api/v1/point/points/claim`,
-      `http://localhost:3000/api/v1/announcement/announcements`,
+      // `http://localhost:3000/api/v1/announcement/announcements`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/announcement/announcements`,
       {
         method: "POST",
         headers: {
@@ -284,8 +284,8 @@ export const removeannouncement = async (announcementId) => {
     const token = localStorage.getItem("token");
     
     const response = await fetch(
-      // `https://dropquest-qd-backend.onrender.com/api/v1/point/points/claim`,
-      `http://localhost:3000/api/v1/announcement/announcements/${announcementId}`,
+      // `http://localhost:3000/api/v1/announcement/announcements/${announcementId}`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/announcement/announcements/${announcementId}`,
       {
         method: "DELETE",
         headers: {
@@ -323,8 +323,8 @@ export const Changeannouncement = async (newAnnouncement, announcementId ) => {
     const token = localStorage.getItem("token");
     
     const response = await fetch(
-      // `https://dropquest-qd-backend.onrender.com/api/v1/point/points/claim`,
-      `http://localhost:3000/api/v1/announcement/announcements/${announcementId}`,
+      // `http://localhost:3000/api/v1/announcement/announcements/${announcementId}`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/announcement/announcements/${announcementId}`,
       {
         method: "PUT",
         headers: {
