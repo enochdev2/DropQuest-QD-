@@ -46,7 +46,9 @@ export default function AnnouncementsManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editForm, setEditForm] = useState({
     title: "",
+    titlekorean: "",
     content: "",
+    contentkorean: "",
     priority: "normal",
   });
 
@@ -139,7 +141,8 @@ export default function AnnouncementsManagement() {
     setEditingAnnouncement(announcement);
     setEditForm({
       title: announcement.title,
-      content: announcement.content || "",
+      titlekorean: announcement.titlekorean,
+      contentkorean: announcement.contentkorean || "",
       priority: announcement.priority || "normal",
     });
     setIsEditDialogOpen(true);
@@ -148,7 +151,9 @@ export default function AnnouncementsManagement() {
   const creatAnnouncement = async () => {
     const newAnnouncement = {
       title: editForm.title,
+      titlekorean: editForm.titlekorean,
       content: editForm.content,
+      contentkorean: editForm.contentkorean,
     };
 
     const announce = await addannouncement(newAnnouncement);
@@ -230,7 +235,7 @@ export default function AnnouncementsManagement() {
                 Create Announcement
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-3xl">
               <DialogHeader>
                 <DialogTitle>Create New Announcement</DialogTitle>
                 <DialogDescription>
@@ -239,8 +244,8 @@ export default function AnnouncementsManagement() {
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="title" className="text-right">
-                    Title
+                  <Label htmlFor="title" className="text-right ">
+                    Title (English)
                   </Label>
                   <Input
                     id="title"
@@ -255,9 +260,26 @@ export default function AnnouncementsManagement() {
                     className="col-span-3"
                   />
                 </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="title" className="text-right">
+                    Title {" "} (Korean)
+                  </Label>
+                  <Input
+                    id="titlekorean"
+                    placeholder="Announcement title"
+                    value={editForm.titlekorean}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({
+                        ...prev,
+                        titlekorean: e.target.value,
+                      }))
+                    }
+                    className="col-span-3"
+                  />
+                </div>
                 <div className="grid grid-cols-4 items-start gap-4">
-                  <Label htmlFor="content" className="text-right mt-2">
-                    Content
+                  <Label htmlFor="content" className="text-right mt-2 w-40">
+                    Content (English)
                   </Label>
                   <Textarea
                     id="content"
@@ -267,6 +289,23 @@ export default function AnnouncementsManagement() {
                       setEditForm((prev) => ({
                         ...prev,
                         content: e.target.value,
+                      }))
+                    }
+                    className="col-span-3 min-h-[100px]"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-start gap-4">
+                  <Label htmlFor="content" className="text-right mt-2 w-40">
+                    Content (Korean)
+                  </Label>
+                  <Textarea
+                    id="contentkorean"
+                    placeholder="Announcement content..."
+                    value={editForm.contentkorean}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({
+                        ...prev,
+                        contentkorean: e.target.value,
                       }))
                     }
                     className="col-span-3 min-h-[100px]"
