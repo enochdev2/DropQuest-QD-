@@ -164,16 +164,6 @@ export default function PointsManagement() {
                     className="col-span-3"
                   />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="reason" className="text-right">
-                    Reason
-                  </Label>
-                  <Input
-                    id="reason"
-                    placeholder="Reason for adjustment"
-                    className="col-span-3"
-                  />
-                </div>
               </div>
               <DialogFooter>
                 <Button className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white">
@@ -214,7 +204,9 @@ export default function PointsManagement() {
                   key={user._id}
                   className="hover:bg-gradient-to-r hover:from-emerald-50/30 hover:to-cyan-50/20 transition-all duration-300 "
                 >
-                  <TableCell className="font-medium ">{user._id?.slice(20,23)}</TableCell>
+                  <TableCell className="font-medium ">
+                    {user._id?.slice(20, 23)}
+                  </TableCell>
                   <TableCell className="font-semibold text-slate-100">
                     {user.name}
                   </TableCell>
