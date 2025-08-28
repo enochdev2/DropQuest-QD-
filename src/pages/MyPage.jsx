@@ -2,6 +2,7 @@
 
 import umbrellaCoin from "@/assets/dqLogo.png";
 import coin from "@/assets/dqcoin.png";
+import PointTransactionHistory from "@/components/PointTransactionHistory";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/language-context";
 import { getUserProfile, getUserReferralList } from "@/lib/utilityFunction";
@@ -227,7 +228,9 @@ function MyPage() {
             </div>
           </div>
         )}
+      <PointTransactionHistory />
       </div>
+
     </div>
   );
 }
