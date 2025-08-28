@@ -58,6 +58,15 @@ const translations = {
 
     // Announcements
     announcementsList: "Announcements List",
+
+    // Point Exchange
+    pointExchangeTitle: "Point Exchange",
+    availableTokens: "Available Tokens",
+    exchangePoints: "Exchange Points",
+    availablePoints: "Available Points",
+    exchangeRequest: "Would you like to apply for a point exchange?",
+    yes: "Yes",
+    no: "No",
   },
   ko: {
     // Navigation
@@ -114,6 +123,15 @@ const translations = {
 
     // Announcements
     announcementsList: "공지사항 목록",
+
+    // Point Exchange
+    pointExchangeTitle: "포인트 교환",
+    availableTokens: "사용 가능한 토큰",
+    exchangePoints: "포인트 교환",
+    availablePoints: "사용 가능한 포인트",
+    exchangeRequest: "포인트 교환을 신청하시겠습니까?",
+    yes: "예",
+    no: "아니오",
   },
 }
 

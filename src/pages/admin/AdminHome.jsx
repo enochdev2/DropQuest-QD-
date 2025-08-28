@@ -18,6 +18,7 @@ import AnnouncementsManagement from "@/components/AdminDashboard/AnnouncementsMa
 import UserManagement from "@/components/AdminDashboard/UserManagement";
 import { Link } from "react-router-dom";
 import { getTotalUser } from "@/lib/utilityFunction";
+import PointExchangeManagement from "@/components/AdminDashboard/PointExchangeManagement";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("users");
@@ -162,7 +163,7 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-white shadow-lg rounded-xl p-2 border border-slate-200">
+          <TabsList className="grid w-full grid-cols-4 mb-8 bg-white shadow-lg rounded-xl p-2 border border-slate-200">
             <TabsTrigger
               value="users"
               className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-blue-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
@@ -184,6 +185,16 @@ export default function AdminDashboard() {
               <Megaphone className="w-4 h-4" />
               Announcements
             </TabsTrigger>
+
+             <TabsTrigger
+              value="point-exchange"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-blue-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
+            >
+              <Megaphone className="w-4 h-4" />
+               Point Exchange
+            </TabsTrigger>
+
+       
           </TabsList>
 
           <TabsContent value="users">
@@ -196,6 +207,10 @@ export default function AdminDashboard() {
 
           <TabsContent value="announcements">
             <AnnouncementsManagement />
+          </TabsContent>
+         
+          <TabsContent value="point-exchange">
+             <PointExchangeManagement />
           </TabsContent>
         </Tabs>
       </div>

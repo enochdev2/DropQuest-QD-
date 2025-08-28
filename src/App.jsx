@@ -10,6 +10,7 @@ import PublicRoute from "./components/PublicRoute";
 import UserProtectedRoute from "./components/UserProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import AdminDashboard from "./pages/admin/AdminHome";
+import PointExchange from "./pages/PointExchange";
 // import AnnouncementsManagement from "./components/AdminDashboard/AnnouncementsManagement";
 // import PointsManagement from "./components/AdminDashboard/PointsManagement";
 // import UserManagement from "./components/AdminDashboard/UserManagement";
@@ -83,6 +84,14 @@ function App() {
           }
         />
     
+        <Route
+          path="/point-exchange/"
+          element={
+            <UserProtectedRoute>
+              <PointExchange />
+            </UserProtectedRoute>
+          }
+        />
 
         {/* Admin-Dashboard */}
         <Route path="/admin">

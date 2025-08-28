@@ -24,6 +24,7 @@ export default function Navbar() {
     { label: t("home"), path: "/" },
     { label: t("announcements"), path: "/announcements" },
     { label: t("myPage"), path: "/my-page" },
+    { label: t("pointExchangeTitle"), path: "/point-exchange",  },
     { label: t("airdrop"), path: "/air-drop" },
   ];
   const user = JSON.parse(localStorage.getItem("user"));
