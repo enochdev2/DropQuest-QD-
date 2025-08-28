@@ -2,7 +2,7 @@ import React from 'react';
 
 const PointExchange = () => {
   return (
-    <div>
+    <div className='bg-black min-h-screen text-white flex items-center justify-center'>
       
     </div>
   );
