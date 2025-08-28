@@ -130,7 +130,7 @@ function AnnouncementsPage() {
               {language === "en" ? "Annoucements" : "최신 에어드롭 소식"}
             </h1>
           </div>
-          <p className="text-gray-300 text-base sm:text-lg lg:text-xl max-w-md lg:max-w-2xl mx-auto">
+          <p className="text-gray-300 text-sm sm:text-lg lg:text-lg max-w-md lg:max-w-2xl mx-auto">
             {language === "en"
               ? "Check out the latest airdrop information on DropQuest!"
               : "DropQuest에서 가장 최신의 에어드롭 정보를 확인하세요!"}

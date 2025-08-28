@@ -30,7 +30,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, Edit, Trash2 } from "lucide-react";
+import { Search, Plus, Edit, Trash2, Loader2 } from "lucide-react";
 import {
   addannouncement,
   Changeannouncement,
@@ -40,13 +40,16 @@ import {
 import { SuccessToast } from "../Success";
 
 export default function AnnouncementsManagement() {
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [editingAnnouncement, setEditingAnnouncement] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editForm, setEditForm] = useState({
     title: "",
+    titlekorean: "",
     content: "",
+    contentkorean: "",
     priority: "normal",
   });
 
@@ -135,61 +138,60 @@ export default function AnnouncementsManagement() {
     setAnnouncements(announcementDetails);
   };
 
-  const handleEditClick = (announcement) => {
-    setEditingAnnouncement(announcement);
-    setEditForm({
-      title: announcement.title,
-      content: announcement.content || "",
-      priority: announcement.priority || "normal",
-    });
-    setIsEditDialogOpen(true);
-  };
-
   const creatAnnouncement = async () => {
+    setLoading(true);
     const newAnnouncement = {
       title: editForm.title,
+      titlekorean: editForm.titlekorean,
       content: editForm.content,
+      contentkorean: editForm.contentkorean,
     };
 
     const announce = await addannouncement(newAnnouncement);
     handleAnnouncementClick();
 
     announce && SuccessToast("new announcement created");
+    setLoading(false);
     setIsModalOpen(false);
   };
 
   const EditAnnouncement = async (announcementId) => {
+    setLoading(true);
     const newAnnouncement = {
       title: editForm.title,
+      titlekorean: editForm.titlekorean,
       content: editForm.content,
+      contentkorean: editForm.contentkorean,
+      priority: editForm.priority,
     };
 
     const announce = await Changeannouncement(newAnnouncement, announcementId);
-    handleAnnouncementClick();
+    await handleAnnouncementClick();
 
-    announce && SuccessToast("new announcement created");
+    if (announce) {
+      SuccessToast("Announcement updated successfully");
+    }
+    setLoading(false);
     setIsModalOpen(false);
+    setIsEditDialogOpen(false);
+  };
+
+  const handleEditClick = (announcement) => {
+    setEditingAnnouncement(announcement);
+    setEditForm({
+      title: announcement.title,
+      titlekorean: announcement.titlekorean,
+      content: announcement.content,
+      contentkorean: announcement.contentkorean,
+      priority: announcement.priority || "normal",
+    });
+    setIsEditDialogOpen(true);
   };
 
   const deleteAnnouncement = async (announcementId) => {
     console.log("🚀 ~ deleteAnnouncement ~ announcementId:", announcementId);
     const announce = await removeannouncement(announcementId);
     handleAnnouncementClick();
-  };
-
-  const handleSaveEdit = () => {
-    if (editingAnnouncement) {
-      setAnnouncements((prev) =>
-        prev.map((announcement) =>
-          announcement.id === editingAnnouncement.id
-            ? { ...announcement, ...editForm }
-            : announcement
-        )
-      );
-      setIsEditDialogOpen(false);
-      setEditingAnnouncement(null);
-      setEditForm({ title: "", content: "", priority: "normal" });
-    }
   };
 
   const filteredAnnouncements = announcements.filter((announcement) =>
@@ -230,17 +232,18 @@ export default function AnnouncementsManagement() {
                 Create Announcement
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-3xl">
               <DialogHeader>
                 <DialogTitle>Create New Announcement</DialogTitle>
                 <DialogDescription>
                   Create a new announcement that will be visible to all users.
                 </DialogDescription>
               </DialogHeader>
+
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="title" className="text-right">
-                    Title
+                  <Label htmlFor="title" className="text-right ">
+                    Title (English)
                   </Label>
                   <Input
                     id="title"
@@ -255,9 +258,26 @@ export default function AnnouncementsManagement() {
                     className="col-span-3"
                   />
                 </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="title" className="text-right">
+                    Title (Korean)
+                  </Label>
+                  <Input
+                    id="titlekorean"
+                    placeholder="Announcement title"
+                    value={editForm.titlekorean}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({
+                        ...prev,
+                        titlekorean: e.target.value,
+                      }))
+                    }
+                    className="col-span-3"
+                  />
+                </div>
                 <div className="grid grid-cols-4 items-start gap-4">
-                  <Label htmlFor="content" className="text-right mt-2">
-                    Content
+                  <Label htmlFor="content" className="text-right mt-2 w-40">
+                    Content (English)
                   </Label>
                   <Textarea
                     id="content"
@@ -267,6 +287,23 @@ export default function AnnouncementsManagement() {
                       setEditForm((prev) => ({
                         ...prev,
                         content: e.target.value,
+                      }))
+                    }
+                    className="col-span-3 min-h-[100px]"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-start gap-4">
+                  <Label htmlFor="content" className="text-right mt-2 w-40">
+                    Content (Korean)
+                  </Label>
+                  <Textarea
+                    id="contentkorean"
+                    placeholder="Announcement content..."
+                    value={editForm.contentkorean}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({
+                        ...prev,
+                        contentkorean: e.target.value,
                       }))
                     }
                     className="col-span-3 min-h-[100px]"
@@ -289,9 +326,20 @@ export default function AnnouncementsManagement() {
               <DialogFooter>
                 <Button
                   onClick={creatAnnouncement}
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white cursor-pointer"
+                  disabled={loading}
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white cursor-pointer inline-flex items-center gap-2 rounded-md px-4 py-2 disabled:opacity-60"
                 >
-                  Publish Announcement
+                  {loading ? (
+                    <>
+                      <Loader2
+                        className="h-4 w-4 animate-spin"
+                        aria-hidden="true"
+                      />
+                      {/* Saving… */}
+                    </>
+                  ) : (
+                    "Publish Announcement"
+                  )}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -320,9 +368,25 @@ export default function AnnouncementsManagement() {
                   className="col-span-3"
                 />
               </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-title" className="text-right">
+                  Title (Korean)
+                </Label>
+                <Input
+                  id="edit-titlekorean"
+                  value={editForm.titlekorean}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({
+                      ...prev,
+                      titlekorean: e.target.value,
+                    }))
+                  }
+                  className="col-span-3"
+                />
+              </div>
               <div className="grid grid-cols-4 items-start gap-4">
                 <Label htmlFor="edit-content" className="text-right mt-2">
-                  Content
+                  Content (English)
                 </Label>
                 <Textarea
                   id="edit-content"
@@ -331,6 +395,22 @@ export default function AnnouncementsManagement() {
                     setEditForm((prev) => ({
                       ...prev,
                       content: e.target.value,
+                    }))
+                  }
+                  className="col-span-3 min-h-[100px]"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-start gap-4">
+                <Label htmlFor="edit-content" className="text-right mt-2">
+                  Content (Korean)
+                </Label>
+                <Textarea
+                  id="edit-contentkorean"
+                  value={editForm.contentkorean}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({
+                      ...prev,
+                      contentkorean: e.target.value,
                     }))
                   }
                   className="col-span-3 min-h-[100px]"
@@ -365,11 +445,22 @@ export default function AnnouncementsManagement() {
                 Cancel
               </Button>
               <Button
-                onClick={handleSaveEdit}
+                onClick={() => EditAnnouncement(editingAnnouncement?._id)}
+                disabled={loading}
                 // onClick={()=> EditAnnouncement(announcement?._id)}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white cursor-pointer inline-flex items-center gap-2 rounded-md px-4 py-2 disabled:opacity-60"
               >
-                Save Changes
+                {loading ? (
+                  <>
+                    <Loader2
+                      className="h-4 w-4 animate-spin"
+                      aria-hidden="true"
+                    />
+                    {/* Saving… */}
+                  </>
+                ) : (
+                  "Save Changes"
+                )}
               </Button>
             </DialogFooter>
           </DialogContent>

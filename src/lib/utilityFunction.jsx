@@ -239,7 +239,6 @@ export const getReferralCodeFromUrl = async () =>{
   const referralCode = urlParams.get('referral'); // Extract the referral code
 
   if (referralCode) {
-    console.log("Referral Code:", referralCode); // You can replace this with your handling logic
     // Here, you can use the referral code for any logic you need (e.g., storing it, autofilling a form, etc.)
     return referralCode;
   } else {
@@ -249,7 +248,6 @@ export const getReferralCodeFromUrl = async () =>{
 }
 
 export const addannouncement = async (newAnnouncement) => {
-  console.log("🚀 ~ addannouncement ~ newAnnouncement:", newAnnouncement)
   try {
     const token = localStorage.getItem("token");
     
@@ -284,7 +282,6 @@ export const addannouncement = async (newAnnouncement) => {
 };
 
 export const removeannouncement = async (announcementId) => {
-  console.log("🚀 ~ addannouncement ~ announcementId:", announcementId)
   try {
     const token = localStorage.getItem("token");
     
@@ -323,7 +320,6 @@ export const removeannouncement = async (announcementId) => {
 };
 
 export const Changeannouncement = async (newAnnouncement, announcementId ) => {
-  console.log("🚀 ~ addannouncement ~ newAnnouncement:", newAnnouncement)
   try {
     const token = localStorage.getItem("token");
     

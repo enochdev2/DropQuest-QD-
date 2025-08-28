@@ -8,6 +8,7 @@ const AnnouncementDetail = () => {
   console.log("🚀 ~ AnnouncementDetail ~ announcement:", announcement);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [active, setActive] = useState("English");
   const router = useNavigate();
   // Fetch the announcement details when the component mount
 
@@ -30,7 +31,7 @@ const AnnouncementDetail = () => {
     // @ts-ignore
   }, [id]);
 
-   if (loading) {
+  if (loading) {
     return (
       <div className="flex bg-gray-950 justify-center items-center min-h-screen">
         <div className="spinner"></div> {/* Spinner component */}
@@ -72,9 +73,26 @@ const AnnouncementDetail = () => {
 
           {/* Announcement Detail */}
           <div className="bg-gray-900 rounded-lg p-3 sm:p-3 border border-gray-700">
+            <div className="flex text-white text-base justify-center  mb-8 my-2 space-x-4">
+              <button
+                onClick={() => setActive("English")}
+                className={`px-8 py-2 border border-slate-500 rounded cursor-pointer ${active === "English" ? "bg-blue-700 font-semibold" : "bg-gray-700"
+                  }`}
+              >
+                English
+              </button>
+
+              <button
+                onClick={() => setActive("Korean")}
+                className={`px-8 py-2 text-white border border-slate-500 rounded cursor-pointer ${active === "Korean" ? "bg-blue-700 font-semibold " : "bg-gray-700"
+                  }`}
+              >
+                Korean
+              </button>
+            </div>
             <div className="mb-6">
               <h1 className="text-xl font-bold text-white mb-4">
-                {announcement?.title}
+                {active === "English" ? announcement?.title : announcement?.titlekorean}
               </h1>
 
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300 mb-6">
@@ -119,15 +137,16 @@ const AnnouncementDetail = () => {
               </div>
             </div>
 
-           <div className="prose prose-invert max-w-none">
-            <div
-              className={`text-gray-300 leading-relaxed text-base ${
-                announcement?.content?.length > 300 ? "max-h-70 overflow-y-auto" : ""
-              }`}
-            >
-              <p className="mb-4 text-justify">{announcement?.content}</p>
+            <div className="prose prose-invert max-w-none">
+              <div
+                className={`text-gray-300 leading-relaxed text-base ${announcement?.content?.length > 300 ? "max-h-70 overflow-y-auto" : ""
+                  }`}
+              >
+                <p className="mb-4 text-justify">
+                  {active === "English" ? announcement?.content : announcement?.contentkorean}
+                </p>
+              </div>
             </div>
-          </div>
 
           </div>
         </div>
