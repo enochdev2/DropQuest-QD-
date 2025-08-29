@@ -352,3 +352,46 @@ export const Changeannouncement = async (newAnnouncement, announcementId ) => {
     console.error("Error during user update:", error);
   }
 };
+
+
+export const modifyuserPoints = async (selectedUser, points ) => {
+  console.log("🚀 ~ modifyuserPoints ~ selectedUser, points:", selectedUser, points)
+  try {
+    const token = localStorage.getItem("token");
+    
+    const response = await fetch(
+      `http://localhost:3000/api/v1/point/points/usermodify`,
+      // `https://dropquest-qd-backend.onrender.com/api/v1/point/points`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: selectedUser,
+          points: points,
+        }),
+        //  body: JSON.stringify({
+        //   userId: selectedUser,
+        //   points: Number(points),
+        // }),
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      const errorMsg = data.error || data.message || "Failed to register user";
+      if (errorMsg === "Invalid or expired token") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("isLoggedIn");
+      }
+      // ErrorToast(errorMsg);
+    }
+
+    return data; // Return updated user data
+  } catch (error) {
+    console.error("Error during user update:", error);
+  }
+};

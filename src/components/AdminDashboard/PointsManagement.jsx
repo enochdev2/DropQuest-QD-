@@ -29,8 +29,10 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Search, Award } from "lucide-react";
-import { getAllUser } from "@/lib/utilityFunction";
+import { Search, Award, Loader2 } from "lucide-react";
+import { getAllUser, modifyuserPoints } from "@/lib/utilityFunction";
+import { UserSearch } from "../UserSearch";
+import { SuccessToast } from "../Success";
 
 export default function PointsManagement() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -77,6 +79,11 @@ export default function PointsManagement() {
       walletAddress: "",
     },
   ]);
+  const [selectedUser, setSelectedUser] = useState("");
+  const [points, setPoints] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   console.log("🚀 ~ PointsManagement ~ users:", users);
 
   useEffect(() => {
@@ -90,7 +97,22 @@ export default function PointsManagement() {
     // setTotalPoints(user.totalPoints);
   };
 
-  const filteredUsers = users.filter(
+  const handleApply = async () => {
+    setLoading(true);
+    const user = await modifyuserPoints(selectedUser, points);
+
+    const users = await getTotalUsers();
+    console.log("🚀 ~ getUserProfileDetails ~ user:", users);
+    if (users || user) {
+      SuccessToast("Announcement updated successfully");
+    }
+    setLoading(false);
+    setIsModalOpen(false);
+    // setUsers(user);
+    // setTotalPoints(user.totalPoints);
+  };
+
+  const filteredUsers = users?.filter(
     (user) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -123,18 +145,20 @@ export default function PointsManagement() {
               className="pl-10 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500 transition-all duration-300"
             />
           </div>
-          <Dialog>
+
+          <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 <Award className="w-4 h-4 mr-2" />
                 Allocate Points
               </Button>
             </DialogTrigger>
+
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Allocate Points</DialogTitle>
                 <DialogDescription>
-                  Grant or deduct points for a specific user.
+                  Grant points for a specific user.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
@@ -142,16 +166,24 @@ export default function PointsManagement() {
                   <Label htmlFor="user-select" className="text-right">
                     User
                   </Label>
-                  <select
+                  {/* <select
                     id="user-select"
                     className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    value={selectedUser}
+                    onChange={(e) => setSelectedUser(e.target.value)}
                   >
+                    <option value="">Select user</option>
                     {users.map((user) => (
-                      <option key={user.id} value={user.id}>
+                      <option key={user._id} value={user._id}>
                         {user.name}
                       </option>
                     ))}
-                  </select>
+                  </select> */}
+                  <UserSearch
+                    users={users}
+                    selectedUser={selectedUser}
+                    setSelectedUser={setSelectedUser}
+                  />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="points" className="text-right">
@@ -162,12 +194,28 @@ export default function PointsManagement() {
                     type="number"
                     placeholder="Enter points (+ or -)"
                     className="col-span-3"
+                    value={points}
+                    onChange={(e) => setPoints(e.target.value)}
                   />
                 </div>
               </div>
               <DialogFooter>
-                <Button className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white">
-                  Apply Changes
+                <Button
+                  onClick={handleApply}
+                  disabled={loading}
+                  className="bg-gradient-to-r cursor-pointer from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2
+                        className="h-4 w-4 animate-spin"
+                        aria-hidden="true"
+                      />
+                      {/* Saving… */}
+                    </>
+                  ) : (
+                    "Apply Changes"
+                  )}
                 </Button>
               </DialogFooter>
             </DialogContent>
