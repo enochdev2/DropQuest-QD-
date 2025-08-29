@@ -360,8 +360,8 @@ export const modifyuserPoints = async (selectedUser, points ) => {
     const token = localStorage.getItem("token");
     
     const response = await fetch(
-      `http://localhost:3000/api/v1/point/points/usermodify`,
-      // `https://dropquest-qd-backend.onrender.com/api/v1/point/points`,
+      // `http://localhost:3000/api/v1/point/points/usermodify`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/point/points/usermodify`,
       {
         method: "PUT",
         headers: {
