@@ -1,10 +1,65 @@
 import { SuccessToast } from "@/components/Success";
 import toast from "react-hot-toast";
 
+// Fetch Token Slots
+export const getTokenSlots = async () => {
+  try {
+    const token = localStorage.getItem("token");
 
+    const response = await fetch(
+      `https://dropquest-qd-backend.onrender.com/api/v1/user/users/point-exchange/token-slots`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
+    const data = await response.json();
+    if (!response.ok) {
+      const errorMsg =
+        data.error || data.message || "Failed to fetch token slots";
+      throw new Error(errorMsg);
+    }
 
+    return data;
+  } catch (error) {
+    console.error("Error fetching token slots:", error);
+    throw error;
+  }
+};
 
+// Submit Point Exchange
+export const submitPointExchange = async (exchangeData) => {
+  try {
+    // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${email}`,
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+      `https://dropquest-qd-backend.onrender.com/api/v1/user/users/point-exchange/submit`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      const errorMsg =
+        data.error || data.message || "Failed to submit exchange";
+      throw new Error(errorMsg);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error submitting point exchange:", error);
+    throw error;
+  }
+};
 
 export const getUserProfile = async (email) => {
   try {
@@ -104,7 +159,6 @@ export const claimPoints = async () => {
     console.error("Error during user update:", error);
   }
 };
-
 
 export const getAnnouncement = async () => {
   try {
@@ -234,9 +288,9 @@ export const getAllUser = async () => {
 };
 
 // Function to get the referral code from the URL
-export const getReferralCodeFromUrl = async () =>{
+export const getReferralCodeFromUrl = async () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const referralCode = urlParams.get('referral'); // Extract the referral code
+  const referralCode = urlParams.get("referral"); // Extract the referral code
 
   if (referralCode) {
     // Here, you can use the referral code for any logic you need (e.g., storing it, autofilling a form, etc.)
@@ -245,12 +299,12 @@ export const getReferralCodeFromUrl = async () =>{
     console.log("No referral code found.");
     return null; // No referral code found
   }
-}
+};
 
 export const addannouncement = async (newAnnouncement) => {
   try {
     const token = localStorage.getItem("token");
-    
+
     const response = await fetch(
       // `http://localhost:3000/api/v1/announcement/announcements`,
       `https://dropquest-qd-backend.onrender.com/api/v1/announcement/announcements`,
@@ -284,7 +338,7 @@ export const addannouncement = async (newAnnouncement) => {
 export const removeannouncement = async (announcementId) => {
   try {
     const token = localStorage.getItem("token");
-    
+
     const response = await fetch(
       // `http://localhost:3000/api/v1/announcement/announcements/${announcementId}`,
       `https://dropquest-qd-backend.onrender.com/api/v1/announcement/announcements/${announcementId}`,
@@ -294,7 +348,7 @@ export const removeannouncement = async (announcementId) => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      // body: JSON.stringify(newAnnouncement),
+        // body: JSON.stringify(newAnnouncement),
       }
     );
 
@@ -307,7 +361,7 @@ export const removeannouncement = async (announcementId) => {
         localStorage.removeItem("isLoggedIn");
       }
       toast.error(errorMsg);
-    }else{
+    } else {
       SuccessToast(data.message);
     }
 
@@ -319,10 +373,10 @@ export const removeannouncement = async (announcementId) => {
   }
 };
 
-export const Changeannouncement = async (newAnnouncement, announcementId ) => {
+export const Changeannouncement = async (newAnnouncement, announcementId) => {
   try {
     const token = localStorage.getItem("token");
-    
+
     const response = await fetch(
       // `http://localhost:3000/api/v1/announcement/announcements/${announcementId}`,
       `https://dropquest-qd-backend.onrender.com/api/v1/announcement/announcements/${announcementId}`,
