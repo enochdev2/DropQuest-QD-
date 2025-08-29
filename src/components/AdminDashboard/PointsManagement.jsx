@@ -241,9 +241,9 @@ export default function PointsManagement() {
                 <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
                   Join Date
                 </TableHead>
-                <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
+                {/* <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
                   Actions
-                </TableHead>
+                </TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -269,12 +269,12 @@ export default function PointsManagement() {
                       </Badge>
                     </div>
                   </TableCell>
-                  <TableCell className="text-xs">
+                  <TableCell className="text-sm text-green-500">
                     {new Date(
                       user.createdAt ?? user.joinDate
                     ).toLocaleDateString("en-US")}
                   </TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     <div className="flex items-center gap-2">
                       <Button
                         size="sm"
@@ -291,7 +291,7 @@ export default function PointsManagement() {
                         Deduct
                       </Button>
                     </div>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
