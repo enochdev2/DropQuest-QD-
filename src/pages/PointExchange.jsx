@@ -159,16 +159,16 @@ function PointExchange() {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="sm:w-[400px] mx-auto border-2 border-gray-700  rounded-2xl">
-        <div className=" bg-gray-900 py-3 px-4">
+        <div className=" bg-gray-950 py-3 px-4">
           <div className=" text-center">
             <h1 className="text-3xl font-bold mb-3 text-white">
               {t("pointExchangeTitle")}
             </h1>
-            <p className="text-lg text-gray-300 mb-4">
+            <p className="text-sm text-gray-300 mb-4">
               Exchange your accumulated points for various cryptocurrencies
             </p>
-            <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-4 inline-block">
-              <p className="text-lg">
+            <div className="bg-gray-800 border border-gray-700 rounded-lg p-1.5 mb-2 inline-block">
+              <p className="text-base">
                 <span className="text-gray-300">{t("availablePoints")}: </span>
                 <span className="text-xl font-bold text-blue-400">
                   {userPoints.toLocaleString()}
@@ -182,7 +182,7 @@ function PointExchange() {
         </div>
         <div className="py-6 px-4">
           <div className="">
-            <h2 className="text-2xl font-bold text-center mb-5 text-white">
+            <h2 className="text-2xl font-bold text-center mb-3 text-white">
               {t("availableTokens")}
             </h2>
 
@@ -202,18 +202,18 @@ function PointExchange() {
                     <CardContent className="p-1  text-center">
                       {token.isConfigured ? (
                         <>
-                          <div className="w-10 h-10 mx-auto mb-2 bg-gray-700 rounded-full flex items-center justify-center">
+                          <div className="w-12 h-12 mx-auto mb-2 bg-gray-700 rounded-full flex items-center justify-center">
                             <img
                               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpN-1f8F6DIYYL2Xg4iFhzg8cId2jzVmVGYgpR2JmHiaJXGx0W2_e8XKcOAGWH_4hTsVA&usqp=CAU"
                               alt={token.tokenName}
-                              width={32}
-                              height={32}
+                              width={42}
+                              height={42}
                               className="rounded-full"
                             />
                           </div>
-                          <p className="font-semibold text-white">
+                          {/* <p className="font-semibold text-white">
                             ${token.tokenName}
-                          </p>
+                          </p> */}
                           <p className="text-xs text-gray-400">
                             {token.pointRatio} pts
                           </p>
