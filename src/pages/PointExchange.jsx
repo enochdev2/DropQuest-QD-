@@ -161,13 +161,13 @@ function PointExchange() {
       <div className="sm:w-[400px] mx-auto border-2 border-gray-700  rounded-2xl">
         <div className=" bg-gray-900 py-3 px-4">
           <div className=" text-center">
-            <h1 className="text-3xl font-bold mb-4 text-white">
+            <h1 className="text-3xl font-bold mb-3 text-white">
               {t("pointExchangeTitle")}
             </h1>
             <p className="text-lg text-gray-300 mb-4">
               Exchange your accumulated points for various cryptocurrencies
             </p>
-            <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-8 inline-block">
+            <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-4 inline-block">
               <p className="text-lg">
                 <span className="text-gray-300">{t("availablePoints")}: </span>
                 <span className="text-xl font-bold text-blue-400">
