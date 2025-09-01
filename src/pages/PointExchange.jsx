@@ -13,19 +13,50 @@ import {
   submitPointExchange,
 } from "@/lib/utilityFunction";
 
+const initialSlots = [
+  {
+    id: 1,
+    tokenName: "GLM",
+    pointRatio: "$GLM",
+    isConfigured: true,
+    img: "https://raw.githubusercontent.com/enochdev2/token-metadata/main/Golem%20LOGO.png",
+  },
+  ...Array.from({ length: 9 }, (_, i) => ({
+    id: i + 2,
+    tokenName: "BTC",
+    // pointRatio: Math.floor(Math.random() * 100) + 1, // random points
+    pointRatio: "$???", // random points
+    isConfigured: true,
+    img: "https://raw.githubusercontent.com/enochdev2/token-metadata/main/DQ%20Bitcoin%20Image.png",
+  })),
+];
+
 function PointExchange() {
   const { t } = useLanguage();
   const [userPoints, setUserPoints] = useState(0);
   const [exchangeAmount, setExchangeAmount] = useState("");
   const [selectedToken, setSelectedToken] = useState(null);
   const [showExchangeModal, setShowExchangeModal] = useState(false);
-  const [tokenSlots, setTokenSlots] = useState([]);
+  const [tokenSlots, setTokenSlots] = useState(initialSlots);
+  // const [tokenSlots, setTokenSlots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
 
   useEffect(() => {
     loadInitialData();
+    getUserProfileDetails();
   }, []);
+
+  const getUserProfileDetails = async () => {
+    const userInfo = JSON.parse(localStorage.getItem("user"));
+    const user = await getUserProfile(userInfo.email);
+    setUserPoints(user?.points?.totalPoints);
+    const userSlots = await getTokenSlots(userInfo._id);
+    setTokenSlots(userSlots);
+
+    setUserProfile(user);
+  };
 
   const loadInitialData = async () => {
     try {
@@ -77,7 +108,7 @@ function PointExchange() {
                 : 0,
             logoUrl: index < 5 ? "/New folder/src/assets/dqcoin.png" : null,
           }));
-        setTokenSlots(mockSlots);
+        // setTokenSlots(mockSlots);
       }
     } catch (error) {
       console.error("Error loading initial data:", error);
@@ -96,7 +127,8 @@ function PointExchange() {
     setShowExchangeModal(true);
   };
 
-  const handleExchange = async () => {
+  const handleExchange = async (slotId) => {
+    console.log("🚀 ~ handleExchange ~ slotId:", slotId);
     if (!selectedToken) return;
 
     const amount = Number.parseInt(exchangeAmount);
@@ -111,7 +143,7 @@ function PointExchange() {
       return;
     }
 
-    if (amount > userPoints) {
+    if (amount > userProfile?.points?.totalPoints) {
       toast.error("Insufficient points. Please check your points on My Page.");
       return;
     }
@@ -129,9 +161,9 @@ function PointExchange() {
         userName: user.name || "",
       };
 
-      await submitPointExchange(exchangeData);
+      await submitPointExchange(slotId);
 
-      setUserPoints((prev) => prev - amount);
+      // setUserPoints((prev) => prev - amount);
       toast.success("The exchange request has been completed.");
 
       setShowExchangeModal(false);
@@ -143,6 +175,22 @@ function PointExchange() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  // Function to update a single slot to GLM
+  const updateToGLM = (id) => {
+    setTokenSlots((prev) =>
+      prev.map((slot) =>
+        slot.id === id
+          ? {
+              ...slot,
+              tokenName: "GLM",
+              pointRatio: 100, // or whatever you want
+              img: "https://raw.githubusercontent.com/enochdev2/token-metadata/main/Golem%20LOGO.png",
+            }
+          : slot
+      )
+    );
   };
 
   if (loading) {
@@ -157,7 +205,7 @@ function PointExchange() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen overflow-x-hidden  bg-black text-white">
       <div className="sm:w-[400px] mx-auto border-2 border-gray-700  rounded-2xl">
         <div className=" bg-gray-950 py-3 px-4">
           <div className=" text-center">
@@ -171,7 +219,8 @@ function PointExchange() {
               <p className="text-base">
                 <span className="text-gray-300">{t("availablePoints")}: </span>
                 <span className="text-xl font-bold text-blue-400">
-                  {userPoints.toLocaleString()}
+                  {/* {userPoints?.toLocaleString() } */}
+                  {userProfile?.points?.totalPoints.toLocaleString()}
                 </span>
               </p>
             </div>
@@ -180,142 +229,146 @@ function PointExchange() {
             </div>
           </div>
         </div>
-        <div className="py-6 px-4">
+        <div className="py-6 px-2">
           <div className="">
             <h2 className="text-2xl font-bold text-center mb-3 text-white">
               {t("availableTokens")}
             </h2>
 
             {/* Scrollable container */}
-            <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 rounded-lg">
+            <div className="max-h-96 px-2 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-gray-900 rounded-lg">
               <div className="grid grid-cols-3 gap-2">
-                {tokenSlots.map((token) => (
-                  <Card
-                    key={token.id}
-                    className={`h-28 cursor-pointer transition-all duration-200 ${
-                      token.isConfigured
-                        ? "bg-gray-800 border-gray-700 hover:bg-gray-700 hover:border-blue-600"
-                        : "bg-gray-900 border-gray-800 opacity-50 cursor-not-allowed"
-                    }`}
-                    onClick={() => handleTokenClick(token)}
-                  >
-                    <CardContent className="p-1  text-center">
-                      {token.isConfigured ? (
-                        <>
-                          <div className="w-12 h-12 mx-auto mb-2 bg-gray-700 rounded-full flex items-center justify-center">
-                            <img
-                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpN-1f8F6DIYYL2Xg4iFhzg8cId2jzVmVGYgpR2JmHiaJXGx0W2_e8XKcOAGWH_4hTsVA&usqp=CAU"
-                              alt={token.tokenName}
-                              width={42}
-                              height={42}
-                              className="rounded-full"
-                            />
-                          </div>
-                          {/* <p className="font-semibold text-white">
-                            ${token.tokenName}
-                          </p> */}
-                          <p className="text-xs text-gray-400">
-                            {token.pointRatio} pts
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          <div className="w-12 h-12 mx-auto mb-2 bg-gray-800 rounded-full flex items-center justify-center">
-                            <span className="text-gray-600">?</span>
-                          </div>
-                          <p className="text-gray-600">NONE</p>
-                        </>
-                      )}
+                {tokenSlots.map((token) => {
+                  const isBTC = token.tokenName === "BTC"; // 👈 Check if BTC
+                  const isDisabled = !token.isConfigured || isBTC;
+
+                  return (
+                    <Card
+                      key={token.id}
+                      onClick={() => {
+                        if (!isDisabled) {
+                          setSelectedToken(token); // 👈 Save clicked token
+                          setShowExchangeModal(true); // 👈 Open modal
+                        }
+                      }}
+                      className={`h-28 transition-all duration-200 ${
+                        isDisabled
+                          ? "bg-gray-900 border-gray-800 opacity-90 cursor-not-allowed"
+                          : "bg-gray-800 border-gray-700 hover:bg-gray-700 hover:border-blue-600 cursor-pointer"
+                      }`}
+                    >
+                      <CardContent className="px-1 text-center">
+                        {token.isConfigured ? (
+                          <>
+                            <div className="w-16 h-16 mx-auto mb-2 bg-gray-700 rounded-full flex items-center justify-center">
+                              <img
+                                src={token?.img}
+                                alt={token.tokenName}
+                                className="rounded-full w-full h-full object-cover"
+                              />
+                            </div>
+                            <p className="text-base bg-blue-700 text-white font-semibold rounded-full">
+                              {token.pointRatio}
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <div className="w-12 h-12 mx-auto mb-2 bg-gray-800 rounded-full flex items-center justify-center">
+                              <span className="text-gray-600">?</span>
+                            </div>
+                            <p className="text-gray-600">NONE</p>
+                          </>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+              {showExchangeModal && selectedToken && (
+                <div className="fixed inset-0 bg-black/30 sm:w-[400px] mx-auto bg-opacity-50 flex items-center justify-center t p-4 z-50">
+                  <Card className="bg-gray-900 border-gray-700 w-full max-w-md">
+                    <CardHeader>
+                      <CardTitle className="text-center text-white">
+                        {t("exchangePoints")}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="text-center">
+                        <div className="w-20 h-20 mx-auto mb-4 bg-gray-950 rounded-full flex items-center justify-center">
+                          <img
+                            src="https://raw.githubusercontent.com/enochdev2/token-metadata/main/Golem%20LOGO.png"
+                            alt={selectedToken.tokenName}
+                            // width={40}
+                            // height={40}
+                            className="rounded-full"
+                          />
+                        </div>
+                        {/* <h3 className="text-xl font-bold text-white">
+                  $GLM
+                </h3> */}
+                        <p className="text-gray-50 text-xl font-bold ">
+                          1 $GLM = 1000 Points
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-lg text-gray-100 mb-2 text-center w-full ">
+                          {t("availablePoints")}:{" "}
+                          {userProfile.points?.totalPoints.toLocaleString()}
+                        </p>
+
+                        <Input
+                          type="number"
+                          placeholder="Enter points to exchange"
+                          value={exchangeAmount}
+                          onChange={(e) => setExchangeAmount(e.target.value)}
+                          className="bg-gray-700 border-gray-600 text-white text-right font-semibold"
+                          disabled={submitting}
+                        />
+                      </div>
+
+                      <p className="text-center text-base font-semibold text-gray-300">
+                        Points can only be exchanged in units of 1000. Would you
+                        like to apply for a point exchange?
+                        {/* {t("exchangeRequest")} */}
+                      </p>
+
+                      <div className="flex gap-4">
+                        <Button
+                          onClick={() => handleExchange(selectedToken.id)}
+                          disabled={submitting}
+                          className="flex-1 bg-blue-600 hover:bg-blue-700 cursor-pointer"
+                        >
+                          {submitting ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Processing...
+                            </>
+                          ) : (
+                            t("yes")
+                          )}
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            setShowExchangeModal(false);
+                            setExchangeAmount("");
+                            setSelectedToken(null);
+                          }}
+                          variant="outline"
+                          className="flex-1 border-gray-600 text-blue-600 hover:bg-gray-700 hover:text-white cursor-pointer"
+                          disabled={submitting}
+                        >
+                          {t("no")}
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      {showExchangeModal && selectedToken && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <Card className="bg-gray-800 border-gray-700 w-full max-w-md">
-            <CardHeader>
-              <CardTitle className="text-center text-white">
-                {t("exchangePoints")}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gray-700 rounded-full flex items-center justify-center">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpN-1f8F6DIYYL2Xg4iFhzg8cId2jzVmVGYgpR2JmHiaJXGx0W2_e8XKcOAGWH_4hTsVA&usqp=CAU"
-                    alt={selectedToken.tokenName}
-                    width={40}
-                    height={40}
-                    className="rounded-full"
-                  />
-                </div>
-                <h3 className="text-xl font-bold text-white">
-                  ${selectedToken.tokenName}
-                </h3>
-                <p className="text-gray-300">
-                  1 {selectedToken.tokenName} = {selectedToken.pointRatio}{" "}
-                  Points
-                </p>
-              </div>
-
-              <div>
-                <p className="text-sm text-gray-300 mb-2">
-                  {t("availablePoints")}: {userPoints.toLocaleString()}
-                </p>
-                <p className="text-xs text-gray-400 mb-4">
-                  Points can only be exchanged in units of 1000.
-                </p>
-                <Input
-                  type="number"
-                  placeholder="Enter points to exchange"
-                  value={exchangeAmount}
-                  onChange={(e) => setExchangeAmount(e.target.value)}
-                  className="bg-gray-700 border-gray-600 text-white"
-                  disabled={submitting}
-                />
-              </div>
-
-              <p className="text-center text-sm text-gray-300">
-                {t("exchangeRequest")}
-              </p>
-
-              <div className="flex gap-4">
-                <Button
-                  onClick={handleExchange}
-                  disabled={submitting}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700"
-                >
-                  {submitting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    t("yes")
-                  )}
-                </Button>
-                <Button
-                  onClick={() => {
-                    setShowExchangeModal(false);
-                    setExchangeAmount("");
-                    setSelectedToken(null);
-                  }}
-                  variant="outline"
-                  className="flex-1 border-gray-600 text-blue-600 hover:bg-gray-700 hover:text-white"
-                  disabled={submitting}
-                >
-                  {t("no")}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
     </div>
   );
 }

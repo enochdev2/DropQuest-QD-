@@ -2,12 +2,14 @@ import { SuccessToast } from "@/components/Success";
 import toast from "react-hot-toast";
 
 // Fetch Token Slots
-export const getTokenSlots = async () => {
+export const getTokenSlots = async (userId) => {
+  console.log("🚀 ~ getTokenSlots ~ userId:", userId)
   try {
     const token = localStorage.getItem("token");
 
     const response = await fetch(
-      `https://dropquest-qd-backend.onrender.com/api/v1/user/users/point-exchange/token-slots`,
+      // `http://localhost:3000/api/v1/point/slots/${userId}`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/point/slots/${userId}`,
       {
         method: "GET",
         headers: {
@@ -32,18 +34,25 @@ export const getTokenSlots = async () => {
 };
 
 // Submit Point Exchange
-export const submitPointExchange = async (exchangeData) => {
+export const submitPointExchange = async ( slotId) => {
+  const userId = JSON.parse(localStorage.getItem("user"))._id
+  console.log("🚀 ~ submitPointExchange ~ userId:", userId)
   try {
     // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${email}`,
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `https://dropquest-qd-backend.onrender.com/api/v1/user/users/point-exchange/submit`,
+      //  `http://localhost:3000/api/v1/point/buyslot`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/point/buyslot`,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          userId: userId,
+          slotId: slotId,
+        }),
       }
     );
 

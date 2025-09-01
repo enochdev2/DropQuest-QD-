@@ -11,6 +11,7 @@ import UserProtectedRoute from "./components/UserProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import AdminDashboard from "./pages/admin/AdminHome";
 import PointExchange from "./pages/PointExchange";
+import AdminRoute from "./components/AdminRoute";
 // import AnnouncementsManagement from "./components/AdminDashboard/AnnouncementsManagement";
 // import PointsManagement from "./components/AdminDashboard/PointsManagement";
 // import UserManagement from "./components/AdminDashboard/UserManagement";
@@ -94,12 +95,19 @@ function App() {
         />
 
         {/* Admin-Dashboard */}
-        <Route path="/admin">
-          <Route index element={<AdminDashboard />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
+        />
+        {/* <Route path="/admin"> */}
           {/* <Route path="points-management" element={<PointsManagement />} />
           <Route path="user-management" element={<UserManagement />} />
           <Route path="announcements" element={<AnnouncementsManagement />} /> */}
-        </Route>
+        {/* </Route> */}
       </Routes>
 
       <Toaster />
