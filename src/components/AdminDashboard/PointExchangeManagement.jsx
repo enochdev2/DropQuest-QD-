@@ -18,31 +18,26 @@ import { RotateCcw } from "lucide-react"
 // import Image from "next/image"
 import toast from "react-hot-toast"
 
+const initialSlots = [
+  {
+    id: 1,
+    tokenName: "GLM",
+    pointRatio: "$GLM",
+    isConfigured: true,
+    img: "https://raw.githubusercontent.com/enochdev2/token-metadata/main/Golem%20LOGO.png",
+  },
+  ...Array.from({ length: 49 }, (_, i) => ({
+    id: i + 2,
+    tokenName: "BTC",
+    // pointRatio: Math.floor(Math.random() * 100) + 1, // random points
+    pointRatio: "$???", // random points
+    isConfigured: true,
+    img: "https://raw.githubusercontent.com/enochdev2/token-metadata/main/DQ%20Bitcoin%20Image.png",
+  })),
+];
+
 export default function PointExchangeManagement() {
-  const [tokenSlots, setTokenSlots] = useState(() => {
-    const slots = Array(50)
-      .fill(null)
-      .map((_, index) => ({
-        id: index + 1,
-        isConfigured: index < 5,
-        tokenName:
-          index === 0
-            ? "GLM"
-            : index === 1
-            ? "ETH"
-            : index === 2
-            ? "BTC"
-            : index === 3
-            ? "USDT"
-            : index === 4
-            ? "BNB"
-            : "",
-        pointRatio:
-          index === 0 ? 1000 : index === 1 ? 2000 : index === 2 ? 50000 : index === 3 ? 100 : index === 4 ? 300 : 0,
-        logoUrl: index < 5 ? "/New folder/src/assets/dqcoin.png" : null,
-      }))
-    return slots
-  })
+  const [tokenSlots, setTokenSlots] = useState(initialSlots)
 
   const [exchangeHistory] = useState([
     { id: 1, name: "Test1", telegram: "@test1", token: "GLM", points: 1000 },
@@ -122,9 +117,9 @@ export default function PointExchangeManagement() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-x-1 flex w-full">
       {/* Token Slots Configuration */}
-      <Card className="bg-gray-800 border-gray-700">
+      <Card className="bg-gray-800 border-gray-700 w-[70%]  ">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-white">Token Slots Configuration</CardTitle>
           <CardDescription className="text-gray-300">
@@ -132,53 +127,47 @@ export default function PointExchangeManagement() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-5 gap-4">
-            {tokenSlots.map((slot) => (
+          <div className="grid grid-cols-10 gap-2">
+            {tokenSlots.map((token) => (
               <Card
-                key={slot.id}
+                key={token.id}
                 className={`cursor-pointer transition-all duration-200 ${
-                  slot.isConfigured
+                  token.isConfigured
                     ? "bg-gray-700 border-gray-600 hover:bg-gray-600"
                     : "bg-gray-900 border-gray-800 hover:bg-gray-800"
                 }`}
-                onClick={() => handleSlotClick(slot)}
+                onClick={() => handleSlotClick(token)}
               >
-                <CardContent className="p-4 text-center">
-                  <div className="text-xs text-gray-400 mb-2">Slot {slot.id}</div>
-                  {slot.isConfigured ? (
-                    <>
-                      <div className="w-8 h-8 mx-auto mb-2 bg-gray-600 rounded-full flex items-center justify-center">
-                        {slot.logoUrl && (
-                            <img
-                                src= "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmRUjmd1FpWDiKe0A89UUSPQ7vwJixYqqlKafYrlEq-Scn-TrKXeSD2TL--LWKomrmQcA&usqp=CAU" 
-                                alt={slot.tokenName}
-                                width={24}
-                                height={24}
-                                className="rounded-full"
-                            />
-                            )}
-
-                      </div>
-                      <p className="font-semibold text-white text-sm">${slot.tokenName}</p>
-                      <p className="text-xs text-gray-400">{slot.pointRatio} pts</p>
-                    </>
-                  ) : (
-                    <>
-                      <div className="w-8 h-8 mx-auto mb-2 bg-gray-800 rounded-full flex items-center justify-center">
-                        <span className="text-gray-600 text-xs">?</span>
-                      </div>
-                      <p className="text-gray-600 text-sm">NONE</p>
-                    </>
-                  )}
-                </CardContent>
+                <CardContent className="px-1 text-center">
+                        {token.isConfigured ? (
+                          <>
+                            <div className="w-16 h-16 mx-auto mb-2 bg-gray-700 rounded-full flex items-center justify-center">
+                              <img
+                                src={token?.img}
+                                alt={token.tokenName}
+                                className="rounded-full w-full h-full object-cover"
+                              />
+                            </div>
+                            <p className="text-base bg-blue-700 text-white font-semibold rounded-full">
+                              {token.pointRatio}
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <div className="w-12 h-12 mx-auto mb-2 bg-gray-800 rounded-full flex items-center justify-center">
+                              <span className="text-gray-600">?</span>
+                            </div>
+                            <p className="text-gray-600">NONE</p>
+                          </>
+                        )}
+                      </CardContent>
               </Card>
             ))}
           </div>
         </CardContent>
       </Card>
-
       {/* Exchange Application History */}
-      <Card className="bg-gray-800 border-gray-700">
+      <Card className="bg-gray-800 border-gray-700 w-[30%]">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-white">Point Exchange Application History</CardTitle>
           <CardDescription className="text-gray-300">Recent point exchange requests from users</CardDescription>
@@ -212,6 +201,7 @@ export default function PointExchangeManagement() {
           </div>
         </CardContent>
       </Card>
+
 
       {/* Configuration Dialog */}
       <Dialog open={configDialogOpen} onOpenChange={setConfigDialogOpen}>
