@@ -70,6 +70,41 @@ export const submitPointExchange = async ( slotId) => {
   }
 };
 
+export const updatePoints = async (name, slotId) => {
+  console.log("🚀 ~ updatePoints ~ slotId, name:", slotId, name)
+  try {
+    // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${email}`,
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+      //  `http://localhost:3000/api/v1/point/updateslot`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/point/updateslot`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          slotId: slotId,
+        }),
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      const errorMsg =
+        data.error || data.message || "Failed to submit exchange";
+      throw new Error(errorMsg);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error submitting point exchange:", error);
+    throw error;
+  }
+};
+
 export const getUserProfile = async (email) => {
   try {
     const token = localStorage.getItem("token");

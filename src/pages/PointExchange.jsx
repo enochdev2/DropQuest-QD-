@@ -44,7 +44,6 @@ function PointExchange() {
   const [userProfile, setUserProfile] = useState({});
 
   useEffect(() => {
-    loadInitialData();
     getUserProfileDetails();
   }, []);
 
@@ -54,78 +53,21 @@ function PointExchange() {
     setUserPoints(user?.points?.totalPoints);
     const userSlots = await getTokenSlots(userInfo._id);
     setTokenSlots(userSlots);
+    setLoading(false);
 
     setUserProfile(user);
   };
 
-  const loadInitialData = async () => {
-    try {
-      setLoading(true);
+  
 
-      // Load user profile to get current points
-      if (typeof window !== "undefined") {
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        if (user.email) {
-          const userProfile = await getUserProfile(user.email);
-          setUserPoints(userProfile.points || 0);
-        }
-      }
-
-      // Load token slots from API
-      try {
-        const slotsData = await getTokenSlots();
-        setTokenSlots(slotsData || []);
-      } catch (error) {
-        console.warn("Using mock token slots data");
-        const mockSlots = Array(50)
-          .fill(null)
-          .map((_, index) => ({
-            id: index + 1,
-            isConfigured: index < 5,
-            tokenName:
-              index === 0
-                ? "GLM"
-                : index === 1
-                ? "ETH"
-                : index === 2
-                ? "BTC"
-                : index === 3
-                ? "USDT"
-                : index === 4
-                ? "BNB"
-                : "",
-            pointRatio:
-              index === 0
-                ? 1000
-                : index === 1
-                ? 2000
-                : index === 2
-                ? 50000
-                : index === 3
-                ? 100
-                : index === 4
-                ? 300
-                : 0,
-            logoUrl: index < 5 ? "/New folder/src/assets/dqcoin.png" : null,
-          }));
-        // setTokenSlots(mockSlots);
-      }
-    } catch (error) {
-      console.error("Error loading initial data:", error);
-      toast.error("Failed to load data. Please refresh the page.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleTokenClick = (token) => {
-    if (!token.isConfigured) {
-      toast.error("This token slot is not available yet.");
-      return;
-    }
-    setSelectedToken(token);
-    setShowExchangeModal(true);
-  };
+  // const handleTokenClick = (token) => {
+  //   if (!token.isConfigured) {
+  //     toast.error("This token slot is not available yet.");
+  //     return;
+  //   }
+  //   setSelectedToken(token);
+  //   setShowExchangeModal(true);
+  // };
 
   const handleExchange = async (slotId) => {
     console.log("🚀 ~ handleExchange ~ slotId:", slotId);
@@ -177,21 +119,7 @@ function PointExchange() {
     }
   };
 
-  // Function to update a single slot to GLM
-  const updateToGLM = (id) => {
-    setTokenSlots((prev) =>
-      prev.map((slot) =>
-        slot.id === id
-          ? {
-              ...slot,
-              tokenName: "GLM",
-              pointRatio: 100, // or whatever you want
-              img: "https://raw.githubusercontent.com/enochdev2/token-metadata/main/Golem%20LOGO.png",
-            }
-          : slot
-      )
-    );
-  };
+  
 
   if (loading) {
     return (
