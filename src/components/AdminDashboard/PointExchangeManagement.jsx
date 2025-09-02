@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { ArrowBigRightDash, RotateCcw } from "lucide-react";
+import { ArrowBigRightDash, Loader2, RotateCcw } from "lucide-react";
 // import Image from "next/image"
 import toast from "react-hot-toast";
 import { getTokenSlots, updatePoints } from "@/lib/utilityFunction";
@@ -52,6 +52,7 @@ const initialSlots = [
 
 export default function PointExchangeManagement() {
   const [tokenSlots, setTokenSlots] = useState(initialSlots);
+  const [submitting, setSubmitting] = useState(false);
 
   const [exchangeHistory] = useState([
     { id: 1, name: "Test1", telegram: "@test1", token: "GLM", points: 1000 },
@@ -88,6 +89,7 @@ export default function PointExchangeManagement() {
   };
 
   const handleSaveConfig = async () => {
+    setSubmitting(true);
     if (!configData.tokenName) {
       toast.error("Please fill in all required fields");
       return;
@@ -99,7 +101,7 @@ export default function PointExchangeManagement() {
     //   return;
     // }
 
-    const updatedSlots = await updatePoints(
+    await updatePoints(
       configData.tokenName,
       selectedSlot
       // updatePoints,
@@ -110,22 +112,25 @@ export default function PointExchangeManagement() {
 
     toast.success("Token slot configured successfully");
     setConfigDialogOpen(false);
+    setSubmitting(false);
     setSelectedSlot(null);
     setConfigData({ tokenName: "", pointRatio: "", logoFile: null });
   };
 
   const handleReset = async () => {
-    const updatedSlots = await updatePoints(
+    setSubmitting(true);
+    await updatePoints(
       configData.tokenName,
       selectedSlot
       // updatePoints,
       // pointRatio
     );
 
-   await getUserProfileDetails();
+    await getUserProfileDetails();
 
     toast.success("Token slot configured successfully");
     setConfigDialogOpen(false);
+    setSubmitting(false);
     setSelectedSlot(null);
     setConfigData({ tokenName: "", pointRatio: "", logoFile: null });
   };
@@ -230,7 +235,11 @@ export default function PointExchangeManagement() {
       </Card>
 
       {/* Configuration Dialog */}
-      <Dialog open={configDialogOpen} onOpenChange={setConfigDialogOpen} className=" px-16">
+      <Dialog
+        open={configDialogOpen}
+        onOpenChange={setConfigDialogOpen}
+        className=" px-16"
+      >
         <DialogContent className="bg-gray-100 text-black border-gray-700">
           <DialogHeader>
             <DialogTitle className="text-black text-xl">
@@ -247,7 +256,14 @@ export default function PointExchangeManagement() {
                 Logo Upload:
               </Label>
               <div className="mb-2 w-30 h-30 bg-transparent border border-gray-500 flex items-center justify-center rounded-lg overflow-hidden">
-                <img src={ configData.tokenName === "GLM" ? "https://raw.githubusercontent.com/enochdev2/token-metadata/main/Golem%20LOGO.png" : "https://raw.githubusercontent.com/enochdev2/token-metadata/main/DQ%20Bitcoin%20Image.png"} alt="image"  />
+                <img
+                  src={
+                    configData.tokenName === "GLM"
+                      ? "https://raw.githubusercontent.com/enochdev2/token-metadata/main/Golem%20LOGO.png"
+                      : "https://raw.githubusercontent.com/enochdev2/token-metadata/main/DQ%20Bitcoin%20Image.png"
+                  }
+                  alt="image"
+                />
               </div>
             </div>
             <div>
@@ -267,14 +283,14 @@ export default function PointExchangeManagement() {
 
             <div>
               <Label htmlFor="logo" className="text-black mb-2 text-2xl">
-                Point Ratio setting : 
+                Point Ratio setting :
               </Label>
               <div className="flex items-center space-x-4 w-full justify-center">
                 <div className="bg-blue-600 px-6 py-2 text-2xl text-white rounded-sm">
                   {" "}
                   1 Token
                 </div>
-                <ArrowBigRightDash/>
+                <ArrowBigRightDash />
                 <div className="bg-blue-600 px-6 py-2 text-2xl text-white rounded-sm">
                   {" "}
                   <span className=" px-4 py-1 font-semibold bg-white mr-2 text-black ">
@@ -304,8 +320,17 @@ export default function PointExchangeManagement() {
               onClick={handleReset}
               className="text-white hover:bg-blue-700 bg-blue-600 cursor-pointer w-36"
             >
-              <RotateCcw className="w-4 h-4 mr-2 " />
-              Reset
+              {submitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <RotateCcw className="w-4 h-4 mr-2 " />
+                  "Reset"
+                </>
+              )}
             </Button>
             {/* <Button
               variant="outline"
@@ -318,7 +343,14 @@ export default function PointExchangeManagement() {
               onClick={handleSaveConfig}
               className="bg-blue-600 hover:bg-blue-700 cursor-pointer w-36"
             >
-              Set
+              {submitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                "Set"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
