@@ -12,6 +12,7 @@ import {
   getUserProfile,
   submitPointExchange,
 } from "@/lib/utilityFunction";
+import { useNavigate } from "react-router-dom";
 
 const initialSlots = [
   {
@@ -33,7 +34,8 @@ const initialSlots = [
 
 function PointExchange() {
   const { t } = useLanguage();
-  const [userPoints, setUserPoints] = useState(0);
+  const navigate = useNavigate();
+  const [, setUserPoints] = useState(0);
   const [exchangeAmount, setExchangeAmount] = useState("");
   const [selectedToken, setSelectedToken] = useState(null);
   const [showExchangeModal, setShowExchangeModal] = useState(false);
@@ -57,6 +59,7 @@ function PointExchange() {
 
     setUserProfile(user);
   };
+  
 
   
 
@@ -92,24 +95,15 @@ function PointExchange() {
 
     try {
       setSubmitting(true);
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-      const exchangeData = {
-        userId: user._id,
-        tokenId: selectedToken.id,
-        tokenName: selectedToken.tokenName,
-        pointsToExchange: amount,
-        userTelegram: user.telegramId || "",
-        userName: user.name || "",
-      };
-
-      await submitPointExchange(slotId);
+      await submitPointExchange(slotId, amount);
 
       // setUserPoints((prev) => prev - amount);
       toast.success("The exchange request has been completed.");
 
       setShowExchangeModal(false);
       setExchangeAmount("");
+      navigate("/my-page");
       setSelectedToken(null);
     } catch (error) {
       console.error("Exchange error:", error);
@@ -263,7 +257,7 @@ function PointExchange() {
 
                       <div className="flex gap-4">
                         <Button
-                          onClick={() => handleExchange(selectedToken.id)}
+                          onClick={() => handleExchange(selectedToken._id)}
                           disabled={submitting}
                           className="flex-1 bg-blue-600 hover:bg-blue-700 cursor-pointer"
                         >

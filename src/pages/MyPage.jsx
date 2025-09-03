@@ -5,7 +5,7 @@ import coin from "@/assets/dqcoin.png";
 import PointTransactionHistory from "@/components/PointTransactionHistory";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/language-context";
-import { getUserProfile, getUserReferralList } from "@/lib/utilityFunction";
+import { getUserProfile, getUserReferralList, getUserTokenSlots } from "@/lib/utilityFunction";
 import { Copy, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -29,6 +29,8 @@ function MyPage() {
   const [userReferralLst, setUserReferralLst] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [, setCopySuccess] = useState(false);
+  const [tokenSlots, setTokenSlots] = useState([]);
+  console.log("🚀 ~ MyPage ~ tokenSlots:", tokenSlots)
 
   useEffect(() => {
     getUserProfileDetails();
@@ -57,6 +59,8 @@ function MyPage() {
   const getUserProfileDetails = async () => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const user = await getUserProfile(userInfo.email);
+    const userSlots = await getUserTokenSlots();
+    setTokenSlots(userSlots);
     // console.log("🚀 ~ getUserProfileDetails ~ user:", user);
     setUserProfile(user);
   };
@@ -228,7 +232,8 @@ function MyPage() {
             </div>
           </div>
         )}
-      <PointTransactionHistory />
+
+       <PointTransactionHistory  tokenSlot={tokenSlots} />
       </div>
 
     </div>

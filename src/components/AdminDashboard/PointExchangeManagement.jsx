@@ -30,7 +30,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowBigRightDash, Loader2, RotateCcw } from "lucide-react";
 // import Image from "next/image"
 import toast from "react-hot-toast";
-import { getTokenSlots, updatePoints } from "@/lib/utilityFunction";
+import { getAllUserTokenSlots, getTokenSlots, updatePoints } from "@/lib/utilityFunction";
 
 const initialSlots = [
   {
@@ -62,6 +62,7 @@ export default function PointExchangeManagement() {
 
   const [configDialogOpen, setConfigDialogOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [allTokenSlots, setAllTokenSlots] = useState([]);
   const [configData, setConfigData] = useState({
     tokenName: "",
     pointRatio: "",
@@ -75,6 +76,8 @@ export default function PointExchangeManagement() {
   const getUserProfileDetails = async () => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const userSlots = await getTokenSlots(userInfo._id);
+    const allUserSlots = await getAllUserTokenSlots();
+        setAllTokenSlots(allUserSlots);
     setTokenSlots(userSlots);
   };
 
@@ -210,17 +213,17 @@ export default function PointExchangeManagement() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {exchangeHistory.map((exchange) => (
+                {allTokenSlots?.map((exchange) => (
                   <TableRow
-                    key={exchange.id}
+                    key={exchange?._id}
                     className="hover:bg-gray-700 text-white"
                   >
                     <TableCell className="font-medium">
-                      {exchange.name}
+                      {exchange?.userId?.name}
                     </TableCell>
-                    <TableCell>{exchange.telegram}</TableCell>
-                    <TableCell>{exchange.token}</TableCell>
-                    <TableCell>{exchange.points.toLocaleString()}</TableCell>
+                    <TableCell>{exchange?.userId?.telegramId}</TableCell>
+                    <TableCell>{exchange?.tokenName}</TableCell>
+                    <TableCell>{exchange?.pointExchanged.toLocaleString()}</TableCell>
                     <TableCell>
                       <Badge className="bg-green-600 text-white">
                         Completed

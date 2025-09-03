@@ -33,8 +33,70 @@ export const getTokenSlots = async (userId) => {
   }
 };
 
+export const getUserTokenSlots = async (userId) => {
+  console.log("🚀 ~ getTokenSlots ~ userId:", userId)
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+      // `http://localhost:3000/api/v1/point/slots`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/point/slots`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      const errorMsg =
+        data.error || data.message || "Failed to fetch token slots";
+      throw new Error(errorMsg);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching token slots:", error);
+    throw error;
+  }
+};
+
+export const getAllUserTokenSlots = async () => {
+ 
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+      // `http://localhost:3000/api/v1/point/allslots`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/point/allslots`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      const errorMsg =
+        data.error || data.message || "Failed to fetch token slots";
+      throw new Error(errorMsg);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching token slots:", error);
+    throw error;
+  }
+};
+
 // Submit Point Exchange
-export const submitPointExchange = async ( slotId) => {
+export const submitPointExchange = async ( slotId, amount) => {
   const userId = JSON.parse(localStorage.getItem("user"))._id
   console.log("🚀 ~ submitPointExchange ~ userId:", userId)
   try {
@@ -52,6 +114,7 @@ export const submitPointExchange = async ( slotId) => {
         body: JSON.stringify({
           userId: userId,
           slotId: slotId,
+          amount: amount,
         }),
       }
     );
@@ -60,6 +123,7 @@ export const submitPointExchange = async ( slotId) => {
     if (!response.ok) {
       const errorMsg =
         data.error || data.message || "Failed to submit exchange";
+        toast.error(errorMsg);
       throw new Error(errorMsg);
     }
 
@@ -127,6 +191,7 @@ export const getUserProfile = async (email) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
+          window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }
@@ -194,6 +259,7 @@ export const claimPoints = async () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
+          window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }
@@ -321,6 +387,7 @@ export const getAllUser = async () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
+         window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }
@@ -369,6 +436,7 @@ export const addannouncement = async (newAnnouncement) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
+         window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }
@@ -403,6 +471,7 @@ export const removeannouncement = async (announcementId) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
+         window.location.href = "/";
       }
       toast.error(errorMsg);
     } else {
@@ -441,6 +510,7 @@ export const Changeannouncement = async (newAnnouncement, announcementId) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
+         window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }
@@ -484,6 +554,7 @@ export const modifyuserPoints = async (selectedUser, points ) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
+         window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }
