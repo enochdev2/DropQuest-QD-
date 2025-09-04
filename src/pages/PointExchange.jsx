@@ -59,9 +59,6 @@ function PointExchange() {
 
     setUserProfile(user);
   };
-  
-
-  
 
   // const handleTokenClick = (token) => {
   //   if (!token.isConfigured) {
@@ -92,6 +89,10 @@ function PointExchange() {
       toast.error("Insufficient points. Please check your points on My Page.");
       return;
     }
+    if (selectedToken?.points > amount  ) {
+      toast.error("Insufficient points. Please check your points on My Page.");
+      return;
+    }
 
     try {
       setSubmitting(true);
@@ -112,8 +113,6 @@ function PointExchange() {
       setSubmitting(false);
     }
   };
-
-  
 
   if (loading) {
     return (
@@ -225,12 +224,15 @@ function PointExchange() {
                             className="rounded-full"
                           />
                         </div>
-                        {/* <h3 className="text-xl font-bold text-white">
-                  $GLM
-                </h3> */}
-                        <p className="text-gray-50 text-xl font-bold ">
-                          1 $GLM = 1000 Points
-                        </p>
+                        <div>
+                          {/* <h3 className="text-xl font-bold text-white">
+                            {selectedToken?.points}
+                          </h3> */}
+                          <p className=" flex w-full justify-center  text-center text-gray-50 text-xl font-bold ">
+                            {selectedToken?.token} <span className="text-orange-500 ml-1">$GLM</span>  <span className="text-green-600 mx-3 font-extrabold text-2xl y-auto -my-1">=</span>{" "}
+                             {selectedToken?.points} {" "} <span className="text-orange-200 ml-1">Point</span>
+                          </p>
+                        </div>
                       </div>
 
                       <div>

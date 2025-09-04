@@ -30,7 +30,11 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowBigRightDash, Loader2, RotateCcw } from "lucide-react";
 // import Image from "next/image"
 import toast from "react-hot-toast";
-import { getAllUserTokenSlots, getTokenSlots, updatePoints } from "@/lib/utilityFunction";
+import {
+  getAllUserTokenSlots,
+  getTokenSlots,
+  updatePoints,
+} from "@/lib/utilityFunction";
 
 const initialSlots = [
   {
@@ -63,6 +67,8 @@ export default function PointExchangeManagement() {
   const [configDialogOpen, setConfigDialogOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [allTokenSlots, setAllTokenSlots] = useState([]);
+  const [points, setPoints] = useState(1000);
+  const [tokensAmount, setTokensAmount] = useState(1);
   const [configData, setConfigData] = useState({
     tokenName: "",
     pointRatio: "",
@@ -77,7 +83,7 @@ export default function PointExchangeManagement() {
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const userSlots = await getTokenSlots(userInfo._id);
     const allUserSlots = await getAllUserTokenSlots();
-        setAllTokenSlots(allUserSlots);
+    setAllTokenSlots(allUserSlots);
     setTokenSlots(userSlots);
   };
 
@@ -95,20 +101,25 @@ export default function PointExchangeManagement() {
     setSubmitting(true);
     if (!configData.tokenName) {
       toast.error("Please fill in all required fields");
+      setSubmitting(false);
       return;
     }
 
     // const pointRatio = parseInt(configData.pointRatio);
-    // if (isNaN(pointRatio) || pointRatio <= 0) {
-    //   toast.error("Please enter a valid point ratio");
-    //   return;
-    // }
+    if (isNaN(points) || points <= 0) {
+      toast.error("Please enter a valid point ratio");
+      return;
+    }
+    if (isNaN(tokensAmount) || tokensAmount <= 0) {
+      toast.error("Please enter a valid point ratio");
+      return;
+    }
 
     await updatePoints(
       configData.tokenName,
-      selectedSlot
-      // updatePoints,
-      // pointRatio
+      selectedSlot,
+      tokensAmount,
+      points
     );
 
     await getUserProfileDetails();
@@ -124,9 +135,9 @@ export default function PointExchangeManagement() {
     setSubmitting(true);
     await updatePoints(
       configData.tokenName,
-      selectedSlot
-      // updatePoints,
-      // pointRatio
+      selectedSlot,
+      tokensAmount,
+      points
     );
 
     await getUserProfileDetails();
@@ -223,7 +234,9 @@ export default function PointExchangeManagement() {
                     </TableCell>
                     <TableCell>{exchange?.userId?.telegramId}</TableCell>
                     <TableCell>{exchange?.tokenName}</TableCell>
-                    <TableCell>{exchange?.pointExchanged.toLocaleString()}</TableCell>
+                    <TableCell>
+                      {exchange?.pointExchanged.toLocaleString()}
+                    </TableCell>
                     <TableCell>
                       <Badge className="bg-green-600 text-white">
                         Completed
@@ -291,27 +304,37 @@ export default function PointExchangeManagement() {
               <div className="flex items-center space-x-4 w-full justify-center">
                 <div className="bg-blue-600 px-6 py-2 text-2xl text-white rounded-sm">
                   {" "}
-                  1 Token
+                  {tokensAmount}
+                  Token
                 </div>
                 <ArrowBigRightDash />
                 <div className="bg-blue-600 px-6 py-2 text-2xl text-white rounded-sm">
                   {" "}
                   <span className=" px-4 py-1 font-semibold bg-white mr-2 text-black ">
-                    ${configData.tokenName === "GLM" && 1000}
+                    $
+                    {points.toLocaleString()}
                   </span>{" "}
                   Points
                 </div>
               </div>
-              {/* <Input
-                id="pointRatio"
-                type="number"
-                value={configData.pointRatio}
-                onChange={(e) =>
-                  setConfigData({ ...configData, pointRatio: e.target.value })
-                }
-                placeholder="e.g., 1000"
-                className="bg-gray-700 border-gray-600 text-white"
-              /> */}
+              <div className="flex items-center space-x-4 w-full justify-center mt-8">
+                <Input
+                  id="pointRatio"
+                  type="number"
+                  // value={configData.pointRatio}
+                  onChange={(e) => setTokensAmount(e.target.value)}
+                  placeholder="e.g., 1000"
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+                <Input
+                  id="pointRatio"
+                  type="number"
+                  // value={configData.pointRatio}
+                  onChange={(e) => setPoints(e.target.value)}
+                  placeholder="e.g., 1000"
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
             </div>
           </div>
 
