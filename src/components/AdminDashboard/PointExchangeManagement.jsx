@@ -58,11 +58,7 @@ export default function PointExchangeManagement() {
   const [tokenSlots, setTokenSlots] = useState(initialSlots);
   const [submitting, setSubmitting] = useState(false);
 
-  const [exchangeHistory] = useState([
-    { id: 1, name: "Test1", telegram: "@test1", token: "GLM", points: 1000 },
-    { id: 2, name: "Test2", telegram: "@test2", token: "GLM", points: 2000 },
-    { id: 3, name: "Test3", telegram: "@test3", token: "GLM", points: 32000 },
-  ]);
+ 
 
   const [configDialogOpen, setConfigDialogOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);

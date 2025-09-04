@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import { SuccessToast } from "@/components/Success";
 import toast from "react-hot-toast";
 
