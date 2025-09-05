@@ -111,8 +111,8 @@ export default function PointExchangeManagement() {
 
         // Upload to backend (you’ll create this endpoint below)
         const imageRes = await fetch(
-          "http://localhost:3000/api/v1/upload",
-          // "https://localhost:3000/api/v1/upload",
+          "https://dropquest-qd-backend.onrender.com/api/v1/upload",
+          // "http://localhost:3000/api/v1/upload",
           {
             method: "POST",
             body: formDataImage,
