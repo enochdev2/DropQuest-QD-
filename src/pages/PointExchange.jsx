@@ -189,7 +189,7 @@ function PointExchange() {
                               />
                             </div>
                             <p className="text-base bg-blue-700 text-white font-semibold rounded-full">
-                              {token.pointRatio}
+                              ${token.tokenName}
                             </p>
                           </>
                         ) : (
@@ -229,7 +229,7 @@ function PointExchange() {
                             {selectedToken?.points}
                           </h3> */}
                           <p className=" flex w-full justify-center  text-center text-gray-50 text-xl font-bold ">
-                            {selectedToken?.token} <span className="text-orange-500 ml-1">$GLM</span>  <span className="text-green-600 mx-3 font-extrabold text-2xl y-auto -my-1">=</span>{" "}
+                            {selectedToken?.token} <span className="text-orange-500 ml-1">${selectedToken?.tokenName}</span>  <span className="text-green-600 mx-3 font-extrabold text-2xl y-auto -my-1">=</span>{" "}
                              {selectedToken?.points} {" "} <span className="text-orange-200 ml-1">Point</span>
                           </p>
                         </div>
