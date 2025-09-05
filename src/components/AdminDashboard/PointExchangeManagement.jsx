@@ -27,7 +27,12 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { ArrowBigRightDash, Loader2, RotateCcw } from "lucide-react";
+import {
+  ArrowBigRightDash,
+  Loader2,
+  RotateCcw,
+  UploadCloud,
+} from "lucide-react";
 // import Image from "next/image"
 import toast from "react-hot-toast";
 import {
@@ -57,8 +62,8 @@ const initialSlots = [
 export default function PointExchangeManagement() {
   const [tokenSlots, setTokenSlots] = useState(initialSlots);
   const [submitting, setSubmitting] = useState(false);
-
- 
+  const [rawFile, setRawFile] = useState(null);
+  const [uploadedFile, setUploadedFile] = useState(null);
 
   const [configDialogOpen, setConfigDialogOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -95,36 +100,63 @@ export default function PointExchangeManagement() {
 
   const handleSaveConfig = async () => {
     setSubmitting(true);
-    if (!configData.tokenName) {
-      toast.error("Please fill in all required fields");
+
+    try {
+      let imageUrl = "";
+
+      if (rawFile) {
+        // Create FormData for image
+        const formDataImage = new FormData();
+        formDataImage.append("file", rawFile);
+
+        // Upload to backend (you’ll create this endpoint below)
+        const imageRes = await fetch(
+          "http://localhost:3000/api/v1/upload",
+          // "https://localhost:3000/api/v1/upload",
+          {
+            method: "POST",
+            body: formDataImage,
+          }
+        );
+
+        const imageData = await imageRes.json();
+        imageUrl = imageData.url; // Get the Cloudinary URL
+        console.log("🚀 ~ handleSaveConfig ~ imageUrl:", imageUrl)
+      }
+
+      if (!configData.tokenName) {
+        toast.error("Please fill in all required fields");
+        setSubmitting(false);
+        return;
+      }
+      // const pointRatio = parseInt(configData.pointRatio);
+      if (isNaN(points) || points <= 0) {
+        toast.error("Please enter a valid point ratio");
+        return;
+      }
+      if (isNaN(tokensAmount) || tokensAmount <= 0) {
+        toast.error("Please enter a valid point ratio");
+        return;
+      }
+      await updatePoints(
+        configData.tokenName,
+        selectedSlot,
+        tokensAmount,
+        points,
+        imageUrl
+      );
+      await getUserProfileDetails();
+
+      toast.success("Token slot configured successfully");
+      setConfigDialogOpen(false);
       setSubmitting(false);
-      return;
+      setSelectedSlot(null);
+      setConfigData({ tokenName: "", pointRatio: "", logoFile: null });
+    } catch (error) {
+      console.error("Error uploading image or updating slot:", error);
+      toast.error("Failed to configure token slot. Please try again.");
+      setSubmitting(false);
     }
-
-    // const pointRatio = parseInt(configData.pointRatio);
-    if (isNaN(points) || points <= 0) {
-      toast.error("Please enter a valid point ratio");
-      return;
-    }
-    if (isNaN(tokensAmount) || tokensAmount <= 0) {
-      toast.error("Please enter a valid point ratio");
-      return;
-    }
-
-    await updatePoints(
-      configData.tokenName,
-      selectedSlot,
-      tokensAmount,
-      points
-    );
-
-    await getUserProfileDetails();
-
-    toast.success("Token slot configured successfully");
-    setConfigDialogOpen(false);
-    setSubmitting(false);
-    setSelectedSlot(null);
-    setConfigData({ tokenName: "", pointRatio: "", logoFile: null });
   };
 
   const handleReset = async () => {
@@ -143,6 +175,14 @@ export default function PointExchangeManagement() {
     setSubmitting(false);
     setSelectedSlot(null);
     setConfigData({ tokenName: "", pointRatio: "", logoFile: null });
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadedFile(URL.createObjectURL(file));
+      setRawFile(file); // store the actual file
+    }
   };
 
   return (
@@ -180,7 +220,7 @@ export default function PointExchangeManagement() {
                         />
                       </div>
                       <p className="text-base bg-blue-700 text-white font-semibold rounded-full">
-                        {token.pointRatio}
+                        ${token.tokenName}
                       </p>
                     </>
                   ) : (
@@ -264,18 +304,43 @@ export default function PointExchangeManagement() {
 
           <div className="space-y-6 mb-20">
             <div className="flex w-full justify-between">
-              <Label htmlFor="logo" className="text-black mb-2 text-xl">
-                Logo Upload:
-              </Label>
+              <div className="border border-dashed border-gray-500 p-4 rounded-md bg-gray-800 cursor-pointer relative group hover:border-blue-400">
+                <Label htmlFor="logo" className="text-white mb-2 text-base">
+                  Logo Upload:
+                </Label>
+                <label className="w-full flex flex-col items-center justify-center text-center text-gray-300 cursor-pointer">
+                  <UploadCloud className="w-8 h-8 mb-2 text-gray-900 group-hover:text-blue-400" />
+                  <span className="text-sm">
+                    Click to upload image (JPG/PNG)
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                    required
+                  />
+                </label>
+              </div>
               <div className="mb-2 w-30 h-30 bg-transparent border border-gray-500 flex items-center justify-center rounded-lg overflow-hidden">
-                <img
-                  src={
-                    configData.tokenName === "GLM"
-                      ? "https://raw.githubusercontent.com/enochdev2/token-metadata/main/Golem%20LOGO.png"
-                      : "https://raw.githubusercontent.com/enochdev2/token-metadata/main/DQ%20Bitcoin%20Image.png"
-                  }
-                  alt="image"
-                />
+                {uploadedFile ? (
+                  <div className="mt-3">
+                    <img
+                      src={uploadedFile}
+                      alt="Uploaded"
+                      className="w-40 h-auto rounded border border-gray-600"
+                    />
+                  </div>
+                ) : (
+                  <img
+                    src={
+                      configData.tokenName === "GLM"
+                        ? "https://raw.githubusercontent.com/enochdev2/token-metadata/main/Golem%20LOGO.png"
+                        : "https://raw.githubusercontent.com/enochdev2/token-metadata/main/DQ%20Bitcoin%20Image.png"
+                    }
+                    alt="image"
+                  />
+                )}
               </div>
             </div>
             <div>
@@ -307,8 +372,7 @@ export default function PointExchangeManagement() {
                 <div className="bg-blue-600 px-6 py-2 text-2xl text-white rounded-sm">
                   {" "}
                   <span className=" px-4 py-1 font-semibold bg-white mr-2 text-black ">
-                    $
-                    {points.toLocaleString()}
+                    ${points.toLocaleString()}
                   </span>{" "}
                   Points
                 </div>
