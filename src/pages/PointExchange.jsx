@@ -44,6 +44,8 @@ function PointExchange() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [userProfile, setUserProfile] = useState({});
+    const { language } = useLanguage();
+  
 
   useEffect(() => {
     getUserProfileDetails();
@@ -81,16 +83,18 @@ function PointExchange() {
     }
 
     if (amount % 1000 !== 0) {
-      toast.error("Points can only be entered in units of 1000.");
+      
+      toast.error(language === "en" ? " Points can only be entered in units of 1000." : "포인트는 ‘1000 단위’로만 교환이 가능합니다");
       return;
     }
 
     if (amount > userProfile?.points?.totalPoints) {
-      toast.error("Insufficient points. Please check your points on My Page.");
+      
+      toast.error(language === "en" ? " Insufficient points. Please check your points on My Page." : "포인트가 부족합니다. 마이페이지에서 내 포인트를 확인해주세요");
       return;
     }
     if (selectedToken?.points > amount  ) {
-      toast.error("Insufficient points. Please check your points on My Page.");
+            toast.error(language === "en" ? " Insufficient points. Please check your points on My Page." : "포인트가 부족합니다. 마이페이지에서 내 포인트를 확인해주세요");
       return;
     }
 
@@ -108,7 +112,8 @@ function PointExchange() {
       setSelectedToken(null);
     } catch (error) {
       console.error("Exchange error:", error);
-      toast.error("Failed to process exchange. Please try again.");
+      toast.error(language === "en" ? "Failed to process exchange. Please try again." : "교환에 실패했습니다. 다시 시도해 주세요");
+      // toast.error("Failed to process exchange. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -134,7 +139,7 @@ function PointExchange() {
               {t("pointExchangeTitle")}
             </h1>
             <p className="text-sm text-gray-300 mb-4">
-              Exchange your accumulated points for various cryptocurrencies
+              {language === "en" ? " Exchange your accumulated points for various cryptocurrencies " : "누적된 포인트를 다양한 암호화폐로 교환하세요."}  
             </p>
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-1.5 mb-2 inline-block">
               <p className="text-base">
@@ -243,7 +248,7 @@ function PointExchange() {
 
                         <Input
                           type="number"
-                          placeholder="Enter points to exchange"
+                          placeholder={language === "en" ? "Enter points to exchange" : "사용할 포인트를 입력해주세요"}
                           value={exchangeAmount}
                           onChange={(e) => setExchangeAmount(e.target.value)}
                           className="bg-gray-700 border-gray-600 text-white text-right font-semibold"
@@ -252,8 +257,7 @@ function PointExchange() {
                       </div>
 
                       <p className="text-center text-base font-semibold text-gray-300">
-                        Points can only be exchanged in units of 1000. Would you
-                        like to apply for a point exchange?
+                        {language === "en" ? "Points can only be exchanged in units of 1000. Would you like to apply for a point exchange?  " : "포인트는 1000단위로만 교환할 수 있습니다. 포인트 교환을 신청하시겠습니까?"}
                         {/* {t("exchangeRequest")} */}
                       </p>
 

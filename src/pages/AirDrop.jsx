@@ -11,19 +11,19 @@ import { SuccessToast } from "@/components/Success";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 // Mock attendance data for the past 3 days
-let attendanceData = [
-  { date: "8/6", status: "absent", label: { en: "Absent", ko: "미출석" } },
-  {
-    date: "8/7",
-    status: "completed",
-    label: { en: "Completed", ko: "출석 완료" },
-  },
-  {
-    date: "8/8",
-    status: "completed",
-    label: { en: "Completed", ko: "출석 완료" },
-  },
-];
+// let attendanceData = [
+//   { date: "8/6", status: "absent", label: { en: "Absent", ko: "미출석" } },
+//   {
+//     date: "8/7",
+//     status: "completed",
+//     label: { en: "Completed", ko: "출석 완료" },
+//   },
+//   {
+//     date: "8/8",
+//     status: "completed",
+//     label: { en: "Completed", ko: "출석 완료" },
+//   },
+// ];
 
 function AirDrop() {
   const { language } = useLanguage();
@@ -63,22 +63,25 @@ function AirDrop() {
     const user = await getUserProfile(userInfo.email);
     console.log("🚀 ~ getUserProfileDetails ~ user:", user);
     setUserProfile(user);
-    attendanceData = [
-      { date: "5/7", status: "absent", label: { en: "Absent", ko: "미출석" } },
-      {
-        date: "6/7",
-        status: "completed",
-        label: { en: "Completed", ko: "출석 완료" },
-      },
-      {
-        date: "7/7",
-        status: "completed",
-        label: { en: "Completed", ko: "출석 완료" },
-      },
-    ];
+    // attendanceData = [
+    //   { date: "5/7", status: "absent", label: { en: "Absent", ko: "미출석" } },
+    //   {
+    //     date: "6/7",
+    //     status: "completed",
+    //     label: { en: "Completed", ko: "출석 완료" },
+    //   },
+    //   {
+    //     date: "7/7",
+    //     status: "completed",
+    //     label: { en: "Completed", ko: "출석 완료" },
+    //   },
+    // ];
     if (user.points?.points === 0) {
       setTodayChecked(true);
-      setMessage("You have already claimed your point for the day.");
+      // setMessage("You have already claimed your point for the day.");
+      setMessage(language === "en"
+                  ? "You have already claimed your point for the day."
+                  : "일일 출석 체크를 이미 완료했습니다");
     } else {
       setTodayChecked(false);
     }
@@ -140,7 +143,7 @@ function AirDrop() {
           </Button>
 
           {/* Attendance Status */}
-          <div className="flex items-center gap-6 mb-4">
+          {/* <div className="flex items-center gap-6 mb-4">
             {attendanceData.map((day, index) => (
               <div key={index} className="flex flex-col items-center">
                 <div
@@ -163,7 +166,7 @@ function AirDrop() {
                 </span>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* Reset Info */}
           <p className="text-gray-400 text-sm text-center">

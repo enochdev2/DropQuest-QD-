@@ -76,7 +76,7 @@ const translations = {
     airdrop: "에어드랍",
 
     // Landing Page
-    clickAnd: "클릭해서 ",
+    clickAnd: "클릭하고",
     Earn: "벌",
     connectingUsers: "잠재적인 기회와 사용자를 연결합니다",
     earnAirdrops: "미션을 통해 에어드랍을 획득하고 수익을 창출할 수 있습니다.",
