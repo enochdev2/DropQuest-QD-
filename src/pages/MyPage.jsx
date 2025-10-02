@@ -75,7 +75,7 @@ function MyPage() {
     <div className="min-h-screen bg-black text-white">
       {/* <Navbar user={mockUser} /> */}
 
-      <div className="px-4 py-6 sm:w-[400px] mx-auto sm:border border-gray-700 h-screen rounded-2xl">
+      <div className="px-4 py-6 sm:w-[400px] mx-auto sm:border border-gray-700 h-fit rounded-2xl">
         {/* Tab Navigation */}
         <div className="flex items-center justify-center mb-6">
           <button
@@ -233,6 +233,7 @@ function MyPage() {
           </div>
         )}
 
+        
        <PointTransactionHistory  tokenSlot={tokenSlots} />
       </div>
 

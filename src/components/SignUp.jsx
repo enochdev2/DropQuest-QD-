@@ -40,7 +40,7 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [touched, setTouched] = useState({});
   // const referralCode = getReferralCodeFromUrl();
-  console.log("🚀 ~ SignUp ~ referralCode:", referralCode)
+  console.log("🚀 ~ SignUp ~ referralCode:", referralCode);
 
   // Validation functions
   const validateEmail = (email) => {
@@ -194,13 +194,12 @@ const SignUp = () => {
           body: JSON.stringify(newUser),
         }
       );
-      console.log("🚀 ~ handleSubmit ~ response:", response)
+      console.log("🚀 ~ handleSubmit ~ response:", response);
       if (!response.ok) {
         const errorData = await response.json();
-         const errorMsg =
-                  errorData.error || errorData.message || "Failed to register user";
-                toast.error(errorMsg)
-        
+        const errorMsg =
+          errorData.error || errorData.message || "Failed to register user";
+        toast.error(errorMsg);
       } else {
         console.log("Registration successful!");
         navigate("/my-page");
@@ -218,10 +217,9 @@ const SignUp = () => {
     <Card className="w-full">
       <CardHeader className="text-center text-black">
         <CardTitle className="text-2xl font-bold">{t("welcome")}</CardTitle>
-        {/* <p className=" text-sm">{t("welcome")}</p> */}
-        {/* <p className=" text-sm">{t("dontMissAirdrop")}</p> */}
         <CardDescription>{t("dontMissAirdrop")}</CardDescription>
       </CardHeader>
+
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           {/* Email */}
@@ -237,7 +235,7 @@ const SignUp = () => {
               onChange={(e) => handleInputChange("email", e.target.value)}
               onBlur={() => handleBlur("email")}
               className={cn(
-                "transition-colors",
+                "transition-colors placeholder:text-sm",
                 errors.email &&
                   touched.email &&
                   "border-red-500 focus:border-red-500"
@@ -262,7 +260,7 @@ const SignUp = () => {
                 onChange={(e) => handleInputChange("password", e.target.value)}
                 onBlur={() => handleBlur("password")}
                 className={cn(
-                  "pr-10 transition-colors",
+                  "pr-10 transition-colors placeholder:text-sm",
                   errors.password &&
                     touched.password &&
                     "border-red-500 focus:border-red-500"
@@ -300,7 +298,7 @@ const SignUp = () => {
                 }
                 onBlur={() => handleBlur("confirmPassword")}
                 className={cn(
-                  "pr-10 transition-colors",
+                  "pr-10 transition-colors placeholder:text-sm",
                   errors.confirmPassword &&
                     touched.confirmPassword &&
                     "border-red-500 focus:border-red-500"
@@ -318,7 +316,7 @@ const SignUp = () => {
               <p className="text-xs text-red-500">{errors.confirmPassword}</p>
             )}
             <p className="text-xs text-gray-500">
-              Please enter the same password as above.
+              {t("passwordMatchValidation")} .
             </p>
           </div>
 
@@ -335,6 +333,7 @@ const SignUp = () => {
                 value={formData.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
                 onBlur={() => handleBlur("name")}
+                className="placeholder:text-sm"
               />
             </div>
             <div className="space-y-2">
@@ -351,7 +350,7 @@ const SignUp = () => {
                 }
                 onBlur={() => handleBlur("phoneNumber")}
                 className={cn(
-                  "transition-colors",
+                  "transition-colors placeholder:text-sm",
                   errors.phoneNumber &&
                     touched.phoneNumber &&
                     "border-red-500 focus:border-red-500"
@@ -371,13 +370,41 @@ const SignUp = () => {
             <Input
               id="telegramId"
               type="text"
-              placeholder={t("telegramId")}
+              placeholder={t("telegramIdPlaceholder")}
               value={formData.telegramId}
               onChange={(e) => handleInputChange("telegramId", e.target.value)}
               onBlur={() => handleBlur("telegramId")}
+              required
+              className="placeholder:text-sm"
             />
           </div>
+
+          {/* ✅ ID Card Upload */}
+          <div className="space-y-2">
+            <Label htmlFor="idCard" className="text-sm font-medium">
+              {t("idCardFront")} <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="idCard"
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={(e) => handleInputChange("idCard", e.target.files[0])}
+              className="cursor-pointer placeholder:text-sm"
+              
+            />
+            {formData.idCard && (
+              <div className="mt-2">
+                <img
+                  src={URL.createObjectURL(formData.idCard)}
+                  alt="ID Preview"
+                  className="w-40 h-28 object-cover rounded-md border placeholder:text-sm"
+                />
+              </div>
+            )}
+          </div>
         </CardContent>
+
         <CardFooter>
           <Button
             type="submit"
@@ -391,13 +418,7 @@ const SignUp = () => {
               color: isFormValid() && !isLoading ? "white" : "#9ca3af",
             }}
           >
-            {isLoading ? (
-              <>
-               <LoadingSpinner/>
-              </>
-            ) : (
-              t("signUp")
-            )}
+            {isLoading ? <LoadingSpinner /> : t("signUp")}
           </Button>
         </CardFooter>
       </form>

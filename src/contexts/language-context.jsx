@@ -32,10 +32,14 @@ const translations = {
     name: "Name",
     phoneNumber: "Phone Number",
     telegramId: "Telegram ID",
+    telegramIdPlaceholder: "Please enter my profile-username",
     required: "Required",
     passwordRequirement: "Use a password with at least 6 characters including letters and numbers.",
     passwordMismatch: "Passwords do not match.",
+    passwordMatchValidation: "Please enter the same password as above.",
+    idCardFront: "ID card photo (front side)",
     alreadyHaveAccount: "Already have an account?",
+    
     login: "Login",
 
     // My Page
@@ -97,9 +101,12 @@ const translations = {
     name: "이름",
     phoneNumber: "전화번호",
     telegramId: "텔레그램 아이디",
+    telegramIdPlaceholder: "내 프로필-사용자명을 기입해주세요",
     required: "필수",
     passwordRequirement: "영문, 숫자를 포함하여 6자리 이상의 비밀번호를 사용하세요.",
     passwordMismatch: "비밀번호가 일치하지 않습니다.",
+    passwordMatchValidation: "위와 동일한 비밀번호를 입력해 주세요",
+    idCardFront: "신분증 사진 (앞면)",
     alreadyHaveAccount: "이미 계정이 있으신가요?",
     login: "로그인",
 

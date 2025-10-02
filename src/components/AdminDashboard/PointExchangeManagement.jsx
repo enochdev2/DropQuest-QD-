@@ -29,6 +29,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
   ArrowBigRightDash,
+  Loader,
   Loader2,
   RotateCcw,
   UploadCloud,
@@ -40,6 +41,8 @@ import {
   getTokenSlots,
   updatePoints,
 } from "@/lib/utilityFunction";
+import { formatKST } from "@/lib/formatKST";
+import LoadingSpinner from "../LoadingSpinner";
 
 const initialSlots = [
   {
@@ -70,6 +73,8 @@ export default function PointExchangeManagement() {
   const [allTokenSlots, setAllTokenSlots] = useState([]);
   const [points, setPoints] = useState(1000);
   const [tokensAmount, setTokensAmount] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [sortedUsers, setSortedUsers] = useState([]);
   const [configData, setConfigData] = useState({
     tokenName: "",
     pointRatio: "",
@@ -81,11 +86,27 @@ export default function PointExchangeManagement() {
   }, []);
 
   const getUserProfileDetails = async () => {
-    const userInfo = JSON.parse(localStorage.getItem("user"));
-    const userSlots = await getTokenSlots(userInfo._id);
-    const allUserSlots = await getAllUserTokenSlots();
-    setAllTokenSlots(allUserSlots);
-    setTokenSlots(userSlots);
+    try {
+      setIsLoading(true); // Start spinner
+      const userInfo = JSON.parse(localStorage.getItem("user"));
+      const userSlots = await getTokenSlots(userInfo._id);
+      const allUserSlots = await getAllUserTokenSlots();
+
+      setAllTokenSlots(allUserSlots);
+      setTokenSlots(userSlots);
+
+      // Optional: Sort users by most recent
+      const sorted = [...allUserSlots].sort(
+        (a, b) =>
+          new Date(b.createdAt ?? b.joinDate) -
+          new Date(a.createdAt ?? a.joinDate)
+      );
+      setSortedUsers(sorted);
+    } catch (error) {
+      console.error("Failed to fetch user profile details", error);
+    } finally {
+      setIsLoading(false); // Stop spinner
+    }
   };
 
   const handleSlotClick = (slot) => {
@@ -121,7 +142,7 @@ export default function PointExchangeManagement() {
 
         const imageData = await imageRes.json();
         imageUrl = imageData.url; // Get the Cloudinary URL
-        console.log("🚀 ~ handleSaveConfig ~ imageUrl:", imageUrl)
+        console.log("🚀 ~ handleSaveConfig ~ imageUrl:", imageUrl);
       }
 
       if (!configData.tokenName) {
@@ -185,6 +206,12 @@ export default function PointExchangeManagement() {
     }
   };
 
+  // const sortedUsers = allTokenSlots.sort((a, b) => {
+  //   const dateA = new Date(a.createdAt ?? a.joinDate);
+  //   const dateB = new Date(b.createdAt ?? b.joinDate);
+  //   return dateB - dateA; // most recent first
+  // } )
+
   return (
     <div className="space-x-1 flex w-full">
       {/* Token Slots Configuration */}
@@ -199,44 +226,59 @@ export default function PointExchangeManagement() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-10 gap-2">
-            {tokenSlots?.map((token) => (
-              <Card
-                key={token._id}
-                className={`cursor-pointer transition-all duration-200 ${
-                  token.isConfigured
-                    ? "bg-gray-700 border-gray-600 hover:bg-gray-600"
-                    : "bg-gray-900 border-gray-800 hover:bg-gray-800"
-                }`}
-                onClick={() => handleSlotClick(token?._id)}
-              >
-                <CardContent className="px-1 text-center">
-                  {token.isConfigured ? (
-                    <>
-                      <div className="w-16 h-16 mx-auto mb-2 bg-gray-700 rounded-full flex items-center justify-center">
-                        <img
-                          src={token?.img}
-                          alt={token.tokenName}
-                          className="rounded-full w-full h-full object-cover"
-                        />
-                      </div>
-                      <p className="text-base bg-blue-700 text-white font-semibold rounded-full">
-                        ${token.tokenName}
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <div className="w-12 h-12 mx-auto mb-2 bg-gray-800 rounded-full flex items-center justify-center">
-                        <span className="text-gray-600">?</span>
-                      </div>
-                      <p className="text-gray-600">NONE</p>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+            {isLoading
+              ? // Skeleton placeholders while loading
+                Array.from({ length: 20 }).map((_, index) => (
+                  <Card
+                    key={index}
+                    className="bg-gray-800 border-gray-700 animate-pulse cursor-not-allowed"
+                  >
+                    <CardContent className="px-1 text-center">
+                      <div className="w-12 h-12 mx-auto mb-2 bg-gray-700 rounded-full"></div>
+                      <p className="h-4 w-10 bg-gray-600 rounded mx-auto"></p>
+                    </CardContent>
+                  </Card>
+                ))
+              : // Actual token slots
+                tokenSlots?.map((token) => (
+                  <Card
+                    key={token._id}
+                    className={`cursor-pointer transition-all duration-200 ${
+                      token.isConfigured
+                        ? "bg-gray-700 border-gray-600 hover:bg-gray-600"
+                        : "bg-gray-900 border-gray-800 hover:bg-gray-800"
+                    }`}
+                    onClick={() => handleSlotClick(token?._id)}
+                  >
+                    <CardContent className="px-1 text-center">
+                      {token.isConfigured ? (
+                        <>
+                          <div className="w-16 h-16 mx-auto mb-2 bg-gray-700 rounded-full flex items-center justify-center">
+                            <img
+                              src={token?.img}
+                              alt={token.tokenName}
+                              className="rounded-full w-full h-full object-cover"
+                            />
+                          </div>
+                          <p className="text-base bg-blue-700 text-white font-semibold rounded-full">
+                            ${token.tokenName}
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <div className="w-12 h-12 mx-auto mb-2 bg-gray-800 rounded-full flex items-center justify-center">
+                            <span className="text-gray-600">?</span>
+                          </div>
+                          <p className="text-gray-600">NONE</p>
+                        </>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
           </div>
         </CardContent>
       </Card>
+
       {/* Exchange Application History */}
       <Card className="bg-gray-800 border-gray-700 w-[30%]">
         <CardHeader>
@@ -248,41 +290,55 @@ export default function PointExchangeManagement() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="rounded-lg border border-gray-700 overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-700">
-                  <TableHead className="text-white">Name</TableHead>
-                  <TableHead className="text-white">Telegram</TableHead>
-                  <TableHead className="text-white">Token</TableHead>
-                  <TableHead className="text-white">Points</TableHead>
-                  <TableHead className="text-white">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {allTokenSlots?.map((exchange) => (
-                  <TableRow
-                    key={exchange?._id}
-                    className="hover:bg-gray-700 text-white"
-                  >
-                    <TableCell className="font-medium">
-                      {exchange?.userId?.name}
-                    </TableCell>
-                    <TableCell>{exchange?.userId?.telegramId}</TableCell>
-                    <TableCell>{exchange?.tokenName}</TableCell>
-                    <TableCell>
-                      {exchange?.pointExchanged.toLocaleString()}
-                    </TableCell>
-                    <TableCell>
-                      <Badge className="bg-green-600 text-white">
-                        Completed
-                      </Badge>
-                    </TableCell>
+          {isLoading ? (
+            <div className="flex justify-center items-center py-10">
+              <div className="flex justify-center items-center">
+                <Loader className="animate-spin w-8 h-8 text-white" />
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-lg border border-gray-700 overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-700">
+                    <TableHead className="text-white">Name</TableHead>
+                    <TableHead className="text-white">Telegram</TableHead>
+                    <TableHead className="text-white">Token</TableHead>
+                    <TableHead className="text-white">Points</TableHead>
+                    <TableHead className="text-white">Status</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+                </TableHeader>
+                <TableBody>
+                  {sortedUsers?.map((exchange) => (
+                    <TableRow
+                      key={exchange?._id}
+                      className="hover:bg-gray-700 text-white"
+                    >
+                      <TableCell className="font-medium">
+                        {exchange?.userId?.name}
+                      </TableCell>
+                      <TableCell>{exchange?.userId?.telegramId}</TableCell>
+                      <TableCell>{exchange?.tokenName}</TableCell>
+                      <TableCell>
+                        {exchange?.pointExchanged.toLocaleString()}
+                      </TableCell>
+                      <TableCell>
+                        {exchange?.createdAt
+                          ? formatKST(exchange.createdAt).toLocaleString(
+                              "en-US",
+                              {
+                                dateStyle: "short",
+                                timeStyle: "short",
+                              }
+                            )
+                          : "N/A"}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
         </CardContent>
       </Card>
 

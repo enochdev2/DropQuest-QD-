@@ -128,6 +128,12 @@ export default function UserManagement() {
     }
   };
 
+  const sortedUsers = filteredUsers.sort((a, b) => {
+  const dateA = new Date(a.createdAt ?? a.joinDate);
+  const dateB = new Date(b.createdAt ?? b.joinDate);
+  return dateB - dateA; // most recent first
+});
+
   return (
     <Card className="bg-gradient-to-r from-sky-50/10 to-blue-50/10  shadow-xl brder-slate-200">
       <CardHeader className="bg-gradient-to-r from-cyan-50/5 to-blue-50/5 rounded-t-lg">
@@ -342,7 +348,7 @@ export default function UserManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredUsers.map((user) => (
+              {sortedUsers.map((user) => (
                 <TableRow
                   key={user._id}
                   className="hover:bg-gradient-to-r hover:from-cyan-700 hover:to-blue-50/5 transition-all duration-300 text-white font-semib text-[16px]"

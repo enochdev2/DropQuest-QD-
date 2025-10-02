@@ -94,24 +94,38 @@ const SignIn = () => {
     <div>
       <Card>
         <CardHeader>
-          {/* <CardTitle>Login</CardTitle> */}
-          {/* <CardDescription>
-                  Enter your credentials to access your account.
-                </CardDescription> */}
+          {/* Optional Titles — Uncomment if needed */}
+          {/* <CardTitle className="text-xl font-semibold text-gray-800">Login</CardTitle> */}
+          {/* <CardDescription className="text-sm text-gray-500">
+      Enter your credentials to access your account.
+    </CardDescription> */}
         </CardHeader>
-        <CardContent className=" grid gap-4">
+
+        <CardContent className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="login-email">Email</Label>
+            <Label
+              htmlFor="login-email"
+              className="text-sm font-medium text-gray-700"
+            >
+              Email
+            </Label>
             <Input
               id="login-email"
               type="email"
               placeholder="you@example.com"
               value={formData.email}
               onChange={(e) => handleInputChange("email", e.target.value)}
+              className="text-base"
             />
           </div>
+
           <div className="grid gap-2">
-            <Label htmlFor="login-password">Password</Label>
+            <Label
+              htmlFor="login-password"
+              className="text-sm font-medium text-gray-700"
+            >
+              Password
+            </Label>
 
             <div className="relative">
               <Input
@@ -120,20 +134,22 @@ const SignIn = () => {
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={(e) => handleInputChange("password", e.target.value)}
+                className="text-base"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
               >
-                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
           </div>
         </CardContent>
+
         <CardFooter>
           <Button
-            className="w-full text-base font-medium text-white"
+            className="w-full text-base md:text-lg font-medium text-white py-3"
             style={{
               background: isFormValid()
                 ? "linear-gradient(to right, #0d0b3e, #3d2abf)"
