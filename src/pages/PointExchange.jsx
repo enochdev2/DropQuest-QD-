@@ -38,6 +38,7 @@ function PointExchange() {
   const [, setUserPoints] = useState(0);
   const [exchangeAmount, setExchangeAmount] = useState("");
   const [selectedToken, setSelectedToken] = useState(null);
+  console.log("🚀 ~ PointExchange ~ selectedToken:", selectedToken)
   const [showExchangeModal, setShowExchangeModal] = useState(false);
   const [tokenSlots, setTokenSlots] = useState(initialSlots);
   // const [tokenSlots, setTokenSlots] = useState([]);
@@ -222,7 +223,7 @@ function PointExchange() {
                       <div className="text-center">
                         <div className="w-20 h-20 mx-auto mb-4 bg-gray-950 rounded-full flex items-center justify-center">
                           <img
-                            src="https://raw.githubusercontent.com/enochdev2/token-metadata/main/Golem%20LOGO.png"
+                            src={selectedToken?.img}
                             alt={selectedToken.tokenName}
                             // width={40}
                             // height={40}

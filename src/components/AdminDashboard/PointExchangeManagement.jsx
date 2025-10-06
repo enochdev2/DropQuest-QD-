@@ -182,8 +182,9 @@ export default function PointExchangeManagement() {
 
   const handleReset = async () => {
     setSubmitting(true);
+    console.log("   🚀 ~ handleReset ~ configData.tokenName:", configData.tokenName)
     await updatePoints(
-      configData.tokenName,
+      "???",
       selectedSlot,
       tokensAmount,
       points
@@ -305,7 +306,7 @@ export default function PointExchangeManagement() {
                     <TableHead className="text-white">Telegram</TableHead>
                     <TableHead className="text-white">Token</TableHead>
                     <TableHead className="text-white">Points</TableHead>
-                    <TableHead className="text-white">Status</TableHead>
+                    {/* <TableHead className="text-white">Status</TableHead> */}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -322,7 +323,7 @@ export default function PointExchangeManagement() {
                       <TableCell>
                         {exchange?.pointExchanged.toLocaleString()}
                       </TableCell>
-                      <TableCell>
+                      {/* <TableCell>
                         {exchange?.createdAt
                           ? formatKST(exchange.createdAt).toLocaleString(
                               "en-US",
@@ -332,7 +333,7 @@ export default function PointExchangeManagement() {
                               }
                             )
                           : "N/A"}
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>
