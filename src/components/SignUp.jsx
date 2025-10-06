@@ -39,8 +39,10 @@ const SignUp = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [touched, setTouched] = useState({});
+  const [rawFile, setRawFile] = useState(null);
+  const [uploadedFile, setUploadedFile] = useState(null);
   // const referralCode = getReferralCodeFromUrl();
-  console.log("🚀 ~ SignUp ~ referralCode:", referralCode);
+  // console.log("🚀 ~ SignUp ~ referralCode:", referralCode);
 
   // Validation functions
   const validateEmail = (email) => {
@@ -164,6 +166,14 @@ const SignUp = () => {
     );
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadedFile(URL.createObjectURL(file));
+      setRawFile(file); // store the actual file
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -174,12 +184,34 @@ const SignUp = () => {
     setIsLoading(true);
 
     try {
+      let imageUrl = "";
+
+      if (rawFile) {
+        // Create FormData for image
+        const formDataImage = new FormData();
+        formDataImage.append("file", rawFile);
+
+        // Upload to backend (you’ll create this endpoint below)
+        const imageRes = await fetch(
+          "https://dropquest-qd-backend.onrender.com/api/v1/upload",
+          // "http://localhost:3000/api/v1/upload",
+          {
+            method: "POST",
+            body: formDataImage,
+          }
+        );
+
+        const imageData = await imageRes.json();
+        imageUrl = imageData.url; // Get the Cloudinary URL
+        console.log("🚀 ~ handleSaveConfig ~ imageUrl:", imageUrl);
+      }
       // Build new user data
       const newUser = {
         email: formData.email,
         password: formData.password,
         name: formData.name,
         phone: formData.phoneNumber,
+        image: imageUrl,
         telegramId: formData.telegramId || "",
         referralCode: referralCode || null, // Include referral code if available
       };
@@ -391,7 +423,6 @@ const SignUp = () => {
               capture="environment"
               onChange={(e) => handleInputChange("idCard", e.target.files[0])}
               className="cursor-pointer placeholder:text-sm"
-              
             />
             {formData.idCard && (
               <div className="mt-2">

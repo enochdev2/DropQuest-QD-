@@ -298,6 +298,17 @@ export default function UserManagement() {
                   className="col-span-3 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500"
                 />
               </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-wallet" className="text-right font-medium">
+                  Image
+                </Label>
+                <div className="w-[340px] h-[200px] border border-slate-300 rounded-md p-1 bg-slate-50">
+
+                  <img src="" alt="" srcset="" className="w-full h-full" />
+
+                </div>
+                
+              </div>
             </div>
             <DialogFooter>
               <Button

@@ -98,15 +98,15 @@ export const getAllUserTokenSlots = async () => {
 };
 
 // Submit Point Exchange
-export const submitPointExchange = async ( slotId, amount) => {
+export const submitPointExchange = async ( slotId, amount, tokenName, imageUrl) => {
   const userId = JSON.parse(localStorage.getItem("user"))._id
   console.log("🚀 ~ submitPointExchange ~ userId:", userId)
   try {
     // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${email}`,
     const token = localStorage.getItem("token");
     const response = await fetch(
-      //  `http://localhost:3000/api/v1/point/buyslot`,
-      `https://dropquest-qd-backend.onrender.com/api/v1/point/buyslot`,
+       `http://localhost:3000/api/v1/point/buyslot`,
+      // `https://dropquest-qd-backend.onrender.com/api/v1/point/buyslot`,
       {
         method: "PUT",
         headers: {
@@ -117,6 +117,8 @@ export const submitPointExchange = async ( slotId, amount) => {
           userId: userId,
           slotId: slotId,
           amount: amount,
+          tokenName: tokenName,
+          imageUrl: imageUrl,
         }),
       }
     );

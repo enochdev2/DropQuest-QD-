@@ -73,7 +73,7 @@ function PointExchange() {
   // };
 
   const handleExchange = async (slotId) => {
-    console.log("🚀 ~ handleExchange ~ slotId:", slotId);
+    console.log("🚀 ~ handleExchange ~ slotId:", selectedToken);
     if (!selectedToken) return;
 
     const amount = Number.parseInt(exchangeAmount);
@@ -102,7 +102,7 @@ function PointExchange() {
     try {
       setSubmitting(true);
 
-      await submitPointExchange(slotId, amount);
+      await submitPointExchange(slotId, amount, selectedToken?.tokenName, selectedToken?.img);
 
       // setUserPoints((prev) => prev - amount);
       toast.success("The exchange request has been completed.");
