@@ -18,6 +18,7 @@ import { useLanguage } from "@/contexts/language-context";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import LoadingSpinner from "./LoadingSpinner";
+import KYCGuideModal from "./Modal/KYCGuideModal";
 
 const SignUp = () => {
   const { t } = useLanguage();
@@ -41,6 +42,7 @@ const SignUp = () => {
   const [touched, setTouched] = useState({});
   const [rawFile, setRawFile] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [showGuide, setShowGuide] = useState(false);
   // const referralCode = getReferralCodeFromUrl();
   // console.log("🚀 ~ SignUp ~ referralCode:", referralCode);
 
@@ -217,16 +219,18 @@ const SignUp = () => {
       };
 
       // Make signup request to backend
-      
-      const response = imageUrl && await fetch(
-        // "http://localhost:3000/api/v1/user/users",
-        "https://dropquest-qd-backend.onrender.com/api/v1/user/users",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newUser),
-        }
-      );
+
+      const response =
+        imageUrl &&
+        (await fetch(
+          // "http://localhost:3000/api/v1/user/users",
+          "https://dropquest-qd-backend.onrender.com/api/v1/user/users",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newUser),
+          }
+        ));
       console.log("🚀 ~ handleSubmit ~ response:", response);
       if (!response.ok) {
         const errorData = await response.json();
@@ -418,6 +422,24 @@ const SignUp = () => {
             <Label htmlFor="idCard" className="text-sm font-medium">
               {t("idCardFront")} <span className="text-red-500">*</span>
             </Label>
+             {/* KYC Guide Trigger */}
+            <div className="mt-3 flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size="icon"
+                className="w-10 h-10"
+                onClick={() => setShowGuide(true)}
+              >
+                📷
+              </Button>
+              <button
+                type="button"
+                className="text-sm text-blue-600 hover:underline"
+                onClick={() => setShowGuide(true)}
+              >
+                {t("kycPhotoTitle")}
+              </button>
+            </div>
             <Input
               id="idCard"
               type="file"
@@ -427,17 +449,26 @@ const SignUp = () => {
               onChange={handleFileChange}
               className="cursor-pointer placeholder:text-sm"
             />
-            {formData.idCard || uploadedFile && (
-              <div className="mt-2">
-                <img
-                  // src={URL.createObjectURL(formData.idCard)}
-                  src={uploadedFile}
-                  alt="ID Preview"
-                  className="w-40 h-28 object-cover rounded-md border placeholder:text-sm"
-                />
-              </div>
-            )}
             
+            {formData.idCard ||
+              (uploadedFile && (
+                <div className="mt-2">
+                  <img
+                    // src={URL.createObjectURL(formData.idCard)}
+                    src={uploadedFile}
+                    alt="ID Preview"
+                    className="w-40 h-28 object-cover rounded-md border placeholder:text-sm"
+                  />
+                </div>
+              ))}
+
+           
+
+            {/* Modal */}
+            <KYCGuideModal
+              isOpen={showGuide}
+              onClose={() => setShowGuide(false)}
+            />
           </div>
         </CardContent>
 
