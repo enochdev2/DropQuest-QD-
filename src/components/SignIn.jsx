@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import LoadingSpinner from "./LoadingSpinner";
 import { Eye, EyeOff } from "lucide-react";
 import { SuccessToast } from "./Success";
+import { motion } from "framer-motion";
 // import { useAuth } from "../lib/AuthProvider";
 const SignIn = () => {
   // const {  setUser } = useAuth();
@@ -92,16 +93,28 @@ const SignIn = () => {
 
   return (
     <div>
-      <Card>
+      <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 40 }}
+      transition={{
+        duration: 0.5,
+        type: "spring",
+        stiffness: 120,
+        damping: 12,
+      }}
+    >
+      <Card className="shadow-lg rounded-2xl">
         <CardHeader>
           {/* Optional Titles — Uncomment if needed */}
           {/* <CardTitle className="text-xl font-semibold text-gray-800">Login</CardTitle> */}
           {/* <CardDescription className="text-sm text-gray-500">
-      Enter your credentials to access your account.
-    </CardDescription> */}
+              Enter your credentials to access your account.
+            </CardDescription> */}
         </CardHeader>
 
         <CardContent className="grid gap-4">
+          {/* Email Field */}
           <div className="grid gap-2">
             <Label
               htmlFor="login-email"
@@ -119,6 +132,7 @@ const SignIn = () => {
             />
           </div>
 
+          {/* Password Field */}
           <div className="grid gap-2">
             <Label
               htmlFor="login-password"
@@ -147,9 +161,10 @@ const SignIn = () => {
           </div>
         </CardContent>
 
+        {/* Submit Button */}
         <CardFooter>
           <Button
-            className="w-full text-base md:text-lg font-medium text-white py-3"
+            className="w-full text-base md:text-lg font-medium text-white py-3 transition-all duration-300"
             style={{
               background: isFormValid()
                 ? "linear-gradient(to right, #0d0b3e, #3d2abf)"
@@ -163,6 +178,7 @@ const SignIn = () => {
           </Button>
         </CardFooter>
       </Card>
+    </motion.div>
     </div>
   );
 };

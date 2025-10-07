@@ -39,7 +39,8 @@ const translations = {
     passwordMatchValidation: "Please enter the same password as above.",
     idCardFront: "ID card photo (front side)",
     alreadyHaveAccount: "Already have an account?",
-    
+    kycPhotoInstruction: "Please take a photo in which both your face and the entire ID card are clearly visible, just like in the image example.",
+    kycPhotoTitle: "How to Take KYC Photos",
     login: "Login",
 
     // My Page
@@ -108,6 +109,8 @@ const translations = {
     passwordMatchValidation: "위와 동일한 비밀번호를 입력해 주세요",
     idCardFront: "신분증 사진 (앞면)",
     alreadyHaveAccount: "이미 계정이 있으신가요?",
+    kycPhotoInstruction: "이미지 예시처럼, 얼굴과 신분증 전체를 알아볼 수 있게 사진을 촬영해주세요.",
+    kycPhotoTitle: "KYC 사진 촬영 방법",
     login: "로그인",
 
     // My Page

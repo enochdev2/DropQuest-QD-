@@ -18,6 +18,7 @@ import { useLanguage } from "@/contexts/language-context";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import LoadingSpinner from "./LoadingSpinner";
+import KYCGuideModal from "./Modal/KYCGuideModal";
 
 const SignUp = () => {
   const { t } = useLanguage();
@@ -41,6 +42,7 @@ const SignUp = () => {
   const [touched, setTouched] = useState({});
   const [rawFile, setRawFile] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [showGuide, setShowGuide] = useState(false);
   // const referralCode = getReferralCodeFromUrl();
   // console.log("🚀 ~ SignUp ~ referralCode:", referralCode);
 
@@ -433,6 +435,31 @@ const SignUp = () => {
                 />
               </div>
             )}
+
+            {/* KYC Guide Trigger */}
+            <div className="mt-3 flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size="icon"
+                className="w-10 h-10"
+                onClick={() => setShowGuide(true)}
+              >
+                📷
+              </Button>
+              <button
+                type="button"
+                className="text-sm text-blue-600 hover:underline"
+                onClick={() => setShowGuide(true)}
+              >
+                {t("kycPhotoTitle")}
+              </button>
+            </div>
+
+            {/* Modal */}
+            <KYCGuideModal
+              isOpen={showGuide}
+              onClose={() => setShowGuide(false)}
+            />
           </div>
         </CardContent>
 
