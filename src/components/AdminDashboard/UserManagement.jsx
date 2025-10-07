@@ -36,12 +36,14 @@ export default function UserManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [rawFile, setRawFile] = useState(null);
   const [editFormData, setEditFormData] = useState({
     name: "",
     email: "",
     phone: "",
     telegramId: "",
     walletAddress: "",
+    img: "",
   });
 
   const [users, setUsers] = useState([
@@ -112,27 +114,100 @@ export default function UserManagement() {
       phone: user.phone,
       telegramId: user.telegramId,
       walletAddress: user.walletAddress || "",
+      img: user.img || "",
     });
     setEditDialogOpen(true);
   };
 
-  const handleSaveEdit = () => {
-    if (selectedUser) {
-      setUsers(
-        users.map((user) =>
-          user.id === selectedUser.id ? { ...user, ...editFormData } : user
+  // const handleSaveEdit = () => {
+  //   if (selectedUser) {
+  //     setUsers(
+  //       users.map((user) =>
+  //         user.id === selectedUser.id ? { ...user, ...editFormData } : user
+  //       )
+  //     );
+  //     setEditDialogOpen(false);
+  //     setSelectedUser(null);
+  //   }
+  // };
+
+  const handleSaveEdit = async () => {
+    let imageUrl = editFormData.img; // default to existing image
+
+    try {
+      // Upload new image if selected
+      if (rawFile) {
+        const formDataImage = new FormData();
+        formDataImage.append("file", rawFile);
+
+        const imageRes = await fetch(
+          "https://dropquest-qd-backend.onrender.com/api/v1/upload",
+          {
+            method: "POST",
+            body: formDataImage,
+          }
+        );
+
+        const imageData = await imageRes.json();
+        imageUrl = imageData.url; // use Cloudinary URL
+        console.log("🚀 ~ handleSaveEdit ~ imageUrl:", imageUrl);
+      }
+
+      // ✅ Build the updated user object
+      const updatedUser = {
+        ...editFormData,
+        img: imageUrl,
+      };
+
+      // ✅ Call your backend API to update user
+      const response = await fetch(
+        `https://dropquest-qd-backend.onrender.com/api/v1/users/${selectedUser.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedUser),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update user on server");
+      }
+
+      const updatedUserFromServer = await response.json();
+
+      // ✅ Update the local state (so UI stays in sync)
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === selectedUser.id ? updatedUserFromServer : user
         )
       );
+
+      // ✅ Clear everything
+      setEditFormData({
+        name: "",
+        email: "",
+        phone: "",
+        telegramId: "",
+        walletAddress: "",
+        img: "",
+      });
+      setRawFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+
       setEditDialogOpen(false);
       setSelectedUser(null);
+    } catch (error) {
+      console.error("Error saving user:", error);
     }
   };
 
   const sortedUsers = filteredUsers.sort((a, b) => {
-  const dateA = new Date(a.createdAt ?? a.joinDate);
-  const dateB = new Date(b.createdAt ?? b.joinDate);
-  return dateB - dateA; // most recent first
-});
+    const dateA = new Date(a.createdAt ?? a.joinDate);
+    const dateB = new Date(b.createdAt ?? b.joinDate);
+    return dateB - dateA; // most recent first
+  });
 
   return (
     <Card className="bg-gradient-to-r from-sky-50/10 to-blue-50/10  shadow-xl brder-slate-200">
@@ -303,11 +378,41 @@ export default function UserManagement() {
                   Image
                 </Label>
                 <div className="w-[340px] h-[200px] border border-slate-300 rounded-md p-1 bg-slate-50">
-
-                  <img src="" alt="" srcset="" className="w-full h-full" />
-
+                  {/* <img src={editFormData.img} alt="" srcset="" className="w-full h-full" /> */}
+                  {editFormData.img ? (
+                    <img
+                      src={editFormData.img}
+                      alt="User"
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                  ) : (
+                    <span className="text-slate-400 text-sm">
+                      No image selected
+                    </span>
+                  )}
                 </div>
-                
+
+                {/* Upload */}
+                <Input
+                  id="edit-image"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setRawFile(file);
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setEditFormData({
+                          ...editFormData,
+                          img: reader.result, // preview
+                        });
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  className="border-slate-300 focus:border-cyan-500 focus:ring-cyan-500"
+                />
               </div>
             </div>
             <DialogFooter>

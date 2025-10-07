@@ -203,23 +203,24 @@ const SignUp = () => {
 
         const imageData = await imageRes.json();
         imageUrl = imageData.url; // Get the Cloudinary URL
-        console.log("🚀 ~ handleSaveConfig ~ imageUrl:", imageUrl);
       }
+      console.log("🚀 ~ handleSaveConfig ~ imageUrl:", imageUrl);
       // Build new user data
       const newUser = {
         email: formData.email,
         password: formData.password,
         name: formData.name,
         phone: formData.phoneNumber,
-        image: imageUrl,
         telegramId: formData.telegramId || "",
         referralCode: referralCode || null, // Include referral code if available
+        image: imageUrl,
       };
 
       // Make signup request to backend
-      const response = await fetch(
-        // "http://localhost:3000/api/v1/user/users",
-        "https://dropquest-qd-backend.onrender.com/api/v1/user/users",
+      
+      const response = imageUrl && await fetch(
+        "http://localhost:3000/api/v1/user/users",
+        // "https://dropquest-qd-backend.onrender.com/api/v1/user/users",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -232,6 +233,7 @@ const SignUp = () => {
         const errorMsg =
           errorData.error || errorData.message || "Failed to register user";
         toast.error(errorMsg);
+        setIsLoading(false);
       } else {
         console.log("Registration successful!");
         navigate("/my-page");
@@ -421,18 +423,21 @@ const SignUp = () => {
               type="file"
               accept="image/*"
               capture="environment"
-              onChange={(e) => handleInputChange("idCard", e.target.files[0])}
+              // onChange={(e) => handleInputChange("idCard", e.target.files[0])}
+              onChange={handleFileChange}
               className="cursor-pointer placeholder:text-sm"
             />
-            {formData.idCard && (
+            {formData.idCard || uploadedFile && (
               <div className="mt-2">
                 <img
-                  src={URL.createObjectURL(formData.idCard)}
+                  // src={URL.createObjectURL(formData.idCard)}
+                  src={uploadedFile}
                   alt="ID Preview"
                   className="w-40 h-28 object-cover rounded-md border placeholder:text-sm"
                 />
               </div>
             )}
+            
           </div>
         </CardContent>
 
