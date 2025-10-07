@@ -70,7 +70,7 @@ export default function PointExchangeManagement() {
 
   const [configDialogOpen, setConfigDialogOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [allTokenSlots, setAllTokenSlots] = useState([]);
+  const [, setAllTokenSlots] = useState([]);
   const [points, setPoints] = useState(1000);
   const [tokensAmount, setTokensAmount] = useState(1);
   const [isLoading, setIsLoading] = useState(false);

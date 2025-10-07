@@ -29,14 +29,16 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, Edit, Trash2 } from "lucide-react";
+import { Search, Plus, Edit, Trash2, Loader } from "lucide-react";
 import { getAllUser } from "@/lib/utilityFunction";
+import { SuccessToast } from "../Success";
 
 export default function UserManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [rawFile, setRawFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [editFormData, setEditFormData] = useState({
     name: "",
     email: "",
@@ -134,6 +136,7 @@ export default function UserManagement() {
   const handleSaveEdit = async () => {
     let imageUrl = editFormData.img; // default to existing image
 
+    setIsLoading(true);
     try {
       // Upload new image if selected
       if (rawFile) {
@@ -160,11 +163,15 @@ export default function UserManagement() {
       };
 
       // ✅ Call your backend API to update user
+      console.log("🚀 ~ handleSaveEdit ~ selectedUser.id:", selectedUser);
+      const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://dropquest-qd-backend.onrender.com/api/v1/users/${selectedUser.id}`,
+        `http://localhost:3000/api/v1/user/users/${selectedUser.email}`,
+        // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${selectedUser.email}`,
         {
           method: "PUT",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(updatedUser),
@@ -184,6 +191,8 @@ export default function UserManagement() {
         )
       );
 
+      SuccessToast("updated user successfully");
+
       // ✅ Clear everything
       setEditFormData({
         name: "",
@@ -194,12 +203,16 @@ export default function UserManagement() {
         img: "",
       });
       setRawFile(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      // if (fileInputRef.current) fileInputRef.current.value = "";
 
+      getTotalUsers();
+      window.location.reload();
       setEditDialogOpen(false);
       setSelectedUser(null);
     } catch (error) {
       console.error("Error saving user:", error);
+    } finally {
+      setIsLoading(false); // Stop spinner
     }
   };
 
@@ -425,9 +438,18 @@ export default function UserManagement() {
               </Button>
               <Button
                 onClick={handleSaveEdit}
-                className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                disabled={isLoading}
+                className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
               >
-                Save Changes
+                {isLoading ? (
+                  <div className="flex justify-center items-center py-10">
+                    <div className="flex justify-center items-center">
+                      <Loader className="animate-spin w-8 h-8 text-white" />
+                    </div>
+                  </div>
+                ) : (
+                  "Save Changes"
+                )}
               </Button>
             </DialogFooter>
           </DialogContent>

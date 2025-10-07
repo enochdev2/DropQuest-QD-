@@ -219,8 +219,8 @@ const SignUp = () => {
       // Make signup request to backend
       
       const response = imageUrl && await fetch(
-        "http://localhost:3000/api/v1/user/users",
-        // "https://dropquest-qd-backend.onrender.com/api/v1/user/users",
+        // "http://localhost:3000/api/v1/user/users",
+        "https://dropquest-qd-backend.onrender.com/api/v1/user/users",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
