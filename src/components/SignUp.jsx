@@ -261,7 +261,7 @@ const SignUp = () => {
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           {/* Email */}
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label htmlFor="email" className="text-sm font-medium">
               {t("email")} <span className="text-red-500">*</span>
             </Label>
@@ -285,7 +285,7 @@ const SignUp = () => {
           </div>
 
           {/* Password */}
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label htmlFor="password" className="text-sm font-medium">
               {t("password")} <span className="text-red-500">*</span>
             </Label>
@@ -321,7 +321,7 @@ const SignUp = () => {
           </div>
 
           {/* Confirm Password */}
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label htmlFor="confirmPassword" className="text-sm font-medium">
               {t("confirmPassword")} <span className="text-red-500">*</span>
             </Label>
@@ -360,7 +360,7 @@ const SignUp = () => {
 
           {/* Name and Phone Number Row */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="name" className="text-sm font-medium">
                 {t("name")} <span className="text-red-500">*</span>
               </Label>
@@ -374,7 +374,7 @@ const SignUp = () => {
                 className="placeholder:text-sm"
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="phoneNumber" className="text-sm font-medium">
                 {t("phoneNumber")} <span className="text-red-500">*</span>
               </Label>
@@ -401,7 +401,7 @@ const SignUp = () => {
           </div>
 
           {/* Telegram ID */}
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label htmlFor="telegramId" className="text-sm font-medium">
               {t("telegramId")}
             </Label>
@@ -418,7 +418,7 @@ const SignUp = () => {
           </div>
 
           {/* ✅ ID Card Upload */}
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label htmlFor="idCard" className="text-sm font-medium">
               {t("idCardFront")} <span className="text-red-500">*</span>
             </Label>
@@ -475,7 +475,7 @@ const SignUp = () => {
         <CardFooter>
           <Button
             type="submit"
-            className="w-full text-base font-medium mt-3 flex items-center justify-center gap-2"
+            className="w-full text-base font-medium mt-2 flex items-center justify-center gap-2"
             disabled={isLoading || !isFormValid()}
             style={{
               background:

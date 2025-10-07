@@ -11,14 +11,14 @@ const KYCGuideModal = ({ isOpen, onClose }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+          className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 "
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
         >
           <motion.div
-            className="bg-[#f9fafb] rounded-2xl border border-gray-200 shadow-lg w-90 p-5 relative"
+            className="bg-[#f9fafb] rounded-2xl border border-gray-200 shadow-lg w-[300px] py-5 px-6 relative"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
@@ -41,7 +41,7 @@ const KYCGuideModal = ({ isOpen, onClose }) => {
             <img
               src="https://shiftly.co.za/wp-content/uploads/2024/04/Shiftly-ID-illustrations-02.png"
               alt="KYC Example"
-              className="w-80 h-92 mx-auto rounded-md mb-4 object-contain border border-gray-300 bg-white p-1"
+              className="w-76 h-92 mx-auto rounded-md mb-4 object-contain border border-gray-300 bg-white "
             />
 
             {/* Instruction Text */}
