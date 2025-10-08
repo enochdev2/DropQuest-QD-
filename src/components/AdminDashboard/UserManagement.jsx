@@ -166,8 +166,8 @@ export default function UserManagement() {
       console.log("🚀 ~ handleSaveEdit ~ selectedUser.id:", selectedUser);
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3000/api/v1/user/users/${selectedUser.email}`,
-        // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${selectedUser.email}`,
+        `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${selectedUser.email}`,
+        // `http://localhost:3000/api/v1/user/users/${selectedUser.email}`,
         {
           method: "PUT",
           headers: {

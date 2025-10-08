@@ -48,7 +48,7 @@ export default function Navbar() {
           >
             <img src={logo} alt="" className=" w-10  h-6" />
             {/* <span className="text-white">DQ</span> */}
-            <span className="text-gray-300 -ml- -mb-3 fon text-lg">
+            <span className="text-gray-300 -ml- -mb-3 fon text-base font-bold">
               DropQuest
             </span>
           </Link>

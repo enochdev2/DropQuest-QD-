@@ -105,8 +105,8 @@ export const submitPointExchange = async ( slotId, amount, tokenName, imageUrl) 
     // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${email}`,
     const token = localStorage.getItem("token");
     const response = await fetch(
-       `http://localhost:3000/api/v1/point/buyslot`,
-      // `https://dropquest-qd-backend.onrender.com/api/v1/point/buyslot`,
+      //  `http://localhost:3000/api/v1/point/buyslot`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/point/buyslot`,
       {
         method: "PUT",
         headers: {
