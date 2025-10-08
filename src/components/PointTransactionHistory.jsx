@@ -6,7 +6,7 @@ export default function PointTransactionHistory({ tokenSlot }) {
   const { language } = useLanguage();
 
   return (
-    <div className="w-full bg-black text-white flex flex-col items-center px-1 py-6 overflow-hidden">
+    <div className="w-full  text-white flex flex-col items-center  py-4 my-2 overflow-hidden">
       {/* Title */}
       <h1 className="text-lg font-bold border-t border-b border-white py-3 w-full text-center">
         {language === "en"
@@ -15,9 +15,10 @@ export default function PointTransactionHistory({ tokenSlot }) {
       </h1>
 
       {/* Table */}
+      <div className="relative min-h-auto bg-cover bg-center bg-no-repeat bg-[url('bg.png')] px-2 mt-5 rounded-2xl">
       <table className="w-full  mt-4 border border-gray-600 text-sm">
         <thead>
-          <tr className="bg-gray-800 text-white">
+          <tr className="bg-[#000b7d] text-white">
             <th className="px-4 py-2 text-left">
               {" "}
               {language === "en" ? "Usage" : "사용"}{" "}
@@ -61,6 +62,7 @@ export default function PointTransactionHistory({ tokenSlot }) {
           )}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
