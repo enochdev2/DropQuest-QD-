@@ -253,7 +253,7 @@ const SignUp = () => {
 
   return (
     <Card className="w-full">
-      <CardHeader className="text-center text-black">
+      <CardHeader className="text-center text-white">
         <CardTitle className="text-2xl font-bold">{t("welcome")}</CardTitle>
         <CardDescription>{t("dontMissAirdrop")}</CardDescription>
       </CardHeader>
@@ -315,7 +315,7 @@ const SignUp = () => {
             {errors.password && touched.password && (
               <p className="text-xs text-red-500">{errors.password}</p>
             )}
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-400">
               {t("passwordRequirement")} .
             </p>
           </div>
@@ -353,7 +353,7 @@ const SignUp = () => {
             {errors.confirmPassword && touched.confirmPassword && (
               <p className="text-xs text-red-500">{errors.confirmPassword}</p>
             )}
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-400">
               {t("passwordMatchValidation")} .
             </p>
           </div>
@@ -444,7 +444,7 @@ const SignUp = () => {
               id="idCard"
               type="file"
               accept="image/*"
-              capture="environment"
+              // capture="environment"
               // onChange={(e) => handleInputChange("idCard", e.target.files[0])}
               onChange={handleFileChange}
               className="cursor-pointer placeholder:text-sm"

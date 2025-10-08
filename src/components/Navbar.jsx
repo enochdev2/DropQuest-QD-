@@ -38,7 +38,9 @@ export default function Navbar() {
   const firstName = user?.name?.split(" ")[0] || "";
 
   return (
-    <header className="flex bg-black justify-center items-center   border-b border-white/10">
+    // <header className="flex bg-black justify-center items-center   border-b border-white/10">
+    <header className="fixed top-0 left-0 w-full z-50 flex bg-black justify-center items-center border-b border-white/10">
+
       <div className="w-full sm:w-[400px] flex bg-black justify-between items-center px-2  py-4  sm:border-white/10 sm:border">
         {/* Logo */}
         <div className="text-lg sm:text-xl   flex items-center gap-2">

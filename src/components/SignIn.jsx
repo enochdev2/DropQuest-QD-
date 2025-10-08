@@ -105,7 +105,7 @@ const SignIn = () => {
           <div className="grid gap-2">
             <Label
               htmlFor="login-email"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium text-gray-100"
             >
               Email
             </Label>
@@ -122,7 +122,7 @@ const SignIn = () => {
           <div className="grid gap-2">
             <Label
               htmlFor="login-password"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium text-gray-100"
             >
               Password
             </Label>
