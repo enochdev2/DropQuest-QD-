@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 function Login() {
   return (
     <div className="flex items-center pt-18 justify-center min-h-screen bg-black">
-      <div className="flex w-full max-w-lg lg:m-0 m-3 flex-col gap-6 relative min-h-auto bg-cover bg-center bg-no-repeat bg-[url('bg.png')] p-3 lg:p-6 rounded-xl">
+      <div className="flex w-full max-w-lg lg:m-0 m-3 flex-col gap-6 relative min-h-auto bg-main p-3 lg:p-6 rounded-xl">
          <div className="absolute inset-0 bg-black/60"></div>
         <Tabs defaultValue="login" className="w-full z-10">
           <TabsList className="w-full flex rounded-lg overflow-hidden bg-gray-100">
