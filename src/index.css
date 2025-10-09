@@ -122,8 +122,11 @@
   body {
     @apply bg-background text-foreground;
   }
+}
 
-  
+.bg-main {
+  @apply bg-cover bg-center bg-no-repeat;
+  background-image: url('/bg.png');
 }
 
 /* Add this to your CSS file or inside a style block */

@@ -15,7 +15,7 @@ export default function PointTransactionHistory({ tokenSlot }) {
       </h1>
 
       {/* Table */}
-      <div className="relative min-h-auto bg-cover bg-center bg-no-repeat bg-[url('bg.png')] px-2 mt-5 rounded-2xl">
+      <div className="relative min-h-auto bg-main px-2 mt-5 rounded-2xl">
       <table className="w-full  mt-4 border border-gray-600 text-sm">
         <thead>
           <tr className="bg-[#000b7d] text-white">
