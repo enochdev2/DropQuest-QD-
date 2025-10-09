@@ -105,7 +105,7 @@ function AnnouncementsPage() {
   }
 
   return (
-    <div className="min-h-screen  bg-main">
+    <div className="min-h-screen pt-20  bg-main">
       {/* <Navbar /> */}
 
       <div className="px-4 sm:px-6 sm:w-[400px] lg:px-8 py-6 max-w-7xl mx-auto sm:border border-gray-700">

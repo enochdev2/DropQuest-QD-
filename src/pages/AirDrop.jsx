@@ -88,7 +88,7 @@ function AirDrop() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen pt-20 bg-black text-white">
       {/* <Navbar user={mockUser} /> */}
 
       <div className="px-4 py-6 sm:w-[400px] mx-auto sm:border border-gray-700 h-screen rounded-2xl">
@@ -97,17 +97,17 @@ function AirDrop() {
           <div className="relative">
             <button
               onClick={() => setShowDropdown(!showDropdown)}
-              className="w-full bg-white text-black rounded-full px-4 py-2 flex items-center justify-between text-sm font-medium"
+              className="w-full bg-[#000b7d] font-bold text-white rounded-full px-4 py-2 flex items-center justify-between text-sm "
             >
               <span>{language === "en" ? "Attendance Check" : "출석체크"}</span>
               <ChevronDown size={16} />
             </button>
 
             {showDropdown && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white text-black rounded-lg shadow-lg z-10">
+              <div className="absolute  top-full left-0 right-0 mt-2 bg-main text-white rounded-lg shadow-lg z-10">
                 <div className="p-2">
-                  <div className="px-3 py-2 text-sm text-gray-500">SOON</div>
-                  <div className="px-3 py-2 text-sm text-gray-500">SOON</div>
+                  <div className="px-3 py-2 text-sm text-gray-100 border-b border-slate-500">SOON</div>
+                  <div className="px-3 py-2 text-sm text-gray-100">SOON</div>
                 </div>
               </div>
             )}
@@ -137,7 +137,7 @@ function AirDrop() {
           <Button
             onClick={handleAttendanceCheck}
             disabled={todayChecked}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-semibold mb-8 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-[#000b7d] hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-semibold mb-8 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {language === "en" ? "Attendance Check" : "출석 체크"}
           </Button>
@@ -179,7 +179,7 @@ function AirDrop() {
         {/* Success Popup */}
         {showSuccess && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-            <div className="bg-blue-500 rounded-2xl p-6 text-center max-w-sm w-full">
+            <div className="bg-[#000b7d] rounded-2xl p-6 text-center max-w-sm w-full">
               <h3 className="text-white text-lg font-semibold mb-4">
                 {language === "en"
                   ? "Today's attendance has been completed!!"
