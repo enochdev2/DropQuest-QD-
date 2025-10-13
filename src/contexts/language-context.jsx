@@ -18,19 +18,24 @@ const translations = {
     connectingUsersToUsers: "Connecting users with other users",
     directOpportunities: "Users can also directly provide potential opportunities to other users.",
     goToAirdrop: "Go to Receive Airdrop",
+    pointsForCoins: "Exchange Points for Coins",
     welcome: "Welcome!",
     dontMissAirdrop: "Don't miss airdrops, start right now!",
     roadmap: "Roadmap",
     comingSoon: "Coming Soon",
+    // Airdrop
+    claimSuccess: "You have successfully claimed your airdrop for the day",
 
     // Auth
     signUp: "Sign Up",
     signIn: "Sign In",
+    logOut: "Log Out",
     email: "Email",
     password: "Password",
     confirmPassword: "Confirm Password",
     name: "Name",
     phoneNumber: "Phone Number",
+    phoneNumberFormat: "000-0000-0000",
     telegramId: "Telegram ID",
     telegramIdPlaceholder: "Please enter my profile-username",
     required: "Required",
@@ -39,8 +44,15 @@ const translations = {
     passwordMatchValidation: "Please enter the same password as above.",
     idCardFront: "ID card photo (front side)",
     alreadyHaveAccount: "Already have an account?",
-    
+    kycPhotoInstruction: "Please upload a photo file that clearly shows both your face and the front side of your ID card.",
+    kycPhotoTitle: "kycPhotoTitle",
+    invalidEmailFormat: "Please enter a valid email format",
+    invalidPasswordFormat: "Password must include both letters and numbers and be at least 6 characters long",
+    passwordsDoNotMatch: "Passwords do not match",
+    invalidPhoneNumberLength: "Phone number must be 11 digits",
     login: "Login",
+    loginSuccess: "Login Successful",
+
 
     // My Page
     myPoints: "My Points",
@@ -51,6 +63,8 @@ const translations = {
     moreInvites: "The more friends you invite, the more points and benefits you can earn.",
     myReferralList: "My Referral List",
     pointsBalance: "Points Balance",
+    invitationLinkCopied: "Invitation link copied to clipboard",
+
 
     // Attendance
     attendanceCheck: "Attendance Check",
@@ -71,6 +85,9 @@ const translations = {
     exchangeRequest: "Would you like to apply for a point exchange?",
     yes: "Yes",
     no: "No",
+    requestCompleted: "The exchange request has been completed",
+    noTransactionHistory: "No transaction history found",
+
   },
   ko: {
     // Navigation
@@ -87,19 +104,25 @@ const translations = {
     connectingUsersToUsers: "사용자와 다른 사용자 연결",
     directOpportunities: "사용자들이 다른 사용자들에게 직접 잠재적 기회를 제공할 수도 있습니다.",
     goToAirdrop: "에어드랍 받으러 가기",
+    pointsForCoins: "포인트를 코인으로 교환하기",
     welcome: "환영합니다!",
     dontMissAirdrop: "에어드랍, 놓치지 말고 지금 바로 시작해보세요.",
     roadmap: "로드맵",
     comingSoon: "출시 예정",
+    // Airdrop
+    claimSuccess: "일일 출석 체크를 완료했습니다",
+
 
     // Auth
     signUp: "회원가입",
     signIn: "로그인",
+    logOut: "로그아웃",
     email: "이메일",
     password: "비밀번호",
     confirmPassword: "비밀번호 재확인",
     name: "이름",
     phoneNumber: "전화번호",
+    phoneNumberFormat: "전화번호 형식",
     telegramId: "텔레그램 아이디",
     telegramIdPlaceholder: "내 프로필-사용자명을 기입해주세요",
     required: "필수",
@@ -108,7 +131,15 @@ const translations = {
     passwordMatchValidation: "위와 동일한 비밀번호를 입력해 주세요",
     idCardFront: "신분증 사진 (앞면)",
     alreadyHaveAccount: "이미 계정이 있으신가요?",
+    kycPhotoInstruction: "신분증 앞면과 얼굴이 모두 사진에 나오게 촬영한 사진 파일을 업로드 해주세요",
+    kycPhotoTitle: "사진 촬영 방법",
+    invalidEmailFormat: "올바른 이메일 형식을 입력해주세요.",
+    invalidPasswordFormat: "문자와 숫자가 모두 포함되어야 하며, 최소 6자 이상이어야 합니다.",
+    passwordsDoNotMatch: "비밀번호가 일치하지 않습니다.",
+    invalidPhoneNumberLength: "올바른 전화번호를 입력하세요",
     login: "로그인",
+    loginSuccess: "로그인 성공",
+
 
     // My Page
     myPoints: "내 포인트",
@@ -119,6 +150,7 @@ const translations = {
     moreInvites: "더 많은 친구를 초대할수록 더 많은 포인트와 혜택을 얻을 수 있습니다.",
     myReferralList: "내 추천 목록",
     pointsBalance: "포인트 잔액",
+    invitationLinkCopied: "초대 링크가 복사되었습니다",
 
     // Attendance
     attendanceCheck: "출석체크",
@@ -130,6 +162,7 @@ const translations = {
 
     // Announcements
     announcementsList: "공지사항 목록",
+    
 
     // Point Exchange
     pointExchangeTitle: "포인트 교환",
@@ -139,6 +172,9 @@ const translations = {
     exchangeRequest: "포인트 교환을 신청하시겠습니까?",
     yes: "예",
     no: "아니오",
+    requestCompleted: "포인트 교환 신청이 완료되었습니다",
+    noTransactionHistory: "교환 내역이 없습니다",
+
   },
 }
 

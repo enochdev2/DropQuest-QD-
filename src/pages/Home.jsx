@@ -9,7 +9,7 @@ export default function DropQuestLanding() {
   const { t } = useLanguage();
 
   return (
-    <div className="min-h-screen pt-18 flex flex-col items-center bg-black text-white ">
+    <div className="min-h-screen pt-18 flex flex-col px-10 items-center bg-black text-white ">
       <div className="sm:w-[400px] sm:border sm:border-gray-700 rounded-lg mb-2  ">
 
       {/* HERO SECTION */}
@@ -32,7 +32,7 @@ export default function DropQuestLanding() {
             <br />
             {t("earnAirdrops")}
         </p> */}
-
+        <div className="space-y-3">
         <Button
           className=" w-[80%] bg-amber-50 text-black  px-24 sm:px-10 py-3 text-base sm:text-lg font-semibold rounded-full "
           // style={{
@@ -41,6 +41,16 @@ export default function DropQuestLanding() {
         >
           <Link to="/air-drop" className="flex items-center space-x-3">{t("goToAirdrop")} <ArrowRight className="w-20 ml-3" size={60}/> </Link>
         </Button>
+        <Button
+          className=" w-[80%] bg-amber-50 text-black  px-2 sm:px-10 py-3 text-base sm:text-lg font-semibold rounded-full "
+          // style={{
+          //   background: "linear-gradient(to right, #0d0b3e, #3d2abf)",
+          // }}
+        >
+          <Link to="/air-drop" className="flex items-center space-x-3">{t("pointsForCoins")} <ArrowRight className="w-20 ml-3" size={60}/> </Link>
+        </Button>
+        </div>
+
       </section>
 
       {/* ROADMAP SECTION */}
