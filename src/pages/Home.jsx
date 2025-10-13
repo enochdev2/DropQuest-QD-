@@ -3,6 +3,7 @@ import umbrellaCoin from "@/assets/dqLogo.png";
 import { useLanguage } from "@/contexts/language-context";
 import { Link } from "react-router-dom";
 import { ArrowBigLeftIcon, ArrowRight, ArrowRightFromLine } from "lucide-react";
+import Partners from "@/components/Partners";
 
 export default function DropQuestLanding() {
   const { t } = useLanguage();
@@ -43,7 +44,7 @@ export default function DropQuestLanding() {
       </section>
 
       {/* ROADMAP SECTION */}
-      <section className="px-4 sm:px-6 pb-12">
+      <section className="px-4 sm:px-6 pb-2">
         <h2 className="text-4xl  font- text-center mb-6 sm:mb-8">
           {t("roadmap")}
         </h2>
@@ -75,6 +76,7 @@ export default function DropQuestLanding() {
           </div>
         </div>
       </section>
+        <Partners />
       </div>
     </div>
   );

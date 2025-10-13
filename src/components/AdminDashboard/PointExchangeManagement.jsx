@@ -76,6 +76,7 @@ export default function PointExchangeManagement() {
   const [isLoading, setIsLoading] = useState(false);
   const [sortedUsers, setSortedUsers] = useState([]);
   const [configData, setConfigData] = useState({
+    link: "",
     tokenName: "",
     pointRatio: "",
     logoFile: null,
@@ -112,9 +113,10 @@ export default function PointExchangeManagement() {
   const handleSlotClick = (slot) => {
     setSelectedSlot(slot);
     setConfigData({
+      link: slot.link || "",
       tokenName: slot.tokenName || "",
       pointRatio: slot.pointRatio?.toString() || "",
-      logoFile: null,
+      logoFile: slot?.img ? slot.img : null,
     });
     setConfigDialogOpen(true);
   };
@@ -145,6 +147,11 @@ export default function PointExchangeManagement() {
         console.log("🚀 ~ handleSaveConfig ~ imageUrl:", imageUrl);
       }
 
+      if (!configData.link) {
+        toast.error("Please fill in all required fields");
+        setSubmitting(false);
+        return;
+      }
       if (!configData.tokenName) {
         toast.error("Please fill in all required fields");
         setSubmitting(false);
@@ -160,6 +167,7 @@ export default function PointExchangeManagement() {
         return;
       }
       await updatePoints(
+        configData.link,
         configData.tokenName,
         selectedSlot,
         tokensAmount,
@@ -214,14 +222,14 @@ export default function PointExchangeManagement() {
   // } )
 
   return (
-    <div className="space-x-1 flex w-full">
+    <div className="space-x-2 flex w-full">
       {/* Token Slots Configuration */}
-      <Card className="bg-gray-800 border-gray-700 w-[70%]  ">
+      <Card className="bg-main py-5 border-gray-700 w-[70%]  ">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-white">
             Token Slots Configuration
           </CardTitle>
-          <CardDescription className="text-gray-300">
+          <CardDescription className="text-gray-300 font-bold text-lg">
             Configure the 50 token slots available for point exchange
           </CardDescription>
         </CardHeader>
@@ -246,7 +254,7 @@ export default function PointExchangeManagement() {
                     key={token._id}
                     className={`cursor-pointer transition-all duration-200 ${
                       token.isConfigured
-                        ? "bg-gray-700 border-gray-600 hover:bg-gray-600"
+                        ? "bg-main py-2 border-gray-400 hover:bg-gray-600"
                         : "bg-gray-900 border-gray-800 hover:bg-gray-800"
                     }`}
                     onClick={() => handleSlotClick(token?._id)}
@@ -281,7 +289,7 @@ export default function PointExchangeManagement() {
       </Card>
 
       {/* Exchange Application History */}
-      <Card className="bg-gray-800 border-gray-700 w-[30%]">
+      <Card className="bg-main py-5 border-gray-700 w-[30%]">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-white">
             Point Exchange Application History
@@ -298,7 +306,7 @@ export default function PointExchangeManagement() {
               </div>
             </div>
           ) : (
-            <div className="rounded-lg border border-gray-700 overflow-hidden">
+            <div className="rounded-lg border border-gray-700 overflow-y-auto overflow-hidden">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-gray-700">
@@ -349,12 +357,12 @@ export default function PointExchangeManagement() {
         onOpenChange={setConfigDialogOpen}
         className=" px-16"
       >
-        <DialogContent className="bg-gray-100 text-black border-gray-700">
+        <DialogContent className="bg-main text-white border-gray-700">
           <DialogHeader>
-            <DialogTitle className="text-black text-xl">
+            <DialogTitle className="text-white text-xl">
               Configure Token Slot {selectedSlot?.id}
             </DialogTitle>
-            <DialogDescription className="text-gray-950 text-lg font-semibold">
+            <DialogDescription className="text-gray-50 text-lg font-semibold">
               Set up the token information for this slot
             </DialogDescription>
           </DialogHeader>
@@ -379,13 +387,13 @@ export default function PointExchangeManagement() {
                   />
                 </label>
               </div>
-              <div className="mb-2 w-30 h-30 bg-transparent border border-gray-500 flex items-center justify-center rounded-lg overflow-hidden">
+              <div className="mb-2 w-30 h-30 bg-transparent border border-gray-200 flex items-center justify-center rounded-lg overflow-hidden">
                 {uploadedFile ? (
                   <div className="mt-3">
                     <img
                       src={uploadedFile}
                       alt="Uploaded"
-                      className="w-40 h-auto rounded border border-gray-600"
+                      className="w-40 h-auto rounded border border-blue-600"
                     />
                   </div>
                 ) : (
@@ -401,7 +409,21 @@ export default function PointExchangeManagement() {
               </div>
             </div>
             <div>
-              <Label htmlFor="logo" className="text-black mb-2 text-xl">
+              <Label htmlFor="logo" className="text-white mb-2 text-xl">
+                Link
+              </Label>
+              <Input
+                id="Link"
+                value={configData.link}
+                onChange={(e) =>
+                  setConfigData({ ...configData, link: e.target.value })
+                }
+                placeholder="Link"
+                className="bg-gray-900 border-gray-600 text-white"
+              />
+            </div>
+            <div>
+              <Label htmlFor="logo" className="text-white mb-2 text-xl">
                 Token Name
               </Label>
               <Input
@@ -411,22 +433,22 @@ export default function PointExchangeManagement() {
                   setConfigData({ ...configData, tokenName: e.target.value })
                 }
                 placeholder="e.g., GLM"
-                className="bg-gray-700 border-gray-600 text-white"
+                className="bg-gray-900 border-gray-600 text-white"
               />
             </div>
 
             <div>
-              <Label htmlFor="logo" className="text-black mb-2 text-2xl">
+              <Label htmlFor="logo" className="text-white font-semibold mb-2 text-2xl">
                 Point Ratio setting :
               </Label>
               <div className="flex items-center space-x-4 w-full justify-center">
-                <div className="bg-blue-600 px-6 py-2 text-2xl text-white rounded-sm">
+                <div className="bg-blue-800 border border-slate-400  px-6 py-2 text-2xl text-white rounded-sm">
                   {" "}
                   {tokensAmount}
                   Token
                 </div>
                 <ArrowBigRightDash />
-                <div className="bg-blue-600 px-6 py-2 text-2xl text-white rounded-sm">
+                <div className="bg-blue-700 px-6 py-2 text-2xl border border-slate-400 text-white rounded-sm">
                   {" "}
                   <span className=" px-4 py-1 font-semibold bg-white mr-2 text-black ">
                     ${points.toLocaleString()}
@@ -461,7 +483,7 @@ export default function PointExchangeManagement() {
             <Button
               variant="outline"
               onClick={handleReset}
-              className="text-white hover:bg-blue-700 bg-blue-600 cursor-pointer w-36"
+              className="text-white hover:bg-blue-700 bg-blue-600 border cursor-pointer w-36"
             >
               {submitting ? (
                 <>

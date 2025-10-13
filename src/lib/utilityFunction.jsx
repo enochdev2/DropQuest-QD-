@@ -138,7 +138,7 @@ export const submitPointExchange = async ( slotId, amount, tokenName, imageUrl) 
   }
 };
 
-export const updatePoints = async (name = "???", slotId, tokensAmount, points, imageUrl) => {
+export const updatePoints = async (link, name = "???", slotId, tokensAmount, points, imageUrl) => {
   console.log("🚀 ~ updatePoints ~ slotId, name:", slotId, name)
   try {
     // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${email}`,
@@ -153,6 +153,7 @@ export const updatePoints = async (name = "???", slotId, tokensAmount, points, i
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          link: link,
           name: name,
           slotId: slotId,
           token: tokensAmount,
