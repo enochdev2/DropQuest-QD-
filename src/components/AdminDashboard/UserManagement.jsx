@@ -223,7 +223,7 @@ export default function UserManagement() {
   });
 
   return (
-    <Card className="bg-gradient-to-r from-sky-50/10 to-blue-50/10  shadow-xl brder-slate-200">
+    <Card className="bg-main -gradient-to-r from-sky-50/10 to-blue-50/10  shadow-xl brder-slate-200">
       <CardHeader className="bg-gradient-to-r from-cyan-50/5 to-blue-50/5 rounded-t-lg">
         <CardTitle
           className="text-3xl font-bold text-slate-100"

@@ -1,3 +1,4 @@
+@import url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSans.css");
 @import "tailwindcss";
 
 @import "tailwindcss";
@@ -121,12 +122,13 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "GmarketSansMedium", sans-serif;
   }
 }
 
 .bg-main {
   @apply bg-cover bg-center bg-no-repeat;
-  background-image: url('/bg.png');
+  background-image: url("/bg.png");
 }
 
 /* Add this to your CSS file or inside a style block */
@@ -147,7 +149,6 @@
     transform: rotate(360deg);
   }
 }
-
 
 /* LoadingSpinner.css */
 
@@ -185,5 +186,3 @@
     transform: rotate(360deg);
   }
 }
-
-

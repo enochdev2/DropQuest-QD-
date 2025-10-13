@@ -132,19 +132,19 @@ function PointExchange() {
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden  bg-black text-white">
+    <div className="min-h-screen pt-20 overflow-x-hidden  bg-black text-white">
       <div className="sm:w-[400px] mx-auto border-2 border-gray-700  rounded-2xl">
-        <div className=" bg-gray-950 py-3 px-4">
+        <div className=" bg-main py-3 px-4">
           <div className=" text-center">
-            <h1 className="text-3xl font-bold mb-3 text-white">
+            <h1 className="text-4xl font-bold mb-3 text-white">
               {t("pointExchangeTitle")}
             </h1>
-            <p className="text-sm text-gray-300 mb-4">
+            <p className="text-base text-gray-100 mb-4">
               {language === "en" ? " Exchange your accumulated points for various cryptocurrencies " : "누적된 포인트를 다양한 암호화폐로 교환하세요."}  
             </p>
-            <div className="bg-gray-800 border border-gray-700 rounded-lg p-1.5 mb-2 inline-block">
+            <div className="bg-gray-800/20 border border-gray-100 rounded-lg p-1.5 mb-2 inline-block">
               <p className="text-base">
-                <span className="text-gray-300">{t("availablePoints")}: </span>
+                <span className="text-gray-100 font-bold">{t("availablePoints")}: </span>
                 <span className="text-xl font-bold text-blue-400">
                   {/* {userPoints?.toLocaleString() } */}
                   {userProfile?.points?.totalPoints.toLocaleString()}
@@ -178,13 +178,13 @@ function PointExchange() {
                           setShowExchangeModal(true); // 👈 Open modal
                         }
                       }}
-                      className={`h-28 transition-all duration-200 ${
+                      className={`h- transition-all duration-200 ${
                         isDisabled
                           ? "bg-gray-900 border-gray-800 opacity-90 cursor-not-allowed"
                           : "bg-gray-800 border-gray-700 hover:bg-gray-700 hover:border-blue-600 cursor-pointer"
                       }`}
                     >
-                      <CardContent className="px-1 text-center">
+                      <CardContent className="px-1 py-3 text-center bg-main">
                         {token.isConfigured ? (
                           <>
                             <div className="w-16 h-16 mx-auto mb-2 bg-gray-700 rounded-full flex items-center justify-center">
