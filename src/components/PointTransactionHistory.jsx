@@ -55,7 +55,7 @@ export default function PointTransactionHistory({ tokenSlot }) {
                 colSpan="3"
                 className="text-center text-2xl py-6 text-gray-400"
               >
-                No transaction history found
+                {language('claimSuccess')}
               </td>
             </tr>
           )}

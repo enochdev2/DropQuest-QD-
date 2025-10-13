@@ -191,7 +191,7 @@ export default function Navbar() {
                 className=" text-white flex items-center gap-2 mt-3 font-bold cursor-pointer hover:bg-blue-800 px-5 py-1 rounded-2xl"
                 onClick={logout}
               >
-                <LogOutIcon /> log-out
+                <LogOutIcon /> {t("logOut")}
               </div>
             )}
           </div>

@@ -105,7 +105,7 @@ function PointExchange() {
       await submitPointExchange(slotId, amount, selectedToken?.tokenName, selectedToken?.img);
 
       // setUserPoints((prev) => prev - amount);
-      toast.success("The exchange request has been completed.");
+      toast.success(t("requestCompleted"));
 
       setShowExchangeModal(false);
       setExchangeAmount("");

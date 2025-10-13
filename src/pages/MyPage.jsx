@@ -49,7 +49,7 @@ function MyPage() {
     try {
       await navigator.clipboard.writeText(inviteLink);
       setCopySuccess(true);
-      toast.success("Invitation link copied to clipboard!");
+      toast.success(t("invitationLinkCopied"));
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
       console.error("Failed to copy: ", err);

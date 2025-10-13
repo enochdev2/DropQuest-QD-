@@ -1,8 +1,11 @@
 import SignIn from "@/components/SignIn";
 import SignUp from "@/components/SignUp";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLanguage } from "@/contexts/language-context";
 
 function Login() {
+    const { t, language } = useLanguage();
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
       <div className="flex w-full max-w-lg lg:m-0 m-4 flex-col gap-6 bg-white p-3 lg:p-6 rounded-xl">
@@ -14,7 +17,7 @@ function Login() {
                          data-[state=active]:bg-[#0d0b3e] rounded-lg
                          data-[state=active]:text-white transition-all duration-300"
             >
-              Login
+              {t("login")}
             </TabsTrigger>
             <TabsTrigger
               value="signup"
@@ -22,7 +25,7 @@ function Login() {
                          data-[state=active]:bg-[#0d0b3e] 
                          data-[state=active]:text-white transition-all duration-300"
             >
-              Sign Up
+              {t("signUp")}
             </TabsTrigger>
           </TabsList>
 

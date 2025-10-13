@@ -109,7 +109,7 @@ const SignUp = () => {
 
     // Email validation
     if (touched.email && formData.email && !validateEmail(formData.email)) {
-      newErrors.email = "Please enter a valid email format";
+      newErrors.email = t("invalidEmailFormat");
     }
 
     // Password validation
@@ -118,8 +118,7 @@ const SignUp = () => {
       formData.password &&
       !validatePassword(formData.password)
     ) {
-      newErrors.password =
-        "Password must include both letters and numbers and be at least 6 characters long";
+      newErrors.password = t("invalidPasswordFormat");
     }
 
     // Confirm password validation
@@ -128,14 +127,14 @@ const SignUp = () => {
       formData.confirmPassword &&
       formData.confirmPassword !== formData.password
     ) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = t("passwordsDoNotMatch");
     }
 
     // Phone number validation (Korean format: 11 digits)
     if (touched.phoneNumber && formData.phoneNumber) {
       const digits = formData.phoneNumber.replace(/\D/g, "");
       if (digits.length !== 11) {
-        newErrors.phoneNumber = "Phone number must be 11 digits";
+        newErrors.phoneNumber = t("invalidPhoneNumberLength");
       }
     }
 
@@ -370,6 +369,7 @@ const SignUp = () => {
                 className="placeholder:text-sm"
               />
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="phoneNumber" className="text-sm font-medium">
                 {t("phoneNumber")} <span className="text-red-500">*</span>
@@ -377,7 +377,7 @@ const SignUp = () => {
               <Input
                 id="phoneNumber"
                 type="tel"
-                placeholder={t("phoneNumber")}
+                placeholder={t("phoneNumberFormat")}
                 value={formData.phoneNumber}
                 onChange={(e) =>
                   handleInputChange("phoneNumber", e.target.value)
@@ -399,7 +399,7 @@ const SignUp = () => {
           {/* Telegram ID */}
           <div className="space-y-2">
             <Label htmlFor="telegramId" className="text-sm font-medium">
-              {t("telegramId")}
+              {t("telegramId")} <span className="text-red-500">*</span>
             </Label>
             <Input
               id="telegramId"
