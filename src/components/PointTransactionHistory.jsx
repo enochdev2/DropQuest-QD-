@@ -39,7 +39,7 @@ export default function PointTransactionHistory({ tokenSlot }) {
                 <td className="px-4 py-2">{slot.tokenName || "-"}</td>
                 <td className="px-4 py-2 text-blue-400">
                   <a
-                    href="https://t.me/+gogCuEqAyzhhZGQ1"
+                    href="https://t.me/+k1k8C9ftsL4wMmE1"
                     target="_blank"
                     rel="noreferrer"
                   >
