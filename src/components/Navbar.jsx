@@ -41,14 +41,14 @@ export default function Navbar() {
     // <header className="flex bg-black justify-center items-center   border-b border-white/10">
     <header className="fixed top-0 left-0 w-full z-50 flex bg-black justify-center items-center border-b border-white/10">
 
-      <div className="w-full sm:w-[400px] flex bg-black justify-between items-center px-2  py-4  sm:border-white/10 sm:border">
+      <div className="w-full sm:w-[400px] flex bg-black justify-between items-center px-2  py-3  sm:border-white/10 sm:border">
         {/* Logo */}
         <div className="text-lg sm:text-xl   flex items-center gap-2">
           <Link
             to="/"
             className="flex items-center gap-2 hover:opacity-80 transition"
           >
-            <img src={logo} alt="" className=" w-10  h-6" />
+            <img src={logo} alt="" className=" w-8  h-6" />
             {/* <span className="text-white">DQ</span> */}
             <span className="text-gray-300 -ml- -mb-3 fon text-base font-bold">
               DropQuest
@@ -193,7 +193,7 @@ export default function Navbar() {
                 className=" text-white flex items-center gap-2 mt-3 font-bold cursor-pointer hover:bg-blue-800 px-5 py-1 rounded-2xl"
                 onClick={logout}
               >
-                <LogOutIcon /> log-out
+                 <LogOutIcon /> {t("logOut")}
               </div>
             )}
           </div>

@@ -47,7 +47,7 @@ export default function DropQuestLanding() {
           //   background: "linear-gradient(to right, #0d0b3e, #3d2abf)",
           // }}
         >
-          <Link to="/air-drop" className="flex items-center space-x-3">{t("pointsForCoins")} <ArrowRight className="w-20 ml-3" size={60}/> </Link>
+          <Link to="/point-exchange" className="flex items-center space-x-3">{t("pointsForCoins")} <ArrowRight className="w-20 ml-3" size={60}/> </Link>
         </Button>
         </div>
 

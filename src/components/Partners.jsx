@@ -33,8 +33,8 @@ export default function Partners() {
   )
 
   return (
-    <section className="w-full pt-4 bg-black text-white border-t border-slate-800/30 rounded-2xl mt-3">
-      <h2 className="text-center text-2xl font-bold mb-3">Partners</h2>
+    <section className="w-full pt-2 bg-black text-white border-t border-slate-800/30 rounded-2xl mt-3">
+      <h2 className="text-center text-lg font-bold mb-2">Partners</h2>
 
       <div className="max-w-6xl mx-auto px-1 bg-mai border border-slate-100/10  py-2 rounded-l">
         <Carousel
@@ -52,7 +52,7 @@ export default function Partners() {
                 className="pl-2 basis-1/3 "
               >
                 <Card className="bg-[#0e0e0e] border border-gray-800 hover:border-gray-600 transition-all rounded-2xl overflow-hidden">
-                  <CardContent className="flex items-center justify-center h-20 p-0">
+                  <CardContent className="flex items-center justify-center h-26 p-0">
                     <img
                       src={partner.img}
                       alt={partner.name}
