@@ -18,8 +18,9 @@ const partners = [
   { name: "USDT", img: "/Partners/USDT.png" },
   { name: "Solana", img: "/Partners/Solana.png" },
   { name: "Doge", img: "/Partners/Doge.png" },
-  { name: "Golem", img: "/partners/Golem.png" },
-  { name: "BNB", img: "/partners/bnb.png" },
+  { name: "Golem", img: "/Partners/Golem.png" },
+  { name: "Jupiter", img: "/Partners/Jupiter.jpeg" },
+  { name: "Raydium", img: "/Partners/Raydium.jpg" },
 ]
 
 export default function Partners() {
@@ -35,7 +36,7 @@ export default function Partners() {
     <section className="w-full pt-4 bg-black text-white border-t border-slate-800/30 rounded-2xl mt-3">
       <h2 className="text-center text-2xl font-bold mb-3">Partners</h2>
 
-      <div className="max-w-6xl mx-auto px-1 bg-mai  py-2 rounded-l">
+      <div className="max-w-6xl mx-auto px-1 bg-mai border border-slate-100/10  py-2 rounded-l">
         <Carousel
           opts={{
             align: "start",

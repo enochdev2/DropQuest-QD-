@@ -9,8 +9,8 @@ export default function DropQuestLanding() {
   const { t } = useLanguage();
 
   return (
-    <div className="min-h-screen pt-18 flex flex-col items-center bg-black text-white">
-      <div className="sm:w-[400px] sm:border sm:border-gray-700 rounded-lg  ">
+    <div className="min-h-screen pt-18 flex flex-col items-center bg-black text-white ">
+      <div className="sm:w-[400px] sm:border sm:border-gray-700 rounded-lg mb-2  ">
 
       {/* HERO SECTION */}
       <section className="flex flex-col X items-center  text-center px-4 sm:px-6 py-10 sm:py-12">
