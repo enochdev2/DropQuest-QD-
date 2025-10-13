@@ -61,14 +61,14 @@ export default function Navbar() {
             <Button
               variant="ghost"
               size="sm"
-              className="text-gray-800 rounded-4xl hover:bg-white/10 py-4 px-3 bg-gray-200 text-md font-semibold"
+              className="text-gray-800 rounded-4xl hover:bg-white/10 py-2 px-3 bg-gray-200 text-md font-semibold"
             >
               <Link to={"/login"}>{t("signIn")}</Link>
             </Button>
           ) : user?.admin ? (
             <Link
               to="/admin"
-              className="text-black font-semibold  py-2 rounded-2xl px-3 bg-white"
+              className="text-black font-semibold  py-1 text-sm rounded-2xl px-3 bg-white"
             >
               Admin
             </Link>
