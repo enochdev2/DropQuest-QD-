@@ -46,9 +46,9 @@ export default function Navbar() {
         <div className="text-lg sm:text-xl   flex items-center gap-2">
           <Link
             to="/"
-            className="flex items-center gap-2 hover:opacity-80 transition"
+            className="flex items-center gap-1 hover:opacity-80 transition"
           >
-            <img src={logo} alt="" className=" w-8  h-6" />
+            <img src={logo} alt="" className=" w-7  h-6" />
             {/* <span className="text-white">DQ</span> */}
             <span className="text-gray-300 -ml- -mb-3 fon text-base font-bold">
               DropQuest
