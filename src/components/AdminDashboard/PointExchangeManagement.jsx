@@ -368,7 +368,7 @@ export default function PointExchangeManagement() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-6 mb-20">
+          <div className="space-y-2 mb-10">
             <div className="flex w-full justify-between">
               <div className="border border-dashed border-gray-500 p-4 rounded-md bg-gray-800 cursor-pointer relative group hover:border-blue-400">
                 <Label htmlFor="logo" className="text-white mb-2 text-base">
