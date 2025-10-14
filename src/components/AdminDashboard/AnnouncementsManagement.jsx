@@ -199,7 +199,7 @@ export default function AnnouncementsManagement() {
   );
 
   return (
-    <Card className="bg-gradient-to-br from-white/5 to-slate-50/5 shadow-xl border-slate-600">
+    <Card className="bg-main from-white/5 to-slate-50/5 shadow-xl border-slate-600">
       <CardHeader className="bg-gradient-to-r from-purple-50/20 to-blue-50/20 rounded-t-lg">
         <CardTitle
           className="text-2xl font-bold text-slate-100"

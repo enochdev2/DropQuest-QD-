@@ -119,8 +119,8 @@ export default function PointsManagement() {
   );
 
   return (
-    <Card className="bg-gradient-to-br from-white/5 to-slate-50/5 shadow-xl border-slate-200/40">
-      <CardHeader className="bg-gradient-to-r from-blue-500/10 to-cyan-50 rounded-t-lg">
+    <Card className="bg-main py-2 from-white/5 to-slate-50/5 shadow-xl border-slate-200/40">
+      <CardHeader className="bg-gradient-to-r from-blue-500/10 to-cyan-900 rounded-t-lg">
         <CardTitle
           className="text-3xl font-bold text-slate-100"
           style={{ fontFamily: "DM Sans, sans-serif" }}
@@ -128,7 +128,7 @@ export default function PointsManagement() {
           Points Management
         </CardTitle>
         <CardDescription
-          className="text-slate-100 text-lg"
+          className="text-slate-100 text-lg font-semibold"
           style={{ fontFamily: "DM Sans, sans-serif" }}
         >
           Monitor and adjust user points with ease for better decision-making
@@ -225,7 +225,7 @@ export default function PointsManagement() {
         <div className="rounded-xl border border-slate-200 overflow-hidden text-white shadow-lg">
           <Table>
             <TableHeader>
-              <TableRow className="bg-gradient-to-r from-blue-500 to-slate-100 ">
+              <TableRow className="bg-gradient-to-r from-blue-500 to-sky-800 ">
                 <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
                   ID
                 </TableHead>
@@ -252,13 +252,13 @@ export default function PointsManagement() {
                   key={user._id}
                   className="hover:bg-gradient-to-r hover:from-emerald-50/30 hover:to-cyan-50/20 transition-all duration-300 "
                 >
-                  <TableCell className="font-medium ">
+                  <TableCell className="font-semibold ">
                     {user._id?.slice(20, 23)}
                   </TableCell>
                   <TableCell className="font-semibold text-slate-100">
                     {user.name}
                   </TableCell>
-                  <TableCell className="text-base">{user.email}</TableCell>
+                  <TableCell className="text-base font-semibold">{user.email}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Badge
@@ -269,7 +269,7 @@ export default function PointsManagement() {
                       </Badge>
                     </div>
                   </TableCell>
-                  <TableCell className="text-sm text-green-500">
+                  <TableCell className="text-sm text-green-500 font-semibold">
                     {new Date(
                       user.createdAt ?? user.joinDate
                     ).toLocaleDateString("en-US")}
