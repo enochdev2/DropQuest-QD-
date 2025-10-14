@@ -192,6 +192,7 @@ export default function PointExchangeManagement() {
     setSubmitting(true);
     console.log("   🚀 ~ handleReset ~ configData.tokenName:", configData.tokenName)
     await updatePoints(
+      " ",
       "???",
       selectedSlot,
       tokensAmount,
