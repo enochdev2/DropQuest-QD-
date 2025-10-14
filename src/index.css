@@ -1,7 +1,18 @@
-@import "tailwindcss";
+
+/* @import "tailwindcss"; */
 
 @import "tailwindcss";
 @import "tw-animate-css";
+
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
 
 @custom-variant dark (&:is(.dark *));
 
@@ -125,6 +136,17 @@
 
   
 }
+
+
+
+.korean-font {
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-weight: 400 !important;
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 
 /* Add this to your CSS file or inside a style block */
 .spinner {

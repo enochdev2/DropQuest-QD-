@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { ArrowBigLeftIcon, ArrowRight, ArrowRightFromLine } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { partnerLogos } from "@/assets/partners";
+import PartnerCarousel from "@/components/Home/PartnerCarousel";
+// import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function DropQuestLanding() {
   const { t } = useLanguage();
@@ -121,6 +124,14 @@ export default function DropQuestLanding() {
               </h3>
             </div>
           </div>
+
+          {/* PARTNER LOGOS SECTION */}
+          <section className=" mx-auto  mt-8 text-center">
+            <h2 className="text-white text-lg font-semibold mb-4">
+              {t("partners")}
+            </h2>
+            <PartnerCarousel />
+          </section>
         </section>
       </div>
     </div>

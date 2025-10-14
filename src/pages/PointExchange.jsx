@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ChevronDown, Loader2 } from "lucide-react";
+import { ChevronDown, ExternalLink, Loader2 } from "lucide-react";
 // import { useLanguage } from "@/contexts/LanguageProvider"
 // import { getTokenSlots, submitPointExchange, getUserProfile } from "@/lib/utils"
 import toast from "react-hot-toast";
@@ -38,15 +38,14 @@ function PointExchange() {
   const [, setUserPoints] = useState(0);
   const [exchangeAmount, setExchangeAmount] = useState("");
   const [selectedToken, setSelectedToken] = useState(null);
-  console.log("🚀 ~ PointExchange ~ selectedToken:", selectedToken)
+  console.log("🚀 ~ PointExchange ~ selectedToken:", selectedToken);
   const [showExchangeModal, setShowExchangeModal] = useState(false);
   const [tokenSlots, setTokenSlots] = useState(initialSlots);
   // const [tokenSlots, setTokenSlots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [userProfile, setUserProfile] = useState({});
-    const { language } = useLanguage();
-  
+  const { language } = useLanguage();
 
   useEffect(() => {
     getUserProfileDetails();
@@ -84,25 +83,40 @@ function PointExchange() {
     }
 
     if (amount % 1000 !== 0) {
-      
-      toast.error(language === "en" ? " Points can only be entered in units of 1000." : "포인트는 ‘1000 단위’로만 교환이 가능합니다");
+      toast.error(
+        language === "en"
+          ? " Points can only be entered in units of 1000."
+          : "포인트는 ‘1000 단위’로만 교환이 가능합니다"
+      );
       return;
     }
 
     if (amount > userProfile?.points?.totalPoints) {
-      
-      toast.error(language === "en" ? " Insufficient points. Please check your points on My Page." : "포인트가 부족합니다. 마이페이지에서 내 포인트를 확인해주세요");
+      toast.error(
+        language === "en"
+          ? " Insufficient points. Please check your points on My Page."
+          : "포인트가 부족합니다. 마이페이지에서 내 포인트를 확인해주세요"
+      );
       return;
     }
-    if (selectedToken?.points > amount  ) {
-            toast.error(language === "en" ? " Insufficient points. Please check your points on My Page." : "포인트가 부족합니다. 마이페이지에서 내 포인트를 확인해주세요");
+    if (selectedToken?.points > amount) {
+      toast.error(
+        language === "en"
+          ? " Insufficient points. Please check your points on My Page."
+          : "포인트가 부족합니다. 마이페이지에서 내 포인트를 확인해주세요"
+      );
       return;
     }
 
     try {
       setSubmitting(true);
 
-      await submitPointExchange(slotId, amount, selectedToken?.tokenName, selectedToken?.img);
+      await submitPointExchange(
+        slotId,
+        amount,
+        selectedToken?.tokenName,
+        selectedToken?.img
+      );
 
       // setUserPoints((prev) => prev - amount);
       toast.success(t("requestCompleted"));
@@ -113,11 +127,19 @@ function PointExchange() {
       setSelectedToken(null);
     } catch (error) {
       console.error("Exchange error:", error);
-      toast.error(language === "en" ? "Failed to process exchange. Please try again." : "교환에 실패했습니다. 다시 시도해 주세요");
+      toast.error(
+        language === "en"
+          ? "Failed to process exchange. Please try again."
+          : "교환에 실패했습니다. 다시 시도해 주세요"
+      );
       // toast.error("Failed to process exchange. Please try again.");
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleClick = () => {
+    window.open("https://your-token-price-link.com", "_blank");
   };
 
   if (loading) {
@@ -140,7 +162,9 @@ function PointExchange() {
               {t("pointExchangeTitle")}
             </h1>
             <p className="text-sm text-gray-300 mb-4">
-              {language === "en" ? " Exchange your accumulated points for various cryptocurrencies " : "누적된 포인트를 다양한 암호화폐로 교환하세요."}  
+              {language === "en"
+                ? " Exchange your accumulated points for various cryptocurrencies "
+                : "누적된 포인트를 다양한 암호화폐로 교환하세요."}
             </p>
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-1.5 mb-2 inline-block">
               <p className="text-base">
@@ -230,13 +254,30 @@ function PointExchange() {
                             className="rounded-full"
                           />
                         </div>
+
+                        <div className="flex items-center justify-center py-2">
+                          <button
+                            onClick={handleClick}
+                            className="flex items-center justify-center space-x-2 bg-[#2D63C8] hover:bg-[#1E4DA8] text-white text-sm font-medium px-4 py-2 rounded-md shadow-md transition-all duration-300"
+                          >
+                            <span>{t('tokenPrice')}</span>
+                            <ExternalLink size={16} className="text-white" />
+                          </button>
+                        </div>
                         <div>
                           {/* <h3 className="text-xl font-bold text-white">
                             {selectedToken?.points}
                           </h3> */}
                           <p className=" flex w-full justify-center  text-center text-gray-50 text-xl font-bold ">
-                            {selectedToken?.token} <span className="text-orange-500 ml-1">${selectedToken?.tokenName}</span>  <span className="text-green-600 mx-3 font-extrabold text-2xl y-auto -my-1">=</span>{" "}
-                             {selectedToken?.points} {" "} <span className="text-orange-200 ml-1">Point</span>
+                            {selectedToken?.token}{" "}
+                            <span className="text-orange-500 ml-1">
+                              ${selectedToken?.tokenName}
+                            </span>{" "}
+                            <span className="text-green-600 mx-3 font-extrabold text-2xl y-auto -my-1">
+                              =
+                            </span>{" "}
+                            {selectedToken?.points}{" "}
+                            <span className="text-orange-200 ml-1">Point</span>
                           </p>
                         </div>
                       </div>
@@ -249,7 +290,11 @@ function PointExchange() {
 
                         <Input
                           type="number"
-                          placeholder={language === "en" ? "Enter points to exchange" : "사용할 포인트를 입력해주세요"}
+                          placeholder={
+                            language === "en"
+                              ? "Enter points to exchange"
+                              : "사용할 포인트를 입력해주세요"
+                          }
                           value={exchangeAmount}
                           onChange={(e) => setExchangeAmount(e.target.value)}
                           className="bg-gray-700 border-gray-600 text-white text-right font-semibold"
@@ -258,7 +303,9 @@ function PointExchange() {
                       </div>
 
                       <p className="text-center text-base font-semibold text-gray-300">
-                        {language === "en" ? "Points can only be exchanged in units of 1000. Would you like to apply for a point exchange?  " : "포인트는 1000단위로만 교환할 수 있습니다. 포인트 교환을 신청하시겠습니까?"}
+                        {language === "en"
+                          ? "Points can only be exchanged in units of 1000. Would you like to apply for a point exchange?  "
+                          : "포인트는 1000단위로만 교환할 수 있습니다. 포인트 교환을 신청하시겠습니까?"}
                         {/* {t("exchangeRequest")} */}
                       </p>
 

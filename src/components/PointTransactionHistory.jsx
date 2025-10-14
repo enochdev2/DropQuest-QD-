@@ -4,6 +4,7 @@ import React from "react";
 export default function PointTransactionHistory({ tokenSlot }) {
   console.log("🚀 ~ PointTransactionHistory ~ tokenSlots:", tokenSlot);
   const { language } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <div className="w-full bg-black text-white flex flex-col items-center px-1 py-6 overflow-hidden">
@@ -38,7 +39,7 @@ export default function PointTransactionHistory({ tokenSlot }) {
                 <td className="px-4 py-2">{slot.tokenName || "-"}</td>
                 <td className="px-4 py-2 text-blue-400">
                   <a
-                    href="https://t.me/+gogCuEqAyzhhZGQ1"
+                    href="https://t.me/+k1k8C9ftsL4wMmE1"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -55,7 +56,7 @@ export default function PointTransactionHistory({ tokenSlot }) {
                 colSpan="3"
                 className="text-center text-2xl py-6 text-gray-400"
               >
-                {language('claimSuccess')}
+                {t('claimSuccess')}
               </td>
             </tr>
           )}
