@@ -6,7 +6,7 @@ import PointTransactionHistory from "@/components/PointTransactionHistory";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/language-context";
 import { getUserProfile, getUserReferralList, getUserTokenSlots } from "@/lib/utilityFunction";
-import { Copy, RefreshCw } from "lucide-react";
+import { Copy, Loader2, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -121,7 +121,8 @@ function MyPage() {
               <div className="bg-white max-w-full text-black rounded-full px-25 py-2 inline-flex items-center gap-3 mb-6">
                 <span className="text-2xl font-bold">
                   {/* {mockUser.points.toLocaleString()} */}
-                  {userProfile.points?.totalPoints.toLocaleString()}
+                  { }
+                  {!userProfile?.points?.totalPoints ? <Loader2 className=" animate-spin" /> : userProfile.points?.totalPoints.toLocaleString()}
                 </span>
                 <img
                   src={coin}

@@ -71,9 +71,9 @@ export default function DropQuestLanding() {
               {t("earnAirdrops")}
             </p>
           </div>
-          <div className="bg-gray-800 p-4 sm:p-5 rounded-2xl shadow-lg text-center">
+          {/* <div className="bg-gray-800 p-4 sm:p-5 rounded-2xl shadow-lg text-center">
             <h3 className="text-base sm:text-lg font-semibold">{t("comingSoon")}</h3>
-          </div>
+          </div> */}
           <div className="bg-main bg-gradient-to-r from-[#0d0b3e] to-[#3d2abf] p-4 sm:p-5 rounded-2xl shadow-lg">
             {/* <h3 className="text-base font-semibold mb-2">{t("connectingUsersToUsers")}</h3>
             <p className="text-gray-200 text-sm">{t("directOpportunities")}</p> */}
