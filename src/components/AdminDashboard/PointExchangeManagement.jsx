@@ -360,7 +360,7 @@ export default function PointExchangeManagement() {
       >
         <DialogContent className="bg-main text-white border-gray-700">
           <DialogHeader>
-            <DialogTitle className="text-white text-xl">
+            <DialogTitle className="text-white text-lg">
               Configure Token Slot {selectedSlot?.id}
             </DialogTitle>
             <DialogDescription className="text-gray-50 text-lg font-semibold">
@@ -368,7 +368,7 @@ export default function PointExchangeManagement() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-2 mb-10">
+          <div className="space-y-2 mb-6">
             <div className="flex w-full justify-between">
               <div className="border border-dashed border-gray-500 p-4 rounded-md bg-gray-800 cursor-pointer relative group hover:border-blue-400">
                 <Label htmlFor="logo" className="text-white mb-2 text-base">
