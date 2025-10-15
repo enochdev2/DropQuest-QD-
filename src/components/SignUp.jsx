@@ -252,7 +252,7 @@ const SignUp = () => {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full py-4">
       <CardHeader className="text-center text-white">
         <CardTitle className="text-2xl font-bold">{t("welcome")}</CardTitle>
         <CardDescription>{t("dontMissAirdrop")}</CardDescription>
