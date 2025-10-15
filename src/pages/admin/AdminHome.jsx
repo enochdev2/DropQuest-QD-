@@ -114,7 +114,7 @@ export default function AdminDashboard() {
           </Card>
 
           <Card className="bg-gradient-to-br from-white to-blue-50 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-            <CardContent className="p-6 py-0">
+            <CardContent className="px-6 py-0">
               <div className="flex items-center justify-between">
                 <div className="space-y-3">
                   <p
@@ -163,24 +163,24 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8 bg-white shadow-lg rounded-xl p-2 border border-slate-200">
+          <TabsList className="grid w-full grid-cols-4 mb-8 bg-main text-white shadow-lg rounded-xl px-2 border border-slate-200">
             <TabsTrigger
               value="users"
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-blue-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
+              className="flex items-center gap-2 text-white data-[state=active]:bg-gradient-to-r font-bold data-[state=active]:from-cyan-600 data-[state=active]:to-blue-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
             >
-              <Users className="w-10 h-10" size={26} />
+              <Users className="w-10 h-10 text-white" size={26} />
               User Management
             </TabsTrigger>
             <TabsTrigger
               value="points"
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-blue-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-blue-600 data-[state=active]:text-white text-white font-bold transition-all duration-300 rounded-lg"
             >
               <Award className="w-4 h-4" />
               Points Management
             </TabsTrigger>
             <TabsTrigger
               value="announcements"
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-blue-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-blue-800 data-[state=active]:text-white text-white font-bold transition-all duration-300 rounded-lg"
             >
               <Megaphone className="w-4 h-4" />
               Announcements
@@ -188,7 +188,7 @@ export default function AdminDashboard() {
 
              <TabsTrigger
               value="point-exchange"
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-blue-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-blue-800 data-[state=active]:text-white text-white font-bold transition-all duration-300 rounded-lg"
             >
               <Megaphone className="w-4 h-4" />
                Point Exchange
