@@ -1,24 +1,25 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+// import { AiOutlineClose } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/language-context";
+import { X } from "lucide-react";
 
 const KYCGuideModal = ({ isOpen, onClose }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 "
+          className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
         >
           <motion.div
-            className="bg-[#f9fafb] rounded-2xl border border-gray-200 shadow-lg w-[300px] py-5 px-6 relative"
+            className="bg-[#f9fafb] rounded-2xl border border-gray-200 shadow-lg w-90 p-5 relative"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
@@ -29,7 +30,7 @@ const KYCGuideModal = ({ isOpen, onClose }) => {
               onClick={onClose}
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 transition-colors"
             >
-              <X size={22} />
+              <X className="w-5 h-5 text-gray-600" />
             </button>
 
             {/* Title */}
@@ -41,7 +42,7 @@ const KYCGuideModal = ({ isOpen, onClose }) => {
             <img
               src="https://shiftly.co.za/wp-content/uploads/2024/04/Shiftly-ID-illustrations-02.png"
               alt="KYC Example"
-              className="w-76 h-92 mx-auto rounded-md mb-4 object-contain border border-gray-300 bg-white "
+              className="w-56 h-40 mx-auto rounded-md mb-4 object-contain border border-gray-300 bg-white p-1"
             />
 
             {/* Instruction Text */}
