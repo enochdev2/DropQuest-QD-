@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -45,6 +45,8 @@ const SignUp = () => {
   const [showGuide, setShowGuide] = useState(false);
   // const referralCode = getReferralCodeFromUrl();
   // console.log("🚀 ~ SignUp ~ referralCode:", referralCode);
+
+  const debounceRef = useRef(null);
 
   // Validation functions
   const validateEmail = (email) => {
@@ -101,6 +103,46 @@ const SignUp = () => {
       ...prev,
       [field]: true,
     }));
+  };
+
+  const validateEmails = async (e) => {
+    const value = e.target.value;
+    const isValid = /^[a-zA-Z0-9]+$/.test(value) && /[a-zA-Z]/.test(value);
+    // Only letters or letters+numbers
+
+    // Update form state immediately
+    handleChange(e);
+
+    // Clear previous debounce timer
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    // 1. Immediate character check
+    if (!isValid) {
+      setNicknameError(t("signUp.nicknameError"));
+      return;
+    }
+
+    // 2. Set new debounce timer for async backend check
+    debounceRef.current = setTimeout(async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `https://tether-p2p-exchang-backend.onrender.com/api/v1/user/check-nickname/${value}`
+        );
+        setIsLoading(false);
+        const data = await res.json();
+        console.log("🚀 ~ debounceRef.current=setTimeout ~ data:", data);
+
+        if (data.exists) {
+          setNicknameError(t("signUp.nicknameAlreadyInUSe"));
+        } else {
+          setNicknameError("");
+        }
+      } catch (err) {
+        console.log("🚀 ~ validateNickname ~ err:", err)
+        setNicknameError("Unable to validate nickname. Please try again.");
+      }
+    }, 100); // Adjust debounce time as needed (600ms recommended)
   };
 
   // Real-time validation
