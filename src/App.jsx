@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import AdminDashboard from "./pages/admin/AdminHome";
 import PointExchange from "./pages/PointExchange";
 import AdminRoute from "./components/AdminRoute";
+import QuestionNAnswer from "./pages/QNA";
 // import AnnouncementsManagement from "./components/AdminDashboard/AnnouncementsManagement";
 // import PointsManagement from "./components/AdminDashboard/PointsManagement";
 // import UserManagement from "./components/AdminDashboard/UserManagement";
@@ -52,6 +53,8 @@ function App() {
         />
 
         <Route path="/" element={<DropQuestLanding />} />
+
+        <Route path="/question-answer" element={<QuestionNAnswer />} />
         <Route
           path="/air-drop"
           element={
@@ -84,7 +87,7 @@ function App() {
             </UserProtectedRoute>
           }
         />
-    
+
         <Route
           path="/point-exchange/"
           element={
@@ -104,7 +107,7 @@ function App() {
           }
         />
         {/* <Route path="/admin"> */}
-          {/* <Route path="points-management" element={<PointsManagement />} />
+        {/* <Route path="points-management" element={<PointsManagement />} />
           <Route path="user-management" element={<UserManagement />} />
           <Route path="announcements" element={<AnnouncementsManagement />} /> */}
         {/* </Route> */}

@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/language-context";
 import { Link } from "react-router-dom";
 import logo from "../assets/dq.png";
+import { motion, AnimatePresence } from "framer-motion";
+
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,8 +26,9 @@ export default function Navbar() {
     { label: t("home"), path: "/" },
     { label: t("announcements"), path: "/announcements" },
     { label: t("myPage"), path: "/my-page" },
-    { label: t("pointExchangeTitle"), path: "/point-exchange",  },
+    { label: t("pointExchangeTitle"), path: "/point-exchange" },
     { label: t("airdrop"), path: "/air-drop" },
+    { label: t("QnA"), path: "/question-answer" },
   ];
   const user = JSON.parse(localStorage.getItem("user"));
   const navButtons = user
@@ -40,13 +43,12 @@ export default function Navbar() {
   return (
     // <header className="flex bg-black justify-center items-center   border-b border-white/10">
     <header className="fixed top-0 left-0 w-full z-50 flex bg-black justify-center items-center border-b border-white/10">
-
-      <div className="w-full sm:w-[400px] flex bg-black justify-between items-center px-2  py-3  sm:border-white/10 sm:border">
+      <div className="w-full max-w-[400px] mx-auto flex bg-black justify-between items-center px-2 py-3 sm:border-white/10 sm:border">
         {/* Logo */}
-        <div className="text-lg sm:text-xl   flex items-center gap-2">
+        
           <Link
             to="/"
-            className="flex items-center gap-1 hover:opacity-80 transition"
+            className="flex items-center gap-2 hover:opacity-80 transition"
           >
             <img src={logo} alt="" className=" w-7  h-6" />
             {/* <span className="text-white">DQ</span> */}
@@ -54,7 +56,7 @@ export default function Navbar() {
               DropQuest
             </span>
           </Link>
-        </div>
+       
 
         <div className="flex items-center gap-2">
           {!user ? (
@@ -123,7 +125,11 @@ export default function Navbar() {
               className="text-white"
               onClick={() => setMenuOpen(!menuOpen)}
             >
-              {menuOpen ? <X size={30} color="white" className="text-white" /> : <Menu size={30} />}
+              {menuOpen ? (
+                <X size={30} color="white" className="text-white" />
+              ) : (
+                <Menu size={30} />
+              )}
             </button>
           </div>
           <Button
@@ -137,67 +143,90 @@ export default function Navbar() {
           </Button>
         </div>
         {/* Mobile Menu Overlay */}
-        
-        {menuOpen && (
-          <div
-            className="sm:w-[400px] h-[500px] mx-auto fixed inset-0 bg-gray-950 opacity-95 z-50 flex flex-col items-center justify-center gap-6 rounded-b-2xl"
-            onClick={closeMenu}
-          >
-            <div className=" absolute top-5 right-10 cursor-pointer "
-            onClick={() => setMenuOpen(!menuOpen)}
-            >
-              <X color="white" size={36}/>
-            </div>
-            <div
-              className="flex flex-col items-center gap-6"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {navLinks.map(({ label, path }) => (
-                <Link
-                  key={label}
-                  to={path}
-                  onClick={closeMenu}
-                  className="text-white text-lg font-medium hover:text-gray-300 transition hover:bg-blue-800 px-5 py-1 rounded-2xl"
-                >
-                  {label}
-                </Link>
-              ))}
 
-              {user ? (
-                <span className="text-white text-lg font-medium hover:bg-blue-800 px-5 py-1 rounded-2xl">
-                  {firstName}님
-                </span>
-              ) : (
-                navButtons.map(({ label, path, variant }) => (
-                  <Link key={label} to={path} onClick={closeMenu}>
-                    <Button
-                      variant={variant === "outline" ? "outline" : undefined}
-                      className="w-40 px-4 py-2 text-sm font-medium rounded-full border-white/40 text-white hover:bg-white/10"
-                      style={
-                        variant === "gradient"
-                          ? {
-                              background:
-                                "linear-gradient(to right, #0d0b3e, #3d2abf)",
-                            }
-                          : {}
-                      }
-                    >
-                      {label}
-                    </Button>
-                  </Link>
-                ))
-              )}
-            </div>
-            {user && (
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              key="mobile-menu"
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -50 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="sm:w-[400px] h-[500px] mx-auto fixed inset-0 bg-gray-950 bg-opacity-95 z-50 flex flex-col items-center justify-center gap-6 rounded-b-2xl backdrop-blur-md"
+              onClick={closeMenu}
+            >
+              {/* Close Button */}
               <div
-                className=" text-white flex items-center gap-2 mt-3 font-bold cursor-pointer hover:bg-blue-800 px-5 py-1 rounded-2xl"
-                onClick={logout}
+                className="absolute top-5 right-8 cursor-pointer p-2 rounded-full hover:bg-blue-900/30 transition"
+                onClick={() => setMenuOpen(false)}
               >
-                 <LogOutIcon /> {t("logOut")}
+                <X color="white" size={30} />
               </div>
-            )}
-          </div>
-        )}
+
+              {/* Navigation Links */}
+              <div
+                className="flex flex-col items-center gap-6"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {navLinks.map(({ label, path }) => (
+                  <Link
+                    key={label}
+                    to={path}
+                    onClick={closeMenu}
+                    className="text-white text-lg font-medium px-6 py-1 rounded-2xl hover:bg-blue-800/80 hover:scale-105 transition-all duration-200"
+                  >
+                    {label}
+                  </Link>
+                ))}
+
+                {/* User or Auth Buttons */}
+                {user ? (
+                  <span
+                    className="text-white text-lg font-semibold px-6 py-2 rounded-2xl shadow-md transition-all duration-300 hover:scale-105"
+                    style={{
+                      background: "linear-gradient(to right, #0d0b3e, #3d2abf)",
+                    }}
+                  >
+                    {firstName}님
+                  </span>
+                ) : (
+                  navButtons.map(({ label, path, variant }) => (
+                    <Link key={label} to={path} onClick={closeMenu}>
+                      <Button
+                        variant={variant === "outline" ? "outline" : undefined}
+                        className="w-40 px-4 py-2 text-sm font-medium rounded-full border-white/40 text-white hover:bg-white/10 transition-all duration-300 hover:scale-105"
+                        style={
+                          variant === "gradient"
+                            ? {
+                                background:
+                                  "linear-gradient(to right, #0d0b3e, #3d2abf)",
+                                boxShadow: "0 0 10px rgba(61, 42, 191, 0.3)",
+                              }
+                            : {}
+                        }
+                      >
+                        {label}
+                      </Button>
+                    </Link>
+                  ))
+                )}
+              </div>
+
+              {/* Logout */}
+              {user && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-white flex items-center gap-2 mt-4 font-semibold cursor-pointer px-6 py-2 rounded-2xl hover:bg-blue-800/80 hover:scale-105 transition-all duration-200"
+                  onClick={logout}
+                >
+                  <LogOutIcon size={20} /> {t("logOut")}
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );

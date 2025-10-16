@@ -8,11 +8,17 @@ const translations = {
     home: "Home",
     announcements: "Announcements",
     myPage: "My Page",
-    airdrop: "Airdrop",
+    airdrop: "Daily Check-in",
+    qna: "QnA",
 
     // Landing Page
     clickAnd: "Click and",
     Earn: "Earn",
+    clickAndEarn: "Drop Quest",
+    dropQuestDescription:
+      "Through the Drop Quest community, we share blockchain-related information with users. This allows users to gain opportunities and information to generate profits from token sales, airdrops, and other events in various communities.",
+    clickInfoIcon: "Click the info icon to learn more",
+    activeNow: "Active Now",
     connectingUsers: "Connecting users with potential opportunities",
     earnAirdrops: "You can earn airdrops and generate income through missions.",
     connectingUsersToUsers: "Connecting users with other users",
@@ -21,7 +27,9 @@ const translations = {
     pointsForCoins: "Exchange Points for Coins",
     welcome: "Welcome!",
     dontMissAirdrop: "Don't miss airdrops, start right now!",
+    soon: "SOON",
     roadmap: "Roadmap",
+    dropquest: "DropQuest",
     comingSoon: "Coming Soon",
     // Airdrop
     claimSuccess: "You have successfully claimed your airdrop for the day",
@@ -53,7 +61,6 @@ const translations = {
     login: "Login",
     loginSuccess: "Login Successful",
 
-
     // My Page
     myPoints: "My Points",
     myReferrer: "My Referrer",
@@ -64,7 +71,6 @@ const translations = {
     myReferralList: "My Referral List",
     pointsBalance: "Points Balance",
     invitationLinkCopied: "Invitation link copied to clipboard",
-
 
     // Attendance
     attendanceCheck: "Attendance Check",
@@ -77,6 +83,67 @@ const translations = {
     // Announcements
     announcementsList: "Announcements List",
 
+    // QnA Page
+    qnaTitle: "QnA",
+    basicUsage: "Basic Usage Guide",
+    whatIsDropQuest: "What is Drop Quest?",
+    whatIsDropQuestAnswer:
+      "Drop Quest is a reward platform where users can earn points through daily check-ins or missions, and exchange those points for cryptocurrency.",
+    howToCheckIn: "How to Check In",
+    howToCheckInAnswer:
+      'After logging in, tap the "Daily Check-in" button — you\'ll automatically receive 100 points once per day.',
+
+    pointsSection: "Points",
+    dailyPointsEarned: "Daily Points Earned",
+    dailyPointsEarnedAnswer: "You can receive 100 points per day by checking in.",
+    howToCheckPoints: "How to Check Your Points",
+    howToCheckPointsAnswer: "Go to My Page > Points History to view your accumulated points.",
+
+    referralSection: "Referral",
+    referralRewardSystem: "Referral Reward System",
+    referralRewardSystemAnswer:
+      "Each time a user who registered through your referral link checks in, you'll receive an additional 10% of the points they earn.",
+    howToFindReferralLink: "How to Find Your Referral Link",
+    howToFindReferralLinkAnswer: "You can view and copy your personal referral link at the top of My Page.",
+
+    pointExchangeSection: "Point Exchange",
+    availableCoins: "Available Coins for Exchange",
+    availableCoinsAnswer: "You can exchange points for Solana (SOL) and various Solana chain-based meme coins.",
+    howToExchange: "How to Exchange",
+    howToExchangeStep1: 'Go to the "Point Exchange" menu and submit an exchange request.',
+    howToExchangeStep2: 'On My Page, open your point exchange record and click the "Check Telegram Message" button.',
+    howToExchangeStep3: "Read the pinned announcement in the Telegram community and message a support agent.",
+    howToExchangeStep4: "A Solana address from your Phantom wallet is required.",
+    processingTime: "Processing Time",
+    processingTimeAnswer: "Typically processed within 1 hour, but may take longer depending on conditions.",
+
+    walletSecurity: "Wallet & Security",
+    isPhantomRequired: "Is a Phantom Wallet Required?",
+    isPhantomRequiredAnswer: "Yes. Drop Quest is based on the Solana network, so a Phantom wallet is required.",
+    wrongAddress: "If You Enter the Wrong Address",
+    wrongAddressAnswer:
+      "Due to the nature of blockchain, coins sent to the wrong address cannot be recovered. Please double-check your wallet address before sending.",
+    coinsNotAppearing: "I Received Coins, but They Don't Appear or Show a Price in My Phantom Wallet",
+    coinsNotAppearingAnswer:
+      "If the coins were issued on a new network rather than the existing one, Phantom Wallet may recognize them as new tokens. This issue is not related to token swap status or trustworthiness, so don't worry. Please refer to the wallet guide below for detailed instructions.",
+    walletGuide: "Wallet Guide",
+    viewAsImage: "View as Image",
+    walletGuideStep1: "Open your Phantom Wallet → Tap the [⋯] icon at the top right of the token list",
+    walletGuideStep2: "Turn ON the toggle switch next to the deposited token",
+    walletGuideStep3: "Return to the main screen and select the deposited token",
+    walletGuideStep4: 'Tap "Report as Not Spam" at the bottom of the screen',
+    walletGuideStep5: "The token should now display correctly",
+
+    othersSection: "Others",
+    canUseOnPC: "Can I Use It on PC?",
+    canUseOnPCAnswer: "Drop Quest currently supports mobile version only.",
+    howToChangeLanguage: "How to Change Language Settings",
+    howToChangeLanguageAnswer:
+      "Tap the 🌐 icon at the top right of the main screen to switch between Korean / English / Chinese (coming soon).",
+    howToJoinEvents: "How to Join Events",
+    howToJoinEventsAnswer:
+      "Announcements for airdrop events and bonus rewards are regularly shared through the Notice category within the Drop Quest platform and our Telegram community channels.",
+
     // Point Exchange
     pointExchangeTitle: "Point Exchange",
     availableTokens: "Available Tokens",
@@ -87,18 +154,24 @@ const translations = {
     no: "No",
     requestCompleted: "The exchange request has been completed",
     noTransactionHistory: "No transaction history found",
-
   },
+
   ko: {
     // Navigation
     home: "홈",
-    announcements: "공지사항",
+    announcements: "공지사항", 
     myPage: "마이페이지",
-    airdrop: "에어드랍",
+    airdrop: "출석체크",
+    qna: "자주 묻는 질문",
 
     // Landing Page
     clickAnd: "클릭하고",
     Earn: "코인받기",
+    clickAndEarn: "드롭퀘스트",
+    dropQuestDescription:
+      "Drop Quest 커뮤니티를 통해 사용자들에게 블록체인 관련 정보를 공유합니다. 이를 통하여 사용자들은 다른 커뮤니티의 토큰 세일, 에어드랍 등의 수익을 창출할 기회 및 정보를 얻습니다.",
+    clickInfoIcon: "정보 아이콘을 클릭하여 자세히 알아보세요",
+    activeNow: "현재 활성화",
     connectingUsers: "잠재적인 기회와 사용자를 연결합니다",
     earnAirdrops: "미션을 통해 에어드랍을 획득하고 수익을 창출할 수 있습니다.",
     connectingUsersToUsers: "사용자와 다른 사용자 연결",
@@ -107,11 +180,12 @@ const translations = {
     pointsForCoins: "포인트를 코인으로 교환하기",
     welcome: "환영합니다!",
     dontMissAirdrop: "에어드랍, 놓치지 말고 지금 바로 시작해보세요.",
+    soon: "SOON",
     roadmap: "로드맵",
+    dropquest: "드롭퀘스트",
     comingSoon: "출시 예정",
     // Airdrop
     claimSuccess: "일일 출석 체크를 완료했습니다",
-
 
     // Auth
     signUp: "회원가입",
@@ -140,7 +214,6 @@ const translations = {
     login: "로그인",
     loginSuccess: "로그인 성공",
 
-
     // My Page
     myPoints: "내 포인트",
     myReferrer: "내 추천인",
@@ -162,7 +235,66 @@ const translations = {
 
     // Announcements
     announcementsList: "공지사항 목록",
-    
+
+    // QnA Page
+    qnaTitle: "자주 묻는 질문",
+    basicUsage: "기본 이용 안내",
+    whatIsDropQuest: "Drop Quest는 무엇인가요?",
+    whatIsDropQuestAnswer:
+      "Drop Quest는 출석체크나 미션을 통해 포인트를 쌓고, 그 포인트를 코인으로 교환할 수 있는 리워드 플랫폼입니다.",
+    howToCheckIn: "출석체크 방법",
+    howToCheckInAnswer: "로그인 후 '출석체크' 버튼을 누르면 하루 1회 100포인트가 자동 적립됩니다.",
+
+    pointsSection: "포인트 관련",
+    dailyPointsEarned: "하루 포인트 적립량",
+    dailyPointsEarnedAnswer: "출석 시 100포인트를 받을 수 있습니다.",
+    howToCheckPoints: "포인트 확인하기",
+    howToCheckPointsAnswer: "마이페이지 > 포인트 내역에서 확인 가능합니다.",
+
+    referralSection: "레퍼럴 (추천인)",
+    referralRewardSystem: "레퍼럴 보상 방식",
+    referralRewardSystemAnswer:
+      "내 추천 링크로 가입한 유저가 출석체크를 할 때마다 그 유저가 얻은 포인트의 10%를 추가로 획득합니다.",
+    howToFindReferralLink: "추천 링크 확인하기",
+    howToFindReferralLinkAnswer: "마이페이지 상단에서 내 전용 링크를 확인하고 복사할 수 있습니다.",
+
+    pointExchangeSection: "포인트 교환",
+    availableCoins: "교환 가능한 코인",
+    availableCoinsAnswer: "솔라나(SOL) 및 솔라나 체인 기반 밈코인 등 다양한 코인으로 교환할 수 있습니다.",
+    howToExchange: "교환 방법",
+    howToExchangeStep1: "'포인트 교환소' 메뉴에서 교환 신청을 진행해주세요.",
+    howToExchangeStep2: "'마이 페이지'의 내 포인트 교환 기록에서 '텔레그램 메세지 확인' 버튼을 눌러주세요.",
+    howToExchangeStep3: "텔레그램 커뮤니티 상단 공지사항을 읽고, 상담원에게 메세지를 보내주세요.",
+    howToExchangeStep4: "팬텀(Phantom) 지갑의 솔라나 주소가 필요합니다.",
+    processingTime: "처리 시간",
+    processingTimeAnswer: "일반적으로 1시간 이내 처리되며, 상황에 따라 지연될 수 있습니다.",
+
+    walletSecurity: "지갑 및 보안",
+    isPhantomRequired: "팬텀 지갑이 꼭 필요한가요?",
+    isPhantomRequiredAnswer: "네. Drop Quest는 솔라나 네트워크를 기반으로 합니다. 따라서 팬텀 지갑이 필요합니다.",
+    wrongAddress: "주소 입력 실수 시",
+    wrongAddressAnswer:
+      "블록체인 특성상 잘못 전송된 코인은 복구가 불가능합니다. 전송 전 반드시 지갑 주소를 확인하세요.",
+    coinsNotAppearing: "코인을 입금 받았는데, 팬텀 지갑에서 코인과 가격이 표시되지 않아요.",
+    coinsNotAppearingAnswer:
+      "기존 네트워크 방식이 아닌 새로운 네트워크에서 발행된 코인의 경우, 팬텀 지갑이 이를 신규 코인으로 인식하는 경우가 있습니다. 이는 코인 스왑 여부나 신뢰성과는 무관하므로 안심하셔도 됩니다. 자세한 해결 방법은 아래 지갑 가이드를 참고해주세요.",
+    walletGuide: "지갑 가이드",
+    viewAsImage: "이미지로 보기",
+    walletGuideStep1: "팬텀 지갑 실행 → 코인 목록 우측 상단 [⋯] 클릭",
+    walletGuideStep2: "입금 받은 코인의 우측 슬라이바 상태를 [ON]으로 변경",
+    walletGuideStep3: "팬텀 지갑 메인 화면으로 돌아가서 입금받은 코인 클릭",
+    walletGuideStep4: "하단의 [스팸 아님으로 신고] 버튼 클릭",
+    walletGuideStep5: "이제부터 코인이 정상적으로 표시됩니다",
+
+    othersSection: "기타",
+    canUseOnPC: "PC 이용 가능 여부",
+    canUseOnPCAnswer: "Drop Quest는 모바일 버전만 지원합니다.",
+    howToChangeLanguage: "언어 설정 변경",
+    howToChangeLanguageAnswer:
+      "메인 화면 우측 상단 🌐 아이콘에서 한국어 / 영어 / 중국어(지원 예정) 버전 전환이 가능합니다.",
+    howToJoinEvents: "이벤트 참여",
+    howToJoinEventsAnswer:
+      "Drop Quest 플랫폼 내 공지사항 카테고리 또는 텔레그램 커뮤니티 채널을 통해 에어드랍 이벤트 및 보너스 소식이 주기적으로 안내됩니다.",
 
     // Point Exchange
     pointExchangeTitle: "포인트 교환",
@@ -174,9 +306,9 @@ const translations = {
     no: "아니오",
     requestCompleted: "포인트 교환 신청이 완료되었습니다",
     noTransactionHistory: "교환 내역이 없습니다",
-
   },
-}
+};
+
 
 const LanguageContext = createContext(undefined)
 
