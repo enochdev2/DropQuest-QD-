@@ -33,12 +33,12 @@ export default function DropQuestLanding() {
     <div className="min-h-screen pt-18 flex flex-col px-10 items-center bg-black text-white ">
       <div className="sm:w-[400px] sm:border sm:border-gray-700 rounded-lg mb-2  ">
         {/* HERO SECTION */}
-        <section className="flex flex-col X items-center  text-center px-4 sm:px-6 py-10 sm:py-12">
-          <div className="w-[90%] flex   sm:w-[400px] gap-4 justify-between  px-4 sm:pr-10 pr-8">
+        <section className="flex flex-col items-center  text-center px-4 sm:px-6 py-10 sm:py-12">
+          <div className="w-[95%] flex sm:w-[400px] gap-4 justify-between  px-2 sm:pr-10 pr-2 ">
             <div className="flex flex-col  space-y-3 text-xl text-left font-medium">
-              <p> {t("airdrop")}</p>
-              <p className="text-blue-600 font-medium">{t("clickAnd")}</p>
-              <p>{t("Earn")}</p>
+              <p className="text-lg"> {t("airdrop")}</p>
+              <p className="text-blue-600 font-semibold">{t("clickAnd")}</p>
+              <p className="font-meduim" >{t("Earn")}</p>
             </div>
 
             <img
