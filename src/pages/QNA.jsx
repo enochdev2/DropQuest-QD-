@@ -1,9 +1,8 @@
 import WalletGuideDialog from "@/components/Homapage/WalletGuideDialog";
-import React, { useState } from "react";
-import Navbar from "@/components/navbar";
+import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/language-context";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const QuestionNAnswer = () => {
   const { t, language } = useLanguage();
