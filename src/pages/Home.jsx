@@ -115,13 +115,21 @@ export default function DropQuestLanding() {
 
           {/* <h3 className="text-base font-semibold mb-2">{t("connectingUsers")}</h3>
             <p className="text-gray-200 text-sm">{t("earnAirdrops")}</p> */}
-          <div className=" w-[90%] space-y-5 sm:space-y-6 max-w-lg mx-auto">
+          <div className=" w-[95%] space-y-5 sm:space-y-6 max-w-lg mx-auto">
             <div className="bg-main p-4 sm:p-5 rounded-2xl shadow-lg">
               <h3 className="text-base sm:text-lg font-semibold mb-1">
                 {t("connectingUsers")}
               </h3>
               <p className="text-gray-200 text-xs sm:text-sm">
                 {t("earnAirdrops")}
+              </p>
+            </div>
+            <div className="bg-main p-2 sm:p-5 rounded-2xl shadow-lg">
+              <h3 className="text-sm sm:text-lg font-bold mb-1">
+                {t("blockchainrelated")}
+              </h3>
+              <p className="text-gray-200 text-xs sm:text-sm">
+                {t("allowsusers")}
               </p>
             </div>
             {/* <div className="bg-gray-800 p-4 sm:p-5 rounded-2xl shadow-lg text-center">
