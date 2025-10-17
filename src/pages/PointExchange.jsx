@@ -188,7 +188,7 @@ function PointExchange() {
             <div className="max-h-96 px-2 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-gray-900 rounded-lg">
               <div className="grid grid-cols-3 gap-2">
                 {tokenSlots.map((token) => {
-                  const isBTC = token.tokenName === "BTC"; // 👈 Check if BTC
+                  const isBTC = token.tokenName === "???"; // 👈 Check if BTC
                   const isDisabled = !token.isConfigured || isBTC;
 
                   return (

@@ -141,10 +141,10 @@ function AnnouncementsPage() {
           {selectedAnnouncement?.map((announcement) => (
             <div
               key={announcement.id}
-              className="bg-gray-800 rounded-lg p-4  border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
+              className="bg-black/70 rounded-lg p-4  border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
             >
               <div className="flex items-start gap-3 sm:gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm sm:text-lg">
+                <div className="flex-shrink-0 w-8 h-8 bg-main border rounded-lg flex items-center justify-center text-white font-bold text-sm sm:text-lg">
                   {announcement.id}
                 </div>
 

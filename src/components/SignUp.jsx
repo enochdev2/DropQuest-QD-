@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -39,12 +39,19 @@ const SignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
+  const [isLoading3, setIsLoading3] = useState(false);
   const [touched, setTouched] = useState({});
   const [rawFile, setRawFile] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [showGuide, setShowGuide] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [telegramError, setTelegramError] = useState("");
+
   // const referralCode = getReferralCodeFromUrl();
   // console.log("🚀 ~ SignUp ~ referralCode:", referralCode);
+
+  const debounceRef = useRef(null);
 
   // Validation functions
   const validateEmail = (email) => {
@@ -103,13 +110,96 @@ const SignUp = () => {
     }));
   };
 
+  const validateEmails = async (e) => {
+    const value = e.target.value.trim();
+
+    // 1️⃣ Update local state immediately
+    handleInputChange("email", value);
+
+    // 2️⃣ Clear previous debounce timer
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    // 3️⃣ Basic local email format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (value && !emailRegex.test(value)) {
+      setEmailError(t("invalidEmailFormat"));
+      return;
+    } else {
+      setEmailError(""); // clear previous error
+    }
+
+    // 4️⃣ Debounce backend validation (e.g., 600ms delay)
+    debounceRef.current = setTimeout(async () => {
+      try {
+        setIsLoading2(true);
+        const response = await fetch(
+          `https://dropquest-qd-backend.onrender.com/api/v1/user/check-email/${value}`
+        );
+        const data = await response.json();
+        setIsLoading2(false);
+
+        if (data.exists) {
+          setEmailError(t("emailAlreadyInUse"));
+        } else {
+          setEmailError("");
+        }
+      } catch (err) {
+        console.error("Email validation error:", err);
+        setEmailError(t("emailValidationError"));
+        setIsLoading(false);
+      }
+    }, 600); // 0.6 seconds debounce
+  };
+
+  const validateTelegramId = async (e) => {
+    const value = e.target.value.trim();
+
+    // 1️⃣ Update state immediately
+    handleInputChange("telegramId", value);
+
+    // 2️⃣ Clear previous debounce timer
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    // 3️⃣ Local validation: Telegram handle must start with '@' and contain letters, numbers, or underscores
+    const telegramRegex = /^@[a-zA-Z0-9_]{5,}$/;
+    if (value && !telegramRegex.test(value)) {
+      setTelegramError(t("invalidTelegramFormat")); // e.g., “Telegram handle must start with @ and be at least 5 characters.”
+      return;
+    } else {
+      setTelegramError("");
+    }
+
+    // 4️⃣ Debounced backend validation
+    debounceRef.current = setTimeout(async () => {
+      try {
+         setIsLoading3(true);
+        const response = await fetch(
+          `https://dropquest-qd-backend.onrender.com/api/v1/user/check-telegram/${value}`
+        );
+        const data = await response.json();
+        console.log("🚀 ~ validateTelegramId ~ data:", data)
+        setIsLoading3(false);
+
+        if (data.exists) {
+          setTelegramError(t("telegramAlreadyInUse"));
+        } else {
+          setTelegramError("");
+        }
+      } catch (err) {
+        console.error("Telegram validation error:", err);
+        setTelegramError(t("telegramValidationError"));
+        setIsLoading(false);
+      }
+    }, 600);
+  };
+
   // Real-time validation
   useEffect(() => {
     const newErrors = {};
 
     // Email validation
     if (touched.email && formData.email && !validateEmail(formData.email)) {
-      newErrors.email = (t("invalidEmailFormat"));
+      newErrors.email = t("invalidEmailFormat");
     }
 
     // Password validation
@@ -118,8 +208,7 @@ const SignUp = () => {
       formData.password &&
       !validatePassword(formData.password)
     ) {
-      newErrors.password =
-        (t('invalidPasswordFormat'));
+      newErrors.password = t("invalidPasswordFormat");
     }
 
     // Confirm password validation
@@ -128,14 +217,14 @@ const SignUp = () => {
       formData.confirmPassword &&
       formData.confirmPassword !== formData.password
     ) {
-      newErrors.confirmPassword = (t('passwordsDoNotMatch'));
+      newErrors.confirmPassword = t("passwordsDoNotMatch");
     }
 
     // Phone number validation (Korean format: 11 digits)
     if (touched.phoneNumber && formData.phoneNumber) {
       const digits = formData.phoneNumber.replace(/\D/g, "");
       if (digits.length !== 11) {
-        newErrors.phoneNumber = (t('invalidPhoneNumberLength'));
+        newErrors.phoneNumber = t("invalidPhoneNumberLength");
       }
     }
 
@@ -270,17 +359,51 @@ const SignUp = () => {
               type="email"
               placeholder={t("email")}
               value={formData.email}
-              onChange={(e) => handleInputChange("email", e.target.value)}
+              // onChange={(e) => handleInputChange("email", e.target.value)}
+              onChange={validateEmails}
               onBlur={() => handleBlur("email")}
+              // className={cn(
+              //   "transition-colors placeholder:text-sm",
+              //   errors.email &&
+              //     touched.email &&
+              //     "border-red-500 focus:border-red-500"
+              // )}
               className={cn(
                 "transition-colors placeholder:text-sm",
-                errors.email &&
+                (errors.email || emailError) &&
                   touched.email &&
                   "border-red-500 focus:border-red-500"
               )}
             />
+            {isLoading2 && (
+                <span className=" transform -translate-y-1/2">
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    ></path>
+                  </svg>
+                </span>
+              )}
             {errors.email && touched.email && (
               <p className="text-xs text-red-500">{errors.email}</p>
+            )}
+            {emailError && (
+              <p className="text-xs text-red-500">{emailError}</p>
             )}
           </div>
 
@@ -408,13 +531,52 @@ const SignUp = () => {
             <Input
               id="telegramId"
               type="text"
-              placeholder={t("telegramIdPlaceholder")}
+              placeholder="@username"
               value={formData.telegramId}
-              onChange={(e) => handleInputChange("telegramId", e.target.value)}
+              onChange={validateTelegramId}
               onBlur={() => handleBlur("telegramId")}
+              className={cn(
+                "placeholder:text-sm",
+                (errors.telegramId || telegramError) &&
+                  touched.telegramId &&
+                  "border-red-500 focus:border-red-500"
+              )}
               required
-              className="placeholder:text-sm"
             />
+            {isLoading3 && (
+                <span className=" transform -translate-y-1/2">
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    ></path>
+                  </svg>
+                </span>
+              )}
+            {(errors.telegramId || telegramError) && touched.telegramId && (
+              <p className="text-xs text-red-500">
+                {errors.telegramId || telegramError}
+              </p>
+            )}
+            {/* {telegramError && (
+              <p className="text-xs text-red-500">
+                { telegramError}
+              </p>
+            )} */}
           </div>
 
           {/* ✅ ID Card Upload */}
@@ -422,7 +584,7 @@ const SignUp = () => {
             <Label htmlFor="idCard" className="text-sm font-medium">
               {t("idCardFront")} <span className="text-red-500">*</span>
             </Label>
-             {/* KYC Guide Trigger */}
+            {/* KYC Guide Trigger */}
             <div className="mt-3 flex items-center space-x-2">
               <Button
                 variant="outline"
@@ -449,7 +611,7 @@ const SignUp = () => {
               onChange={handleFileChange}
               className="cursor-pointer placeholder:text-sm"
             />
-            
+
             {formData.idCard ||
               (uploadedFile && (
                 <div className="mt-2">
@@ -461,8 +623,6 @@ const SignUp = () => {
                   />
                 </div>
               ))}
-
-           
 
             {/* Modal */}
             <KYCGuideModal

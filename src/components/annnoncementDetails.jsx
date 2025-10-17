@@ -48,12 +48,12 @@ const AnnouncementDetail = () => {
   }
 
   return (
-    <div className="min-h-screen flex justify-center bg-gray-950">
-      <div className="min-h-screen sm:w-[400px] sm:border border-slate-600 bg-gray-950">
-        <div className="px-4 sm:px-6 lg:px-4 py-6 max-w-4xl mx-auto">
+    <div className="min-h-screen pt-14 flex justify-center bg-gray-950">
+      <div className="min-h-screen sm:w-[400px] sm:border border-slate-600 bg-main">
+        <div className="px-4 sm:px-6 lg:px-4 py-3 max-w-4xl mx-auto">
           <button
             onClick={() => router(-1)}
-            className="mb-6 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors duration-300 cursor-pointer"
+            className="mb-3 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors duration-300 cursor-pointer"
           >
             <svg
               className="w-5 h-5"
@@ -72,7 +72,7 @@ const AnnouncementDetail = () => {
           </button>
 
           {/* Announcement Detail */}
-          <div className="bg-gray-900 rounded-lg p-3 sm:p-3 border border-gray-700">
+          <div className="bg-black/70 min-h-[90vh] rounded-lg py-3 px-2.5 sm:p-3 border border-gray-700">
             <div className="flex text-white text-base justify-center  mb-8 my-2 space-x-4">
               <button
                 onClick={() => setActive("English")}
@@ -139,7 +139,7 @@ const AnnouncementDetail = () => {
 
             <div className="prose prose-invert max-w-none">
               <div
-                className={`text-gray-300 leading-relaxed text-base ${announcement?.content?.length > 300 ? "max-h-70 overflow-y-auto" : ""
+                className={`text-gray-300 leading-relaxed text-base ${announcement?.content?.length > 300 ? "max-h-100 overflow-y-auto" : ""
                   }`}
               >
                 <p className="mb-4 text-justify">
