@@ -9,12 +9,24 @@ const QuestionNAnswer = () => {
   const [openSections, setOpenSections] = useState({});
   const [showWalletGuide, setShowWalletGuide] = useState(false);
 
+  // const toggleSection = (section) => {
+  //   setOpenSections((prev) => ({
+  //     ...prev,
+  //     [section]: !prev[section],
+  //   }));
+  // };
+
   const toggleSection = (section) => {
-    setOpenSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
-  };
+  setOpenSections((prev) => {
+    // If the same section is clicked again, close it
+    if (prev[section]) {
+      return {};
+    }
+    // Otherwise, close all others and open the clicked one
+    return { [section]: true };
+  });
+};
+
 
   const qnaData = [
     {
@@ -139,12 +151,12 @@ const QuestionNAnswer = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-18 flex flex-col px-10 items-center bg-black text-white ">
+    <div className="min-h-screen pt-18 flex flex-col px-2 items-center bg-black text-white ">
       <div className="sm:w-[400px] sm:border sm:border-gray-700 rounded-lg mb-2 relative your-parent-class">
-        <div className="px-4 py-6 max-w-4xl mx-auto">
-          <div className="mb-8 text-center">
+        <div className="px-4 py-3 max-w-4xl mx-auto">
+          <div className="mb-4 text-center">
             <h1 className="text-3xl font-bold mb-2">{t("qnaTitle")}</h1>
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-300 text-sm">
               {language === "en"
                 ? "Frequently Asked Questions"
                 : "자주 묻는 질문"}
@@ -155,9 +167,9 @@ const QuestionNAnswer = () => {
             {qnaData.map((section, sectionIndex) => (
               <div
                 key={sectionIndex}
-                className="bg-gray-800/50 rounded-xl p-4 backdrop-blur-sm"
+                className="bg-main rounded-xl py-4 px-3 backdrop-blur-sm"
               >
-                <h2 className="text-xl font-bold mb-4 text-blue-400">
+                <h2 className="text-xl font-bold mb-4 text-blue-200">
                   {section.category}
                 </h2>
                 <div className="space-y-3">
@@ -168,7 +180,7 @@ const QuestionNAnswer = () => {
                     return (
                       <div
                         key={itemIndex}
-                        className="bg-gray-900/50 rounded-lg overflow-hidden"
+                        className="bg-black/50 rounded-lg overflow-hidden"
                       >
                         <button
                           onClick={() => toggleSection(key)}
@@ -190,7 +202,7 @@ const QuestionNAnswer = () => {
                           )}
                         </button>
                         {isOpen && (
-                          <div className="px-4 pb-4 text-gray-300 text-sm leading-relaxed border-t border-gray-700/50 pt-3">
+                          <div className="px-4 pb-4 text-gray-100 text-sm leading-relaxed border-t border-gray-700/50 pt-3">
                             {typeof item.answer === "string" ? (
                               <p>{item.answer}</p>
                             ) : (
