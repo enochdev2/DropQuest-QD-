@@ -13,6 +13,8 @@ import AdminDashboard from "./pages/admin/AdminHome";
 import PointExchange from "./pages/PointExchange";
 import AdminRoute from "./components/AdminRoute";
 import QuestionNAnswer from "./pages/QNA";
+import ManagerRoute from "./components/ManagerRoute";
+import ManagerDashboard from "./pages/manager/ManagerHome";
 // import AnnouncementsManagement from "./components/AdminDashboard/AnnouncementsManagement";
 // import PointsManagement from "./components/AdminDashboard/PointsManagement";
 // import UserManagement from "./components/AdminDashboard/UserManagement";
@@ -104,6 +106,15 @@ function App() {
             <AdminRoute>
               <AdminDashboard />
             </AdminRoute>
+          }
+        />
+        {/* Manager-Dashboard */}
+        <Route
+          path="/manager"
+          element={
+            <ManagerRoute>
+              <ManagerDashboard />
+            </ManagerRoute>
           }
         />
         {/* <Route path="/admin"> */}

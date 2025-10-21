@@ -88,7 +88,7 @@ export default function DropQuestLanding() {
                 </DialogTrigger>
 
                 {/* ✅ Make modal full width relative to parent */}
-                <DialogContent className="bg-gray-900 border-gray-700 text-white w-full max-w-[90%] sm:max-w-[380px] mx-auto rounded-lg">
+                <DialogContent className="bg-black/90 border-gray-700 text-white w-full max-w-[90%] sm:max-w-[380px] mx-auto rounded-lg">
                   <DialogHeader>
                     <DialogTitle className="text-xl font-bold text-center mb-0">
                       {t("clickAndEarn")}
