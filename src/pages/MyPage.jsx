@@ -122,7 +122,7 @@ function MyPage() {
                 <span className="text-2xl font-bold">
                   {/* {mockUser.points.toLocaleString()} */}
                   { }
-                  {!userProfile?.points?.totalPoints ? <Loader2 className=" animate-spin" /> : userProfile.points?.totalPoints.toLocaleString()}
+                  {!userProfile?.points ? <Loader2 className=" animate-spin" /> : userProfile.points?.totalPoints.toLocaleString()}
                 </span>
                 <img
                   src={coin}
