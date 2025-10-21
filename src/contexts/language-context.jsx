@@ -62,6 +62,7 @@ const translations = {
     emailAlreadyInUse: "This E-mail is already in use",
     telegramAlreadyInUse: "This Telegram ID is already in use.",
     referralEmail: "Referral email (Optional)",
+    referralEmails: "Referral email",
     kycPhotoInstruction:
       "Please upload a photo file that clearly shows both your face and the front side of your ID card.",
     kycPhotoTitle: "kycPhotoTitle",
@@ -182,6 +183,15 @@ const translations = {
     no: "No",
     requestCompleted: "The exchange request has been completed",
     noTransactionHistory: "No transaction history found",
+    searchForManagerEmail: "Search for a manager email",
+    managermanagement: "Manager Management",
+    numberOfUsers: "Number of Users",
+    registrationdate: "Registration Date",
+    backbutton: "Back button",
+    managerEmail: "Manager E-Mail",
+    ok: "OK",
+    cancel: "Cancel",
+  
   },
 
   ko: {
@@ -251,9 +261,11 @@ const translations = {
     passwordsDoNotMatch: "비밀번호가 일치하지 않습니다.",
     invalidPhoneNumberLength: "올바른 전화번호를 입력하세요",
     referralEmail: "추천인 이메일 (선택사항)",
+    referralEmails: "추천인 이메일",
     UploadID: "신분증 업로드",
     login: "로그인",
     loginSuccess: "로그인 성공",
+    backbutton: "뒤로가기",
 
     // My Page
     myPoints: "내 포인트",
@@ -335,6 +347,7 @@ const translations = {
     walletGuideStep3: "팬텀 지갑 메인 화면으로 돌아가서 입금받은 코인 클릭",
     walletGuideStep4: "하단의 [스팸 아님으로 신고] 버튼 클릭",
     walletGuideStep5: "이제부터 코인이 정상적으로 표시됩니다",
+    searchForManagerEmail: "이름을 검색하세요",
 
     othersSection: "기타",
     canUseOnPC: "PC 이용 가능 여부",
@@ -356,6 +369,12 @@ const translations = {
     no: "아니오",
     requestCompleted: "포인트 교환 신청이 완료되었습니다",
     noTransactionHistory: "교환 내역이 없습니다",
+    managermanagement: "매니저 관리",
+    numberOfUsers: "유저 수",
+    registrationdate: "가입 일",
+    managerEmail: "매니저 이메일",
+    ok: "확인",
+    cancel: "취소",
   },
 };
 

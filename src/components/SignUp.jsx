@@ -19,6 +19,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import LoadingSpinner from "./LoadingSpinner";
 import KYCGuideModal from "./Modal/KYCGuideModal";
+import { SuccessToast } from "./Success";
 
 const SignUp = () => {
   const { t } = useLanguage();
@@ -33,7 +34,7 @@ const SignUp = () => {
     name: "",
     phoneNumber: "",
     telegramId: "",
-    referralEmail:" ",
+    referralEmail:"",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -269,6 +270,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    SuccessToast("Uploading image...");
 
     if (!isFormValid()) {
       console.log("Please fill all required fields correctly.");
@@ -297,6 +299,7 @@ const SignUp = () => {
         const imageData = await imageRes.json();
         imageUrl = imageData.url; // Get the Cloudinary URL
       }
+      SuccessToast("Image uploaded successfully!");
       console.log("🚀 ~ handleSaveConfig ~ imageUrl:", imageUrl);
       // Build new user data
       const newUser = {
@@ -307,10 +310,12 @@ const SignUp = () => {
         telegramId: formData.telegramId || "",
         referralCode: referralCode || null, // Include referral code if available
         image: imageUrl,
-        referralEmail:formData.referralEmail || "",
+        referralEmail: formData.referralEmail || "",
       };
 
       // Make signup request to backend
+
+      SuccessToast("Registering user...");
 
       const response =
         imageUrl &&

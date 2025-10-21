@@ -6,7 +6,6 @@ const ManagerRoute = ({ children }) => {
 
 
   const user = token ? JSON.parse(atob(token.split(".")[1])) : null;
-  console.log("🚀 ~ ManagerRoute ~ user:", user)
 
   // If no user or not an admin, redirect
   if (!user || !user?.manager) {
