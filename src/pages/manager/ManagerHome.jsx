@@ -44,7 +44,8 @@ export default function ManagerDashboard() {
       while (true) {
         // const response = await fetch(`${BASE_URL}/api/v1/user/managersref?page=${page}`);
         const response = await fetch(
-          `http://localhost:3000/api/v1/user/managersref?page=${page}`,
+          // `http://localhost:3000/api/v1/user/managersref?page=${page}`,
+          `https://dropquest-qd-backend.onrender.com/api/v1/user/managersref?page=${page}`,
           {
             method: "GET",
             headers: {
@@ -85,7 +86,8 @@ export default function ManagerDashboard() {
 
       while (true) {
         const response = await fetch(
-          `http://localhost:3000/api/v1/user/managers?page=${page}`,
+          // `http://localhost:3000/api/v1/user/managers?page=${page}`,
+          `https://dropquest-qd-backend.onrender.com/api/v1/user/managers?page=${page}`,
           {
             method: "GET",
             headers: {
@@ -298,7 +300,7 @@ export default function ManagerDashboard() {
         </div>
       </div>
       <div className="w-full flex flex-col items-center justify-center py-5">
-        <div className="bg-blue-500/60 px-4 py-3 rounded-lg shadow-lg">
+        <div className="bg-main px-4 py-3 rounded-lg shadow-lg">
           <h1
             className="text-3xl font-bold text-gray-200"
             style={{ fontFamily: "DM Sans, sans-serif" }}
@@ -636,7 +638,7 @@ export default function ManagerDashboard() {
                   </div>
 
                   <div className="bg-main px-4 py-2 text-xl font-semibold rounded-md">
-                    Target : {selectedManager}
+                    Target : {personalData}
                   </div>
                 </div>
 
