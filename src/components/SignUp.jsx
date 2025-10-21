@@ -172,12 +172,12 @@ const SignUp = () => {
     // 4️⃣ Debounced backend validation
     debounceRef.current = setTimeout(async () => {
       try {
-         setIsLoading3(true);
+        setIsLoading3(true);
         const response = await fetch(
           `https://dropquest-qd-backend.onrender.com/api/v1/user/check-telegram/${value}`
         );
         const data = await response.json();
-        console.log("🚀 ~ validateTelegramId ~ data:", data)
+        console.log("🚀 ~ validateTelegramId ~ data:", data);
         setIsLoading3(false);
 
         if (data.exists) {
@@ -197,10 +197,10 @@ const SignUp = () => {
   useEffect(() => {
     const newErrors = {};
 
-    // Email validation
-    if (touched.email && formData.email && !validateEmail(formData.email)) {
-      newErrors.email = t("invalidEmailFormat");
-    }
+    // // Email validation
+    // if (touched.email && formData.email && !validateEmail(formData.email)) {
+    //   newErrors.email = t("invalidEmailFormat");
+    // }
 
     // Password validation
     if (
@@ -376,35 +376,33 @@ const SignUp = () => {
               )}
             />
             {isLoading2 && (
-                <span className=" transform -translate-y-1/2">
-                  <svg
-                    className="animate-spin h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v8H4z"
-                    ></path>
-                  </svg>
-                </span>
-              )}
+              <span className=" transform -translate-y-1/2">
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  ></path>
+                </svg>
+              </span>
+            )}
             {errors.email && touched.email && (
               <p className="text-xs text-red-500">{errors.email}</p>
             )}
-            {emailError && (
-              <p className="text-xs text-red-500">{emailError}</p>
-            )}
+            {emailError && <p className="text-xs text-red-500">{emailError}</p>}
           </div>
 
           {/* Password */}
@@ -544,29 +542,29 @@ const SignUp = () => {
               required
             />
             {isLoading3 && (
-                <span className=" transform -translate-y-1/2">
-                  <svg
-                    className="animate-spin h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v8H4z"
-                    ></path>
-                  </svg>
-                </span>
-              )}
+              <span className=" transform -translate-y-1/2">
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  ></path>
+                </svg>
+              </span>
+            )}
             {(errors.telegramId || telegramError) && touched.telegramId && (
               <p className="text-xs text-red-500">
                 {errors.telegramId || telegramError}
@@ -602,15 +600,19 @@ const SignUp = () => {
                 {t("kycPhotoTitle")}
               </button>
             </div>
-            <Input
-              id="idCard"
-              type="file"
-              accept="image/*"
-              // capture="environment"
-              // onChange={(e) => handleInputChange("idCard", e.target.files[0])}
-              onChange={handleFileChange}
-              className="cursor-pointer placeholder:text-sm"
-            />
+            <label
+              htmlFor="idCard"
+              className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-600 hover:bg-gray-100 transition"
+            >
+              {(t("UploadID"))}
+              <Input
+                id="idCard"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </label>
 
             {formData.idCard ||
               (uploadedFile && (

@@ -88,8 +88,8 @@ export default function WalletGuideDialog({ open, onOpenChange }) {
 
           <GuideStep
             number={8}
-            title="[스팸 아님으로 신고] 클릭"
-            description='하단의 "스팸 아님으로 신고" 버튼을 클릭합니다'
+            title="되돌아오기"
+            description='지갑의 초기 화면으로 돌아옵니다'
             image={imageGuide8}
             alt="imageGuide8"
           />

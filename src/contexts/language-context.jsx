@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { createContext, useContext, useState, useEffect } from "react"
+import { createContext, useContext, useState, useEffect } from "react";
 
 const translations = {
   en: {
@@ -22,9 +22,12 @@ const translations = {
     connectingUsers: "Connecting users with potential opportunities",
     earnAirdrops: "You can earn airdrops and generate income through missions.",
     connectingUsersToUsers: "Connecting users with other users",
-    blockchainrelated: " Through the Drop Quest community, we share blockchain-related information with users.",
-    allowsusers: "This allows users to gain opportunities and information to generate profits from token sales, airdrops, and other events in various communities.",
-    directOpportunities: "Users can also directly provide potential opportunities to other users.",
+    blockchainrelated:
+      " Through the Drop Quest community, we share blockchain-related information with users.",
+    allowsusers:
+      "This allows users to gain opportunities and information to generate profits from token sales, airdrops, and other events in various communities.",
+    directOpportunities:
+      "Users can also directly provide potential opportunities to other users.",
     goToAirdrop: "Go to Receive Airdrop",
 
     pointsForCoins: "Exchange Points for Coins",
@@ -50,19 +53,24 @@ const translations = {
     telegramId: "Telegram ID",
     telegramIdPlaceholder: "Please enter my profile-username",
     required: "Required",
-    passwordRequirement: "Use a password with at least 6 characters including letters and numbers.",
+    passwordRequirement:
+      "Use a password with at least 6 characters including letters and numbers.",
     passwordMismatch: "Passwords do not match.",
     passwordMatchValidation: "Please enter the same password as above.",
     idCardFront: "ID card photo (front side)",
     alreadyHaveAccount: "Already have an account?",
     emailAlreadyInUse: "This E-mail is already in use",
     telegramAlreadyInUse: "This Telegram ID is already in use.",
-    kycPhotoInstruction: "Please upload a photo file that clearly shows both your face and the front side of your ID card.",
+    kycPhotoInstruction:
+      "Please upload a photo file that clearly shows both your face and the front side of your ID card.",
     kycPhotoTitle: "kycPhotoTitle",
     invalidEmailFormat: "Please enter a valid email format",
-    invalidPasswordFormat: "Password must include both letters and numbers and be at least 6 characters long",
+    invalidPasswordFormat:
+      "Password must include both letters and numbers and be at least 6 characters long",
+    invalidTelegramFormat: "invalidTelegramFormat",
     passwordsDoNotMatch: "Passwords do not match",
     invalidPhoneNumberLength: "Phone number must be 11 digits",
+    UploadID: "Upload ID Card",
     login: "Login",
     loginSuccess: "Login Successful",
 
@@ -72,7 +80,8 @@ const translations = {
     refresh: "Refresh",
     myInvitationLink: "My Invitation Link",
     copyInvitationLink: "Copy your invitation link and invite friends to DQ!",
-    moreInvites: "The more friends you invite, the more points and benefits you can earn.",
+    moreInvites:
+      "The more friends you invite, the more points and benefits you can earn.",
     myReferralList: "My Referral List",
     pointsBalance: "Points Balance",
     invitationLinkCopied: "Invitation link copied to clipboard",
@@ -100,42 +109,55 @@ const translations = {
 
     pointsSection: "Points",
     dailyPointsEarned: "Daily Points Earned",
-    dailyPointsEarnedAnswer: "You can receive 100 points per day by checking in.",
+    dailyPointsEarnedAnswer:
+      "You can receive 100 points per day by checking in.",
     howToCheckPoints: "How to Check Your Points",
-    howToCheckPointsAnswer: "Go to My Page > Points History to view your accumulated points.",
+    howToCheckPointsAnswer:
+      "Go to My Page > Points History to view your accumulated points.",
 
     referralSection: "Referral",
     referralRewardSystem: "Referral Reward System",
     referralRewardSystemAnswer:
       "Each time a user who registered through your referral link checks in, you'll receive an additional 10% of the points they earn.",
     howToFindReferralLink: "How to Find Your Referral Link",
-    howToFindReferralLinkAnswer: "You can view and copy your personal referral link at the top of My Page.",
+    howToFindReferralLinkAnswer:
+      "You can view and copy your personal referral link at the top of My Page.",
 
     pointExchangeSection: "Point Exchange",
     availableCoins: "Available Coins for Exchange",
-    availableCoinsAnswer: "You can exchange points for Solana (SOL) and various Solana chain-based meme coins.",
+    availableCoinsAnswer:
+      "You can exchange points for Solana (SOL) and various Solana chain-based meme coins.",
     howToExchange: "How to Exchange",
-    howToExchangeStep1: 'Go to the "Point Exchange" menu and submit an exchange request.',
-    howToExchangeStep2: 'On My Page, open your point exchange record and click the "Check Telegram Message" button.',
-    howToExchangeStep3: "Read the pinned announcement in the Telegram community and message a support agent.",
-    howToExchangeStep4: "A Solana address from your Phantom wallet is required.",
+    howToExchangeStep1:
+      'Go to the "Point Exchange" menu and submit an exchange request.',
+    howToExchangeStep2:
+      'On My Page, open your point exchange record and click the "Check Telegram Message" button.',
+    howToExchangeStep3:
+      "Read the pinned announcement in the Telegram community and message a support agent.",
+    howToExchangeStep4:
+      "A Solana address from your Phantom wallet is required.",
     processingTime: "Processing Time",
-    processingTimeAnswer: "Typically processed within 1 hour, but may take longer depending on conditions.",
+    processingTimeAnswer:
+      "Typically processed within 1 hour, but may take longer depending on conditions.",
 
     walletSecurity: "Wallet & Security",
     isPhantomRequired: "Is a Phantom Wallet Required?",
-    isPhantomRequiredAnswer: "Yes. Drop Quest is based on the Solana network, so a Phantom wallet is required.",
+    isPhantomRequiredAnswer:
+      "Yes. Drop Quest is based on the Solana network, so a Phantom wallet is required.",
     wrongAddress: "If You Enter the Wrong Address",
     wrongAddressAnswer:
       "Due to the nature of blockchain, coins sent to the wrong address cannot be recovered. Please double-check your wallet address before sending.",
-    coinsNotAppearing: "I Received Coins, but They Don't Appear or Show a Price in My Phantom Wallet",
+    coinsNotAppearing:
+      "I Received Coins, but They Don't Appear or Show a Price in My Phantom Wallet",
     coinsNotAppearingAnswer:
       "If the coins were issued on a new network rather than the existing one, Phantom Wallet may recognize them as new tokens. This issue is not related to token swap status or trustworthiness, so don't worry. Please refer to the wallet guide below for detailed instructions.",
     walletGuide: "Wallet Guide",
     viewAsImage: "View as Image",
-    walletGuideStep1: "Open your Phantom Wallet → Tap the [⋯] icon at the top right of the token list",
+    walletGuideStep1:
+      "Open your Phantom Wallet → Tap the [⋯] icon at the top right of the token list",
     walletGuideStep2: "Turn ON the toggle switch next to the deposited token",
-    walletGuideStep3: "Return to the main screen and select the deposited token",
+    walletGuideStep3:
+      "Return to the main screen and select the deposited token",
     walletGuideStep4: 'Tap "Report as Not Spam" at the bottom of the screen',
     walletGuideStep5: "The token should now display correctly",
 
@@ -164,7 +186,7 @@ const translations = {
   ko: {
     // Navigation
     home: "홈",
-    announcements: "공지사항", 
+    announcements: "공지사항",
     myPage: "마이페이지",
     airdrop: "출석체크",
     qna: "자주 묻는 질문",
@@ -179,10 +201,13 @@ const translations = {
     activeNow: "현재 활성화",
     connectingUsers: "잠재적인 기회와 사용자를 연결합니다",
     earnAirdrops: "미션을 통해 에어드랍을 획득하고 수익을 창출할 수 있습니다.",
-    blockchainrelated: "Drop Quest 커뮤니티를 통해 사용자들에게 블록체인 관련 정보를 공유합니다.",
-    allowsusers: "이를 통하여 사용자들은 다른 커뮤니티의 토큰 세일, 에어드랍 등의 수익을 창출할 기회 및 정보를 얻습니다.",
+    blockchainrelated:
+      "Drop Quest 커뮤니티를 통해 사용자들에게 블록체인 관련 정보를 공유합니다.",
+    allowsusers:
+      "이를 통하여 사용자들은 다른 커뮤니티의 토큰 세일, 에어드랍 등의 수익을 창출할 기회 및 정보를 얻습니다.",
     connectingUsersToUsers: "사용자와 다른 사용자 연결",
-    directOpportunities: "사용자들이 다른 사용자들에게 직접 잠재적 기회를 제공할 수도 있습니다.",
+    directOpportunities:
+      "사용자들이 다른 사용자들에게 직접 잠재적 기회를 제공할 수도 있습니다.",
     goToAirdrop: "에어드랍 받으러 가기",
     pointsForCoins: "포인트를 코인으로 교환하기",
     welcome: "환영합니다!",
@@ -207,19 +232,24 @@ const translations = {
     telegramId: "텔레그램 아이디",
     telegramIdPlaceholder: "내 프로필-사용자명을 기입해주세요",
     required: "필수",
-    passwordRequirement: "영문, 숫자를 포함하여 6자리 이상의 비밀번호를 사용하세요.",
+    passwordRequirement:
+      "영문, 숫자를 포함하여 6자리 이상의 비밀번호를 사용하세요.",
     passwordMismatch: "비밀번호가 일치하지 않습니다.",
     passwordMatchValidation: "위와 동일한 비밀번호를 입력해 주세요",
     idCardFront: "신분증 사진 (앞면)",
     alreadyHaveAccount: "이미 계정이 있으신가요?",
     emailAlreadyInUse: "이 이메일은 이미 사용 중입니다",
     telegramAlreadyInUse: "이 텔레그램 아이디는 이미 사용 중입니다.",
-    kycPhotoInstruction: "신분증 앞면과 얼굴이 모두 사진에 나오게 촬영한 사진 파일을 업로드 해주세요",
+    kycPhotoInstruction:
+      "신분증 앞면과 얼굴이 모두 사진에 나오게 촬영한 사진 파일을 업로드 해주세요",
     kycPhotoTitle: "사진 촬영 방법",
     invalidEmailFormat: "올바른 이메일 형식을 입력해주세요.",
-    invalidPasswordFormat: "문자와 숫자가 모두 포함되어야 하며, 최소 6자 이상이어야 합니다.",
+    invalidPasswordFormat:
+      "문자와 숫자가 모두 포함되어야 하며, 최소 6자 이상이어야 합니다.",
+    invalidTelegramFormat: "올바른 형식의 텔레그램 아이디를 입력해주세요",
     passwordsDoNotMatch: "비밀번호가 일치하지 않습니다.",
     invalidPhoneNumberLength: "올바른 전화번호를 입력하세요",
+    UploadID: "신분증 업로드",
     login: "로그인",
     loginSuccess: "로그인 성공",
 
@@ -229,7 +259,8 @@ const translations = {
     refresh: "새로고침",
     myInvitationLink: "내 초대 링크",
     copyInvitationLink: "초대 링크를 복사하고 친구들을 DQ에 초대하세요!",
-    moreInvites: "더 많은 친구를 초대할수록 더 많은 포인트와 혜택을 얻을 수 있습니다.",
+    moreInvites:
+      "더 많은 친구를 초대할수록 더 많은 포인트와 혜택을 얻을 수 있습니다.",
     myReferralList: "내 추천 목록",
     pointsBalance: "포인트 잔액",
     invitationLinkCopied: "초대 링크가 복사되었습니다",
@@ -247,44 +278,52 @@ const translations = {
 
     // QnA Page
     qnaTitle: "자주 묻는 질문",
-    basicUsage: "기본 이용 안내",
+    basicUsage: "출석체크",
     whatIsDropQuest: "Drop Quest는 무엇인가요?",
     whatIsDropQuestAnswer:
       "Drop Quest는 출석체크나 미션을 통해 포인트를 쌓고, 그 포인트를 코인으로 교환할 수 있는 리워드 플랫폼입니다.",
     howToCheckIn: "출석체크 방법",
-    howToCheckInAnswer: "로그인 후 '출석체크' 버튼을 누르면 하루 1회 100포인트가 자동 적립됩니다.",
+    howToCheckInAnswer:
+      "로그인 후 '출석체크' 버튼을 누르면 하루 1회 100포인트가 자동 적립됩니다.",
 
     pointsSection: "포인트 관련",
     dailyPointsEarned: "하루 포인트 적립량",
     dailyPointsEarnedAnswer: "출석 시 100포인트를 받을 수 있습니다.",
     howToCheckPoints: "포인트 확인하기",
-    howToCheckPointsAnswer: "마이페이지 > 포인트 내역에서 확인 가능합니다.",
+    howToCheckPointsAnswer: "마이 페이지 > 내 포인트에서 확인 가능합니다.",
 
     referralSection: "레퍼럴 (추천인)",
     referralRewardSystem: "레퍼럴 보상 방식",
     referralRewardSystemAnswer:
       "내 추천 링크로 가입한 유저가 출석체크를 할 때마다 그 유저가 얻은 포인트의 10%를 추가로 획득합니다.",
-    howToFindReferralLink: "추천 링크 확인하기",
-    howToFindReferralLinkAnswer: "마이페이지 상단에서 내 전용 링크를 확인하고 복사할 수 있습니다.",
+    howToFindReferralLink: "내 초대 링크(추천인 링크) 확인하기",
+    howToFindReferralLinkAnswer:
+      "마이페이지 > 내 추천인에서 내 초대 링크를 확인하고 복사할 수 있습 니다",
 
     pointExchangeSection: "포인트 교환",
     availableCoins: "교환 가능한 코인",
-    availableCoinsAnswer: "솔라나(SOL) 및 솔라나 체인 기반 밈코인 등 다양한 코인으로 교환할 수 있습니다.",
+    availableCoinsAnswer:
+      "솔라나(SOL) 및 솔라나 체인 기반 밈코인 등 다양한 코인으로 교환할 수 있습니다.",
     howToExchange: "교환 방법",
     howToExchangeStep1: "'포인트 교환소' 메뉴에서 교환 신청을 진행해주세요.",
-    howToExchangeStep2: "'마이 페이지'의 내 포인트 교환 기록에서 '텔레그램 메세지 확인' 버튼을 눌러주세요.",
-    howToExchangeStep3: "텔레그램 커뮤니티 상단 공지사항을 읽고, 상담원에게 메세지를 보내주세요.",
+    howToExchangeStep2:
+      "마이페이지 하단의 ‘내 포인트 교환 기록’에서 텔레그램을 클릭해주세요",
+    howToExchangeStep3:
+      "텔레그램 커뮤니티의 상단 공지사항의 안내에 따라주세요.",
     howToExchangeStep4: "팬텀(Phantom) 지갑의 솔라나 주소가 필요합니다.",
     processingTime: "처리 시간",
-    processingTimeAnswer: "일반적으로 1시간 이내 처리되며, 상황에 따라 지연될 수 있습니다.",
+    processingTimeAnswer:
+      "일반적으로 1시간 이내 처리되며, 상황에 따라 지연될 수 있습니다.",
 
     walletSecurity: "지갑 및 보안",
     isPhantomRequired: "팬텀 지갑이 꼭 필요한가요?",
-    isPhantomRequiredAnswer: "네. Drop Quest는 솔라나 네트워크를 기반으로 합니다. 따라서 팬텀 지갑이 필요합니다.",
+    isPhantomRequiredAnswer:
+      "네. Drop Quest는 솔라나 네트워크를 기반으로 합니다. 따라서 팬텀 지갑이 필요합니다.",
     wrongAddress: "주소 입력 실수 시",
     wrongAddressAnswer:
       "블록체인 특성상 잘못 전송된 코인은 복구가 불가능합니다. 전송 전 반드시 지갑 주소를 확인하세요.",
-    coinsNotAppearing: "코인을 입금 받았는데, 팬텀 지갑에서 코인과 가격이 표시되지 않아요.",
+    coinsNotAppearing:
+      "코인을 입금 받았는데, 팬텀 지갑에서 코인과 가격이 표시되지 않아요.",
     coinsNotAppearingAnswer:
       "기존 네트워크 방식이 아닌 새로운 네트워크에서 발행된 코인의 경우, 팬텀 지갑이 이를 신규 코인으로 인식하는 경우가 있습니다. 이는 코인 스왑 여부나 신뢰성과는 무관하므로 안심하셔도 됩니다. 자세한 해결 방법은 아래 지갑 가이드를 참고해주세요.",
     walletGuide: "지갑 가이드",
@@ -318,40 +357,41 @@ const translations = {
   },
 };
 
-
-const LanguageContext = createContext(undefined)
+const LanguageContext = createContext(undefined);
 
 export function LanguageProvider({ children }) {
-  const [language, setLanguage] = useState("en") // Default to English
+  const [language, setLanguage] = useState("en"); // Default to English
 
   useEffect(() => {
-    const savedLanguage = localStorage.getItem("language")
+    const savedLanguage = localStorage.getItem("language");
     if (savedLanguage && (savedLanguage === "en" || savedLanguage === "ko")) {
-      setLanguage(savedLanguage)
+      setLanguage(savedLanguage);
     }
-  }, [])
+  }, []);
 
   const handleSetLanguage = (lang) => {
-    setLanguage(lang)
-    localStorage.setItem("language", lang)
-  }
+    setLanguage(lang);
+    localStorage.setItem("language", lang);
+  };
 
   const t = (key) => {
-    return translations[language][key] || key
-  }
+    return translations[language][key] || key;
+  };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
+    <LanguageContext.Provider
+      value={{ language, setLanguage: handleSetLanguage, t }}
+    >
       {children}
     </LanguageContext.Provider>
-  )
+  );
 }
 
 export function useLanguage() {
-  const context = useContext(LanguageContext)
+  const context = useContext(LanguageContext);
   if (context === undefined) {
-    throw new Error("useLanguage must be used within a LanguageProvider")
+    throw new Error("useLanguage must be used within a LanguageProvider");
   }
-//    fast refresh only works when a file only exports components. use a new file to share constants or function between components
-  return context
+  //    fast refresh only works when a file only exports components. use a new file to share constants or function between components
+  return context;
 }
