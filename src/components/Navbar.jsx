@@ -74,6 +74,13 @@ export default function Navbar() {
             >
               Admin
             </Link>
+          ) : user?.manager ? (
+            <Link
+              to="/manager"
+              className="text-black font-semibold  py-1 text-sm rounded-2xl px-3 bg-white"
+            >
+              Manager
+            </Link>
           ) : (
             <Button
               variant="ghost"

@@ -33,6 +33,7 @@ const SignUp = () => {
     name: "",
     phoneNumber: "",
     telegramId: "",
+    referralEmail:" ",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -247,6 +248,7 @@ const SignUp = () => {
     const passwordsMatch = formData.password === formData.confirmPassword;
     const validPassword = validatePassword(formData.password);
     const validEmail = validateEmail(formData.email);
+    // const referralEmail = validateEmail(formData.referralEmail);
 
     return (
       allRequiredFilled &&
@@ -305,6 +307,7 @@ const SignUp = () => {
         telegramId: formData.telegramId || "",
         referralCode: referralCode || null, // Include referral code if available
         image: imageUrl,
+        referralEmail:formData.referralEmail || "",
       };
 
       // Make signup request to backend
@@ -604,7 +607,7 @@ const SignUp = () => {
               htmlFor="idCard"
               className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-600 hover:bg-gray-100 transition"
             >
-              {(t("UploadID"))}
+              {t("UploadID")}
               <Input
                 id="idCard"
                 type="file"
@@ -632,12 +635,28 @@ const SignUp = () => {
               onClose={() => setShowGuide(false)}
             />
           </div>
+
+          <div className="space-y-1">
+            <Label htmlFor="referralEmail" className="text-sm font-semibold">
+              {t("referralEmail")}
+            </Label>
+            <Input
+              id="referralEmail"
+              type="text"
+              // placeholder={t("name")}
+              placeholder="DropQuest@gmail.com"
+              value={formData.referralEmail}
+              onChange={(e) => handleInputChange("referralEmail", e.target.value)}
+              onBlur={() => handleBlur("name")}
+              className="placeholder:text-base placeholder:text-white"
+            />
+          </div>
         </CardContent>
 
         <CardFooter>
           <Button
             type="submit"
-            className="w-full text-base font-medium mt-2 flex items-center justify-center gap-2"
+            className="w-full text-lg text-white font-medium mt-4 py-4 flex items-center justify-center gap-2"
             disabled={isLoading || !isFormValid()}
             style={{
               background:
