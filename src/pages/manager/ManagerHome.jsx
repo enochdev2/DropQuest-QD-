@@ -273,14 +273,13 @@ export default function ManagerDashboard() {
   return (
     <div className="min-h-screen bg-black">
       <div className="px-16 bg-black border-b border-cyan-100  py-6 shadow-sm">
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <div className="text-lg sm:text-xl   flex items-center gap-2">
             <Link
               to="/"
               className="flex items-center gap-2 hover:opacity-80 transition"
             >
               <img src={logo} alt="" className=" w-14  h-8" />
-              {/* <span className="text-white">DQ</span> */}
               <span className="text-gray-300 -ml- -mb-3 fon text-2xl">
                 DropQuest
               </span>
@@ -297,9 +296,9 @@ export default function ManagerDashboard() {
             />
             {isLoading ? "Loading..." : "Refresh"}
           </Button>
-        </div>
+        </div> */}
       </div>
-      <div className="w-full flex flex-col items-center justify-center py-5">
+      <div className="w-full flex flex-col pt-7 items-center justify-center py-5">
         <div className="bg-main px-4 py-3 rounded-lg shadow-lg">
           <h1
             className="text-3xl font-bold text-gray-200"
@@ -307,9 +306,7 @@ export default function ManagerDashboard() {
           >
             DropQuest Manager Dashboard
           </h1>
-          {/* <p className="text-slate-200 mt-2 text-lg" style={{ fontFamily: "DM Sans, sans-serif" }}>
-              Manage your data effortlessly with insights at your fingertips
-            </p> */}
+          
         </div>
       </div>
 
@@ -364,9 +361,9 @@ export default function ManagerDashboard() {
                         setManagerSearchTerm(e.target.value);
                         setCurrentManagerPage(1);
                       }}
-                      className="bg-gray-800 text-white text-xl px-3 py-2 rounded-md focus:outline-none"
+                      className="bg-black/40 border border-blue-600/40 text-white text-xl px-3 py-2 rounded-md focus:outline-none"
                     />
-                    <button className="bg-sky-700 hover:bg-gray-600 text-xl font-bold px-4 py-2 rounded-md">
+                    <button className="bg-main border border-blue-700 hover:bg-blue-600 text-xl font-bold px-4 py-2 rounded-md cursor-pointer">
                       Enter
                     </button>
                   </div>
@@ -702,8 +699,8 @@ export default function ManagerDashboard() {
                       </tbody>
                     </table>
                   ) : (
-                    <div className="flex justify-center items-center py-8">
-                      <p className="text-gray-400 text-sm">No referral yet</p>
+                    <div className="flex justify-center py-8 items-center ">
+                      <p className="text-gray-100 text-3xl font-bold">No referral yet</p>
                     </div>
                   )}
                 </div>
