@@ -3,27 +3,12 @@
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/language-context";
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { Calendar, CalendarPlusIcon, ChevronDown } from "lucide-react";
 // import { useLanguage } from "@/contexts/language-context"
 import umbrellaCoin from "@/assets/dqLogo.png";
 import { claimPoints, getUserProfile } from "@/lib/utilityFunction";
 import { SuccessToast } from "@/components/Success";
 import LoadingSpinner from "@/components/LoadingSpinner";
-
-// Mock attendance data for the past 3 days
-// let attendanceData = [
-//   { date: "8/6", status: "absent", label: { en: "Absent", ko: "미출석" } },
-//   {
-//     date: "8/7",
-//     status: "completed",
-//     label: { en: "Completed", ko: "출석 완료" },
-//   },
-//   {
-//     date: "8/8",
-//     status: "completed",
-//     label: { en: "Completed", ko: "출석 완료" },
-//   },
-// ];
 
 function AirDrop() {
   const { language } = useLanguage();
@@ -33,6 +18,14 @@ function AirDrop() {
   const [userProfile, setUserProfile] = useState({});
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [currentStreak, setCurrentStreak] = useState(0); // Mock: replace with user.streak from backend
+
+  // Mock rewards per streak day (1-based index)
+  const dayRewards = [100, 100, 100, 200, 200, 300, 300];
+  const todayDay = currentStreak + 1;
+  // const todayReward = dayRewards[todayDay - 1] || 100;
+  const hundred = 100
+  const todayReward = hundred || dayRewards[todayDay - 1] ;
 
   useEffect(() => {
     getUserProfileDetails();
@@ -49,13 +42,13 @@ function AirDrop() {
 
     setShowSuccess(false);
     setLoading(false);
-    SuccessToast("you have successfully claim your airdrop for the day");
+    SuccessToast(`You have successfully claimed ${todayReward} points for the day.`);
 
     setTodayChecked(true);
-    // Redirect after 30 seconds
+    // Redirect after 3 seconds (reduced for demo)
     setTimeout(() => {
       window.location.href = "/my-page"; // replace with your page URL
-    }, 3000); // 30000ms = 30 seconds
+    }, 3000);
   };
 
   const getUserProfileDetails = async () => {
@@ -63,25 +56,13 @@ function AirDrop() {
     const user = await getUserProfile(userInfo.email);
     console.log("🚀 ~ getUserProfileDetails ~ user:", user);
     setUserProfile(user);
-    // attendanceData = [
-    //   { date: "5/7", status: "absent", label: { en: "Absent", ko: "미출석" } },
-    //   {
-    //     date: "6/7",
-    //     status: "completed",
-    //     label: { en: "Completed", ko: "출석 완료" },
-    //   },
-    //   {
-    //     date: "7/7",
-    //     status: "completed",
-    //     label: { en: "Completed", ko: "출석 완료" },
-    //   },
-    // ];
+    // Mock streak: replace with actual user.streak logic
+    setCurrentStreak(3); // Example: 3-day streak
     if (user.points?.points === 0) {
       setTodayChecked(true);
-      // setMessage("You have already claimed your point for the day.");
       setMessage(language === "en"
-                  ? "You have already claimed your point for the day."
-                  : "일일 출석 체크를 이미 완료했습니다");
+        ? "You have already claimed your point for the day."
+        : "일일 출석 체크를 이미 완료했습니다");
     } else {
       setTodayChecked(false);
     }
@@ -129,7 +110,8 @@ function AirDrop() {
           </div>
           {message && (
             <p className="text-red-500 font-semibold mb-2 text-xs mt-2">
-              {message}
+              {/* {message} */}
+              {language === "en" ? "you have already claimed your point for the day." : "일일 출석체크를 이미 완료했습니다"}
             </p>
           )}
 
@@ -142,38 +124,56 @@ function AirDrop() {
             {language === "en" ? "Attendance Check" : "출석 체크"}
           </Button>
 
-          {/* Attendance Status */}
-          {/* <div className="flex items-center gap-6 mb-4">
-            {attendanceData.map((day, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center text-xs font-medium ${
-                    day.status === "completed"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-700 text-gray-400"
-                  }`}
-                >
-                  {day.date}
-                </div>
-                <span
-                  className={`text-xs mt-1 ${
-                    day.status === "completed"
-                      ? "text-blue-400"
-                      : "text-gray-500"
-                  }`}
-                >
-                  {day.label[language]}
-                </span>
-              </div>
-            ))}
-          </div> */}
-
           {/* Reset Info */}
           <p className="text-gray-400 text-sm text-center">
             {language === "en"
               ? "Attendance checks are reset daily at 00:00 (KST)."
               : "출석체크는 매일 00시00분에 초기화 됩니다."}
           </p>
+          {/* <Calendar text-white /> */}
+
+          {/* Streak Calendar UI */}
+          <div className="mb-6 w-full mt-12 bg-main py-5 px-3 text-right max-w-xs">
+            {/* Top row: Days 1-5 */}
+            <div className="grid grid-cols-5 gap-2 mb-2 justify-items-center">
+              {Array.from({ length: 5 }, (_, i) => i + 1).map((day) => {
+                const isCompleted = day <= currentStreak;
+                return (
+                  <div key={day} className="flex flex-col flex-wrap items-center">
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium mb-1 transition-colors ${
+                        isCompleted ? "bg-green-600 text-white" : "bg-gray-700 text-gray-400"
+                      }`}
+                    >
+                      {day}
+                    </div>
+                    <span className="text-xs text-gray-500">{dayRewards[day - 1]}</span>
+                  </div>
+                );
+              })}
+            </div>
+            
+            {/* Bottom row: Days 6-7 */}
+            <div className="flex justify-start gap-6">
+              {Array.from({ length: 2 }, (_, i) => i + 6).map((day) => {
+                const isCompleted = day <= currentStreak;
+                return (
+                  <div key={day} className="flex flex-col items-center">
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium mb-1 transition-colors ${
+                        isCompleted ? "bg-green-600 text-white" : "bg-gray-700 text-gray-400"
+                      }`}
+                    >
+                      {day}
+                    </div>
+                    <span className="text-xs text-gray-500">{dayRewards[day - 1]}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          
         </div>
 
         {/* Success Popup */}
@@ -190,7 +190,7 @@ function AirDrop() {
                 <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
                   <span className="text-white font-bold text-sm">$</span>
                 </div>
-                <span className="text-white text-2xl font-bold">100</span>
+                <span className="text-white text-2xl font-bold">{todayReward}</span>
               </div>
 
               <Button

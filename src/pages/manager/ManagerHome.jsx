@@ -21,6 +21,7 @@ export default function ManagerDashboard() {
   const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [referralLoading, setReferralLoading] = useState(false);
+  const [managerReferralLoading, setManagerReferralLoading] = useState({}); // CHANGED: Added state for per-manager loading
   const [showManagers, setShowManagers] = useState(false);
   const [selectedManager, setSelectedManager] = useState(null);
   const [unlocked, setUnlocked] = useState(false);
@@ -34,6 +35,7 @@ export default function ManagerDashboard() {
   const [referralCurrentPage, setReferralCurrentPage] = useState(1);
   const [allUsers, setAllUsers] = useState([]);
   const [myReferrals, setMyReferrals] = useState([]);
+  const [managerReferrals, setManagerReferrals] = useState({}); // CHANGED: Added state to store referrals per manager { email: [users] }
   const [personalData, setPersonalData] = useState("");
   const [allManagers, setAllManagers] = useState([]);
   const inputRefs = useRef([]);
@@ -46,41 +48,41 @@ export default function ManagerDashboard() {
   const referralItemsPerPage = 5;
 
   const fetchAllUsers = async () => {
-    try {
-      let page = 1;
-      // let fetchedUsers = [];
-      let fetchedReferrals = [];
-      const token = localStorage.getItem("token");
-      while (true) {
-        const response = await fetch(
-          // `http://localhost:3000/api/v1/user/managersref?page=${page}`,
-          `https://dropquest-qd-backend.onrender.com/api/v1/user/managersref?page=${page}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+      try {
+        let page = 1;
+        // let fetchedUsers = [];
+        let fetchedReferrals = [];
+        const token = localStorage.getItem("token");
+        while (true) {
+          const response = await fetch(
+            // `http://localhost:3000/api/v1/user/managersref?page=${page}`,
+            `https://dropquest-qd-backend.onrender.com/api/v1/user/managersref?page=${page}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch users");
           }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch users");
+          if (!response.ok) {
+            throw new Error("Failed to fetch my referrals");
+          }
+          const data = await response.json();
+          console.log("🚀 ~ fetchMyReferrals ~ data:", data);
+          if (!data.users || data.users.length === 0) break;
+          fetchedReferrals = [...fetchedReferrals, ...data.users];
+          if (data.users.length < 10) break;
+          page++;
         }
-        if (!response.ok) {
-          throw new Error("Failed to fetch my referrals");
-        }
-        const data = await response.json();
-        console.log("🚀 ~ fetchMyReferrals ~ data:", data);
-        if (!data.users || data.users.length === 0) break;
-        fetchedReferrals = [...fetchedReferrals, ...data.users];
-        if (data.users.length < 10) break;
-        page++;
+        setMyReferrals(fetchedReferrals);
+        setAllUsers(fetchedReferrals);
+      } catch (error) {
+        console.error("Error fetching users:", error);
       }
-      setMyReferrals(fetchedReferrals);
-      setAllUsers(fetchedReferrals);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
   };
 
   const fetchMyReferrals = async () => {
@@ -113,6 +115,46 @@ export default function ManagerDashboard() {
       setMyReferrals(fetchedReferrals);
     } catch (error) {
       console.error("Error fetching my referrals:", error);
+    }
+  };
+
+  // CHANGED: New function to fetch referrals for a specific manager
+  const fetchManagerReferrals = async (managerEmail) => {
+    console.log("🚀 ~ fetchManagerReferrals ~ managerEmail:", managerEmail)
+    // if (managerReferrals[managerEmail]) return; // Already fetched
+    setManagerReferralLoading(prev => ({ ...prev, [managerEmail]: true }));
+    try {
+      let page = 1;
+      let fetchedReferrals = [];
+      const token = localStorage.getItem("token");
+      while (true) {
+        const response = await fetch(
+          `http://localhost:3000/api/v1/user/managerref?managerEmail=${managerEmail}&page=${page}`, // CHANGED: Added managerEmail query param
+          // `https://dropquest-qd-backend.onrender.com/api/v1/user/managerref?managerEmail=${managerEmail}&page=${page}`, // CHANGED: Added managerEmail query param
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch manager referrals");
+        }
+        const data = await response.json();
+        console.log("🚀 ~ fetchManagerReferrals ~ data:", data)
+        console.log(`🚀 ~ fetchManagerReferrals ~ data for ${managerEmail}:`, data);
+        if (!data.users || data.users.length === 0) break;
+        fetchedReferrals = [...fetchedReferrals, ...data.users];
+        if (data.users.length < 10) break;
+        page++;
+      }
+      setManagerReferrals(prev => ({ ...prev, [managerEmail]: fetchedReferrals }));
+    } catch (error) {
+      console.error("Error fetching manager referrals:", error);
+    } finally {
+      setManagerReferralLoading(prev => ({ ...prev, [managerEmail]: false }));
     }
   };
 
@@ -207,13 +249,15 @@ export default function ManagerDashboard() {
     }
   };
 
-  const toggleExpand = (manager) => {
+  // CHANGED: Updated toggleExpand to fetch referrals for the specific manager
+  const toggleExpand = async (manager) => {
     if (expandedManager === manager) {
       setExpandedManager(null);
       setExpandedUser(null);
       setReferralSearchTerm("");
       setReferralCurrentPage(1);
     } else {
+      await fetchManagerReferrals(manager); // CHANGED: Fetch on expand
       setExpandedManager(manager);
       setExpandedUser(null);
       setReferralSearchTerm("");
@@ -286,9 +330,9 @@ export default function ManagerDashboard() {
     filteredManagers.length / managerItemsPerPage
   );
 
+  // CHANGED: Updated to use managerReferrals state instead of allUsers
   const managerUsersForTable = (manager) =>
-    allUsers
-      .filter((user) => user.referral === manager)
+    (managerReferrals[manager] || [])
       .sort(
         (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
       );
@@ -320,30 +364,7 @@ export default function ManagerDashboard() {
   return (
     <div className="min-h-screen bg-black">
       <div className="px-16 bg-black border-b border-cyan-100  py-6 shadow-sm">
-        {/* <div className="flex items-center justify-between">
-          <div className="text-lg sm:text-xl   flex items-center gap-2">
-            <Link
-              to="/"
-              className="flex items-center gap-2 hover:opacity-80 transition"
-            >
-              <img src={logo} alt="" className=" w-14  h-8" />
-              <span className="text-gray-300 -ml- -mb-3 fon text-2xl">
-                DropQuest
-              </span>
-            </Link>
-          </div>
 
-          <Button
-            onClick={handleRefresh}
-            disabled={isLoading}
-            className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-          >
-            <RefreshCw
-              className={`w-4 h-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
-            />
-            {isLoading ? "Loading..." : "Refresh"}
-          </Button>
-        </div> */}
       </div>
       <div className="w-full flex flex-col pt-7 items-center justify-center py-5">
         <div className="bg-main px-4 py-3 rounded-lg shadow-lg">
@@ -399,7 +420,10 @@ export default function ManagerDashboard() {
                 <div>
                   <button
                     className="flex  gap-5 text-2xl font-bold py-3 px-4 rounded-4xl mb-2 bg-[#000856] hover:bg-[#000b7d] text-white cursor-pointer"
-                    onClick={() => toggleExpand()}
+                    onClick={() => {
+                      setShowManagers(false); // CHANGED: Added back button functionality
+                      setExpandedManager(null);
+                    }}
                   >
                     <ArrowLeft size={30} /> {t("backbutton")}
                   </button>
@@ -485,150 +509,160 @@ export default function ManagerDashboard() {
                                 <tr>
                                   <td className="px-2 py-3">
                                     <div className="pl-2 pb-4">
-                                      <div className="flex items-center gap-2 mb-2">
-                                        <input
-                                          type="text"
-                                          placeholder="Search for a user name"
-                                          value={referralSearchTerm}
-                                          onChange={(e) => {
-                                            setReferralSearchTerm(
-                                              e.target.value
-                                            );
-                                            setReferralCurrentPage(1);
-                                          }}
-                                          className="bg-black/30 border border-[#000b7d] text-white text-lg px-4 py-2 rounded-md focus:outline-none flex-1 max-w-xs"
-                                        />
-                                        <button className="bg-[#000b7d] border-blue-900 hover:bg-gray-600 text-xl border font-bold px-4 py-1 rounded-md">
-                                          Enter
-                                        </button>
-                                      </div>
-                                      <div className="bg-[#000b7d] border border-blue-500/30 mb-2 px-4 py-3 rounded-md">
-                                        <span className="text-base text-gray-50 font-semibold">
-                                          Referrals (
-                                          {getFilteredManagerUsersLength(
-                                            manager
-                                          )}
-                                          )
-                                        </span>
-                                      </div>
-                                      {displayedManagerUsers.length > 0 ? (
-                                        <>
-                                          <table className="w-full text-left bg-black/50 border border-gray-600 rounded-lg overflow-hidden">
-                                            <thead className="bg-sky-950 font-semibold">
-                                              <tr>
-                                                <th className="px-4 py-3 text-sm">
-                                                  {t("email")}
-                                                </th>
-                                                <th className="px-4 py-3 text-sm">
-                                                  {t("name")}
-                                                </th>
-                                                <th className="px-4 py-3 text-sm">
-                                                  {t("phoneNumber")}
-                                                </th>
-                                                <th className="px-4 py-3 text-sm">
-                                                  {t("telegramId")}
-                                                </th>
-                                                <th className="px-4 py-3 text-sm">
-                                                  {t("referralEmails")}
-                                                </th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              {displayedManagerUsers.map(
-                                                (user, j) => {
-                                                  const isUserExpanded =
-                                                    expandedUser === user.email;
-                                                  return (
-                                                    <>
-                                                      <tr
-                                                        key={j}
-                                                        className="border-t-2 border-black  text-xl hover:bg-blue-950 cursor-pointer"
-                                                        onClick={(e) => {
-                                                          e.stopPropagation();
-                                                          toggleUserExpand(
-                                                            user.email
-                                                          );
-                                                        }}
-                                                      >
-                                                        <td className="px-3 py-4 text-lg">
-                                                          {user.email}
-                                                        </td>
-                                                        <td className="px-3 py-2 text-lg">
-                                                          {user.name}
-                                                        </td>
-                                                        <td className="px-3 py-2 text-base">
-                                                          {user.phone}
-                                                        </td>
-                                                        <td className="px-3 py-2 text-base">
-                                                          {user.telegram}
-                                                        </td>
-                                                        <td className="px-3 py-2 text-base">
-                                                          {user.referral}
-                                                        </td>
-                                                      </tr>
-                                                      {isUserExpanded && (
-                                                        <tr>
-                                                          <td
-                                                            colSpan={5}
-                                                            className="px-3 py-3 bg-main"
-                                                          >
-                                                            <div className="pl-4">
-                                                              <span className="text-sm text-gray-300">
-                                                                Registration
-                                                                date:{" "}
-                                                                {
-                                                                  user.registrationDate
-                                                                }
-                                                              </span>
-                                                            </div>
-                                                          </td>
-                                                        </tr>
-                                                      )}
-                                                    </>
-                                                  );
-                                                }
-                                              )}
-                                            </tbody>
-                                          </table>
-                                          <div className="flex justify-center items-center gap-2 mt-4">
-                                            <span className="bg-orange-700 px-2 py-1 rounded-md text-sm">
-                                              Page
-                                            </span>
-                                            {Array.from(
-                                              {
-                                                length: Math.min(
-                                                  5,
-                                                  totalReferralPagesForManager
-                                                ),
-                                              },
-                                              (_, i) => i + 1
-                                            ).map((n) => (
-                                              <button
-                                                key={n}
-                                                className={`px-2 py-1 rounded-md text-sm ${
-                                                  n === referralCurrentPage
-                                                    ? "bg-orange-600"
-                                                    : "bg-gray-700 hover:bg-gray-600"
-                                                }`}
-                                                onClick={() =>
-                                                  setReferralCurrentPage(n)
-                                                }
-                                              >
-                                                {n}
-                                              </button>
-                                            ))}
-                                            {totalReferralPagesForManager >
-                                              5 && (
-                                              <span className="text-gray-500 text-sm">
-                                                ...
-                                              </span>
-                                            )}
-                                          </div>
-                                        </>
+                                      {/* CHANGED: Added loading spinner for manager referrals */}
+                                      {managerReferralLoading[manager] ? (
+                                        <div className="flex justify-center items-center py-4">
+                                          <Loader2 className="w-6 h-6 animate-spin text-blue-500 mr-2" />
+                                          <span className="text-gray-400">Loading referrals...</span>
+                                        </div>
                                       ) : (
-                                        <p className="text-gray-400 text-sm">
-                                          No referrals
-                                        </p>
+                                        <>
+                                          <div className="flex items-center gap-2 mb-2">
+                                            <input
+                                              type="text"
+                                              placeholder="Search for a user name"
+                                              value={referralSearchTerm}
+                                              onChange={(e) => {
+                                                setReferralSearchTerm(
+                                                  e.target.value
+                                                );
+                                                setReferralCurrentPage(1);
+                                              }}
+                                              className="bg-black/30 border border-[#000b7d] text-white text-lg px-4 py-2 rounded-md focus:outline-none flex-1 max-w-xs"
+                                            />
+                                            <button className="bg-[#000b7d] border-blue-900 hover:bg-gray-600 text-xl border font-bold px-4 py-1 rounded-md">
+                                              Enter
+                                            </button>
+                                          </div>
+                                          <div className="bg-[#000b7d] border border-blue-500/30 mb-2 px-4 py-3 rounded-md">
+                                            <span className="text-base text-gray-50 font-semibold">
+                                              Referrals (
+                                              {getFilteredManagerUsersLength(
+                                                manager
+                                              )}
+                                              )
+                                            </span>
+                                          </div>
+                                          {displayedManagerUsers.length > 0 ? (
+                                            <>
+                                              <table className="w-full text-left bg-black/50 border border-gray-600 rounded-lg overflow-hidden">
+                                                <thead className="bg-sky-950 font-semibold">
+                                                  <tr>
+                                                    <th className="px-4 py-3 text-sm">
+                                                      {t("email")}
+                                                    </th>
+                                                    <th className="px-4 py-3 text-sm">
+                                                      {t("name")}
+                                                    </th>
+                                                    <th className="px-4 py-3 text-sm">
+                                                      {t("phoneNumber")}
+                                                    </th>
+                                                    <th className="px-4 py-3 text-sm">
+                                                      {t("telegramId")}
+                                                    </th>
+                                                    <th className="px-4 py-3 text-sm">
+                                                      {t("referralEmails")}
+                                                    </th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  {displayedManagerUsers.map(
+                                                    (user, j) => {
+                                                      const isUserExpanded =
+                                                        expandedUser === user.email;
+                                                      return (
+                                                        <>
+                                                          <tr
+                                                            key={j}
+                                                            className="border-t-2 border-black  text-xl hover:bg-blue-950 cursor-pointer"
+                                                            onClick={(e) => {
+                                                              e.stopPropagation();
+                                                              toggleUserExpand(
+                                                                user.email
+                                                              );
+                                                            }}
+                                                          >
+                                                            <td className="px-3 py-4 text-lg">
+                                                              {user.email}
+                                                            </td>
+                                                            <td className="px-3 py-2 text-lg">
+                                                              {user.name}
+                                                            </td>
+                                                            <td className="px-3 py-2 text-base">
+                                                              {user.phone}
+                                                            </td>
+                                                            <td className="px-3 py-2 text-base">
+                                                              {user.telegram}
+                                                            </td>
+                                                            <td className="px-3 py-2 text-base">
+                                                              {user.referral}
+                                                            </td>
+                                                          </tr>
+                                                          {isUserExpanded && (
+                                                            <tr>
+                                                              <td
+                                                                colSpan={5}
+                                                                className="px-3 py-3 bg-main"
+                                                              >
+                                                                <div className="pl-4">
+                                                                  <span className="text-sm text-gray-300">
+                                                                    Registration
+                                                                    date:{" "}
+                                                                    {
+                                                                      user.registrationDate
+                                                                    }
+                                                                  </span>
+                                                                </div>
+                                                              </td>
+                                                            </tr>
+                                                          )}
+                                                        </>
+                                                      );
+                                                    }
+                                                  )}
+                                                </tbody>
+                                              </table>
+                                              <div className="flex justify-center items-center gap-2 mt-4">
+                                                <span className="bg-orange-700 px-2 py-1 rounded-md text-sm">
+                                                  Page
+                                                </span>
+                                                {Array.from(
+                                                  {
+                                                    length: Math.min(
+                                                      5,
+                                                      totalReferralPagesForManager
+                                                    ),
+                                                  },
+                                                  (_, i) => i + 1
+                                                ).map((n) => (
+                                                  <button
+                                                    key={n}
+                                                    className={`px-2 py-1 rounded-md text-sm ${
+                                                      n === referralCurrentPage
+                                                        ? "bg-orange-600"
+                                                        : "bg-gray-700 hover:bg-gray-600"
+                                                    }`}
+                                                    onClick={() =>
+                                                      setReferralCurrentPage(n)
+                                                    }
+                                                  >
+                                                    {n}
+                                                  </button>
+                                                ))}
+                                                {totalReferralPagesForManager >
+                                                  5 && (
+                                                  <span className="text-gray-500 text-sm">
+                                                    ...
+                                                  </span>
+                                                )}
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <p className="text-gray-400 text-sm">
+                                              No referrals
+                                            </p>
+                                          )}
+                                        </>
                                       )}
                                     </div>
                                   </td>
