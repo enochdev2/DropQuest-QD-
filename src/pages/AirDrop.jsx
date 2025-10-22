@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/language-context";
 import { Button } from "@/components/ui/button";
-import { Calendar, CalendarPlusIcon, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 // import { useLanguage } from "@/contexts/language-context"
 import umbrellaCoin from "@/assets/dqLogo.png";
 import { claimPoints, getUserProfile } from "@/lib/utilityFunction";
@@ -18,14 +18,13 @@ function AirDrop() {
   const [userProfile, setUserProfile] = useState({});
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [currentStreak, setCurrentStreak] = useState(0); // Mock: replace with user.streak from backend
+  const [currentStreak, setCurrentStreak] = useState(1); // Mock: replace with user.streak from backend, e.g., 1 for day 1 completed
 
   // Mock rewards per streak day (1-based index)
-  const dayRewards = [100, 100, 100, 200, 200, 300, 300];
+  const dayRewards = [100, 100, 100, 100, 100, 200, 300];
   const todayDay = currentStreak + 1;
-  // const todayReward = dayRewards[todayDay - 1] || 100;
-  const hundred = 100
-  const todayReward = hundred || dayRewards[todayDay - 1] ;
+  const hundredReward = 100;
+  const todayReward =  hundredReward || dayRewards[todayDay - 1] || 100;
 
   useEffect(() => {
     getUserProfileDetails();
@@ -57,7 +56,7 @@ function AirDrop() {
     console.log("🚀 ~ getUserProfileDetails ~ user:", user);
     setUserProfile(user);
     // Mock streak: replace with actual user.streak logic
-    setCurrentStreak(3); // Example: 3-day streak
+    setCurrentStreak(1); // Example: 1-day streak (day 1 completed, today is day 2)
     if (user.points?.points === 0) {
       setTodayChecked(true);
       setMessage(language === "en"
@@ -68,11 +67,13 @@ function AirDrop() {
     }
   };
 
+  const isDayCompleted = (day) => day <= currentStreak;
+
   return (
     <div className="min-h-screen pt-20 bg-black text-white">
       {/* <Navbar user={mockUser} /> */}
 
-      <div className="px-4 py-6 sm:w-[400px] mx-auto sm:border border-gray-700 h-screen rounded-2xl">
+      <div className="px-4 py-6 sm:w-[400px] mx-auto sm:border border-gray-700 min-h-[90vh] rounded-2xl">
         {/* Header with Dropdown */}
         <div className="mb-8">
           <div className="relative">
@@ -108,7 +109,7 @@ function AirDrop() {
               />
             </div>
           </div>
-          {message && (
+            {message && (
             <p className="text-red-500 font-semibold mb-2 text-xs mt-2">
               {/* {message} */}
               {language === "en" ? "you have already claimed your point for the day." : "일일 출석체크를 이미 완료했습니다"}
@@ -124,52 +125,58 @@ function AirDrop() {
             {language === "en" ? "Attendance Check" : "출석 체크"}
           </Button>
 
+
           {/* Reset Info */}
-          <p className="text-gray-400 text-sm text-center">
+          <p className="text-gray-400 text-sm mb-8 text-center">
             {language === "en"
               ? "Attendance checks are reset daily at 00:00 (KST)."
               : "출석체크는 매일 00시00분에 초기화 됩니다."}
           </p>
-          {/* <Calendar text-white /> */}
 
-          {/* Streak Calendar UI */}
-          <div className="mb-6 w-full mt-12 bg-main py-5 px-3 text-right max-w-xs">
-            {/* Top row: Days 1-5 */}
-            <div className="grid grid-cols-5 gap-2 mb-2 justify-items-center">
-              {Array.from({ length: 5 }, (_, i) => i + 1).map((day) => {
-                const isCompleted = day <= currentStreak;
-                return (
-                  <div key={day} className="flex flex-col flex-wrap items-center">
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium mb-1 transition-colors ${
-                        isCompleted ? "bg-green-600 text-white" : "bg-gray-700 text-gray-400"
-                      }`}
-                    >
-                      {day}
+          {/* Streak Calendar UI - Exact Match */}
+          <div className="mb-3 w-full max-w-xs relative">
+            {/* Calendar Border - Orange top, gray background */}
+            <div className="border-t-4 border-orange-500 bg-gray-800 rounded-lg p-4">
+              {/* Days Grid: First row days 1-5 */}
+              <div className="grid grid-cols-5 gap-2 mb-3 justify-items-center">
+                {Array.from({ length: 5 }, (_, i) => i + 1).map((day) => {
+                  const completed = isDayCompleted(day);
+                  return (
+                    <div key={day} className="flex flex-col items-center">
+                      <div
+                        className={`w-13 h-13 rounded-full flex flex-wrap items-center justify-center text-sm font-medium transition-colors border-2 ${
+                          completed
+                            ? "bg-green-600 text-white border-green-600"
+                            : "bg-transparent text-gray-400 border-gray-600"
+                        }`}
+                      >
+                        {completed ? "✓" : day}
+                      </div>
+                      <span className="text-xs text-gray-300 mt-1">{dayRewards[day - 1]}</span>
                     </div>
-                    <span className="text-xs text-gray-500">{dayRewards[day - 1]}</span>
-                  </div>
-                );
-              })}
-            </div>
-            
-            {/* Bottom row: Days 6-7 */}
-            <div className="flex justify-start gap-6">
-              {Array.from({ length: 2 }, (_, i) => i + 6).map((day) => {
-                const isCompleted = day <= currentStreak;
-                return (
-                  <div key={day} className="flex flex-col items-center">
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium mb-1 transition-colors ${
-                        isCompleted ? "bg-green-600 text-white" : "bg-gray-700 text-gray-400"
-                      }`}
-                    >
-                      {day}
+                  );
+                })}
+              </div>
+              {/* Second row: days 6-7, centered */}
+              <div className="flex justify-cente gap-3">
+                {Array.from({ length: 2 }, (_, i) => i + 6).map((day) => {
+                  const completed = isDayCompleted(day);
+                  return (
+                    <div key={day} className="flex flex-col items-center">
+                      <div
+                        className={`w-13 h-13 rounded-full flex items-center justify-center text-sm font-medium transition-colors border-2 ${
+                          completed
+                            ? "bg-green-600 text-white border-green-600"
+                            : "bg-transparent text-gray-400 border-gray-600"
+                        }`}
+                      >
+                        {completed ? "✓" : day}
+                      </div>
+                      <span className="text-xs text-gray-300 mt-1">{dayRewards[day - 1]}</span>
                     </div>
-                    <span className="text-xs text-gray-500">{dayRewards[day - 1]}</span>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
 
