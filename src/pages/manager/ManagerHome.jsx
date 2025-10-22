@@ -8,6 +8,7 @@ import {
   RefreshCw,
   Loader2,
   ArrowLeft,
+  Loader,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -20,6 +21,7 @@ const BASE_URL = "https://dropquest-qd-backend.onrender.com";
 export default function ManagerDashboard() {
   const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingManDel, setLoadingManDel] = useState(false);
   const [referralLoading, setReferralLoading] = useState(false);
   const [managerReferralLoading, setManagerReferralLoading] = useState({}); // CHANGED: Added state for per-manager loading
   const [showManagers, setShowManagers] = useState(false);
@@ -48,41 +50,41 @@ export default function ManagerDashboard() {
   const referralItemsPerPage = 5;
 
   const fetchAllUsers = async () => {
-      try {
-        let page = 1;
-        // let fetchedUsers = [];
-        let fetchedReferrals = [];
-        const token = localStorage.getItem("token");
-        while (true) {
-          const response = await fetch(
-            // `http://localhost:3000/api/v1/user/managersref?page=${page}`,
-            `https://dropquest-qd-backend.onrender.com/api/v1/user/managersref?page=${page}`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          if (!response.ok) {
-            throw new Error("Failed to fetch users");
+    try {
+      let page = 1;
+      // let fetchedUsers = [];
+      let fetchedReferrals = [];
+      const token = localStorage.getItem("token");
+      while (true) {
+        const response = await fetch(
+          // `http://localhost:3000/api/v1/user/managersref?page=${page}`,
+          `https://dropquest-qd-backend.onrender.com/api/v1/user/managersref?page=${page}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
           }
-          if (!response.ok) {
-            throw new Error("Failed to fetch my referrals");
-          }
-          const data = await response.json();
-          console.log("🚀 ~ fetchMyReferrals ~ data:", data);
-          if (!data.users || data.users.length === 0) break;
-          fetchedReferrals = [...fetchedReferrals, ...data.users];
-          if (data.users.length < 10) break;
-          page++;
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch users");
         }
-        setMyReferrals(fetchedReferrals);
-        setAllUsers(fetchedReferrals);
-      } catch (error) {
-        console.error("Error fetching users:", error);
+        if (!response.ok) {
+          throw new Error("Failed to fetch my referrals");
+        }
+        const data = await response.json();
+        console.log("🚀 ~ fetchMyReferrals ~ data:", data);
+        if (!data.users || data.users.length === 0) break;
+        fetchedReferrals = [...fetchedReferrals, ...data.users];
+        if (data.users.length < 10) break;
+        page++;
       }
+      setMyReferrals(fetchedReferrals);
+      setAllUsers(fetchedReferrals);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
   const fetchMyReferrals = async () => {
@@ -120,9 +122,10 @@ export default function ManagerDashboard() {
 
   // CHANGED: New function to fetch referrals for a specific manager
   const fetchManagerReferrals = async (managerEmail) => {
-    console.log("🚀 ~ fetchManagerReferrals ~ managerEmail:", managerEmail)
+    console.log("🚀 ~ fetchManagerReferrals ~ managerEmail:", managerEmail);
+    setLoadingManDel(true);
     // if (managerReferrals[managerEmail]) return; // Already fetched
-    setManagerReferralLoading(prev => ({ ...prev, [managerEmail]: true }));
+    setManagerReferralLoading((prev) => ({ ...prev, [managerEmail]: true }));
     try {
       let page = 1;
       let fetchedReferrals = [];
@@ -142,19 +145,26 @@ export default function ManagerDashboard() {
         if (!response.ok) {
           throw new Error("Failed to fetch manager referrals");
         }
+        setLoadingManDel(false);
         const data = await response.json();
-        console.log("🚀 ~ fetchManagerReferrals ~ data:", data)
-        console.log(`🚀 ~ fetchManagerReferrals ~ data for ${managerEmail}:`, data);
+        console.log("🚀 ~ fetchManagerReferrals ~ data:", data);
+        console.log(
+          `🚀 ~ fetchManagerReferrals ~ data for ${managerEmail}:`,
+          data
+        );
         if (!data.users || data.users.length === 0) break;
         fetchedReferrals = [...fetchedReferrals, ...data.users];
         if (data.users.length < 10) break;
         page++;
       }
-      setManagerReferrals(prev => ({ ...prev, [managerEmail]: fetchedReferrals }));
+      setManagerReferrals((prev) => ({
+        ...prev,
+        [managerEmail]: fetchedReferrals,
+      }));
     } catch (error) {
       console.error("Error fetching manager referrals:", error);
     } finally {
-      setManagerReferralLoading(prev => ({ ...prev, [managerEmail]: false }));
+      setManagerReferralLoading((prev) => ({ ...prev, [managerEmail]: false }));
     }
   };
 
@@ -332,10 +342,9 @@ export default function ManagerDashboard() {
 
   // CHANGED: Updated to use managerReferrals state instead of allUsers
   const managerUsersForTable = (manager) =>
-    (managerReferrals[manager] || [])
-      .sort(
-        (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
-      );
+    (managerReferrals[manager] || []).sort(
+      (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
+    );
 
   const getDisplayedManagerUsers = (manager) => {
     const allManagerUsers = managerUsersForTable(manager);
@@ -363,9 +372,7 @@ export default function ManagerDashboard() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="px-16 bg-black border-b border-cyan-100  py-6 shadow-sm">
-
-      </div>
+      <div className="px-16 bg-black border-b border-cyan-100  py-6 shadow-sm"></div>
       <div className="w-full flex flex-col pt-7 items-center justify-center py-5">
         <div className="bg-main px-4 py-3 rounded-lg shadow-lg">
           <h1
@@ -420,10 +427,7 @@ export default function ManagerDashboard() {
                 <div>
                   <button
                     className="flex  gap-5 text-2xl font-bold py-3 px-4 rounded-4xl mb-2 bg-[#000856] hover:bg-[#000b7d] text-white cursor-pointer"
-                    onClick={() => {
-                      setShowManagers(false); // CHANGED: Added back button functionality
-                      setExpandedManager(null);
-                    }}
+                    onClick={() => setExpandedManager(null)}
                   >
                     <ArrowLeft size={30} /> {t("backbutton")}
                   </button>
@@ -470,7 +474,12 @@ export default function ManagerDashboard() {
                     <table className="w-full text-center">
                       <thead className="  bg-[#000856] ">
                         <tr>
-                          <th className="px-4 py-3">{t("managerEmail")}</th>
+                          <th className="px-4 py-3 flex w-full justify-center">
+                            {t("managerEmail")}
+                            {loadingManDel && (
+                              <Loader2 className="animate-spin" />
+                            )}
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -495,7 +504,7 @@ export default function ManagerDashboard() {
                                       <ChevronRight className="w-4 h-4" />
                                     )}
                                   </span>
-                                  {manager}
+                                  <span className="flex">{manager}</span>
                                   <span className="ml-2">
                                     {isExpanded ? (
                                       <ChevronDown className="w-4 h-4" />
@@ -513,7 +522,9 @@ export default function ManagerDashboard() {
                                       {managerReferralLoading[manager] ? (
                                         <div className="flex justify-center items-center py-4">
                                           <Loader2 className="w-6 h-6 animate-spin text-blue-500 mr-2" />
-                                          <span className="text-gray-400">Loading referrals...</span>
+                                          <span className="text-gray-400">
+                                            Loading referrals...
+                                          </span>
                                         </div>
                                       ) : (
                                         <>
@@ -569,7 +580,8 @@ export default function ManagerDashboard() {
                                                   {displayedManagerUsers.map(
                                                     (user, j) => {
                                                       const isUserExpanded =
-                                                        expandedUser === user.email;
+                                                        expandedUser ===
+                                                        user.email;
                                                       return (
                                                         <>
                                                           <tr
