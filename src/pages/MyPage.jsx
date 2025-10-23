@@ -3,6 +3,7 @@
 import umbrellaCoin from "@/assets/dqLogo.png";
 import coin from "@/assets/dqcoin.png";
 import PointTransactionHistory from "@/components/PointTransactionHistory";
+import { SuccessToast } from "@/components/Success";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/language-context";
 import { getUserProfile, getUserReferralList, getUserTokenSlots } from "@/lib/utilityFunction";
@@ -49,7 +50,11 @@ function MyPage() {
     try {
       await navigator.clipboard.writeText(inviteLink);
       setCopySuccess(true);
-      toast.success("Invitation link copied to clipboard!");
+      SuccessToast(
+        language === "en"
+          ? "Invitation link copied to clipboard!"
+          : "내 추천인 링크를 복사했습니다 !"
+      );
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
       console.error("Failed to copy: ", err);
@@ -159,7 +164,7 @@ function MyPage() {
                 </code>
                 <button
                   onClick={handleCopyLink}
-                  className="ml-2 text-gray-100 hover:text-white flex-shrink-0"
+                  className="ml-2 text-gray-100 hover:text-white flex-shrink-0 cursor-pointer"
                 >
                   <Copy size={16} />
                 </button>

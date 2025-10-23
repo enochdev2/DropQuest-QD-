@@ -24,7 +24,7 @@ function AirDrop() {
   const dayRewards = [100, 100, 100, 100, 100, 200, 300];
   const todayDay = currentStreak + 1;
   const hundredReward = 100;
-  const todayReward =  hundredReward || dayRewards[todayDay - 1] || 100;
+  const todayReward = hundredReward || dayRewards[todayDay - 1] || 100;
 
   useEffect(() => {
     getUserProfileDetails();
@@ -41,7 +41,13 @@ function AirDrop() {
 
     setShowSuccess(false);
     setLoading(false);
-    SuccessToast(`You have successfully claimed ${todayReward} points for the day.`);
+    // SuccessToast(`You have successfully claimed ${todayReward} points for the day.`);
+    // SuccessToast(`You have successfully claimed ${todayReward} points for the day.`);
+    SuccessToast(
+      language === "en"
+        ? `You have successfully claimed ${todayReward} points for the day.`
+        : `오늘의 출석체크로 ${todayReward} 포인트를 획득하였습니다.`
+    );
 
     setTodayChecked(true);
     // Redirect after 3 seconds (reduced for demo)
@@ -59,9 +65,11 @@ function AirDrop() {
     setCurrentStreak(1); // Example: 1-day streak (day 1 completed, today is day 2)
     if (user.points?.points === 0) {
       setTodayChecked(true);
-      setMessage(language === "en"
-        ? "You have already claimed your point for the day."
-        : "일일 출석 체크를 이미 완료했습니다");
+      setMessage(
+        language === "en"
+          ? "You have already claimed your point for the day."
+          : "일일 출석 체크를 이미 완료했습니다"
+      );
     } else {
       setTodayChecked(false);
     }
@@ -88,7 +96,9 @@ function AirDrop() {
             {showDropdown && (
               <div className="absolute  top-full left-0 right-0 mt-2 bg-main text-white rounded-lg shadow-lg z-10">
                 <div className="p-2">
-                  <div className="px-3 py-2 text-sm text-gray-100 border-b border-slate-500">SOON</div>
+                  <div className="px-3 py-2 text-sm text-gray-100 border-b border-slate-500">
+                    SOON
+                  </div>
                   <div className="px-3 py-2 text-sm text-gray-100">SOON</div>
                 </div>
               </div>
@@ -109,10 +119,12 @@ function AirDrop() {
               />
             </div>
           </div>
-            {message && (
+          {message && (
             <p className="text-red-500 font-semibold mb-2 text-xs mt-2">
               {/* {message} */}
-              {language === "en" ? "you have already claimed your point for the day." : "일일 출석체크를 이미 완료했습니다"}
+              {language === "en"
+                ? "you have already claimed your point for the day."
+                : "일일 출석체크를 이미 완료했습니다"}
             </p>
           )}
 
@@ -124,7 +136,6 @@ function AirDrop() {
           >
             {language === "en" ? "Attendance Check" : "출석 체크"}
           </Button>
-
 
           {/* Reset Info */}
           <p className="text-gray-400 text-sm mb-8 text-center">
@@ -152,7 +163,9 @@ function AirDrop() {
                       >
                         {completed ? "✓" : day}
                       </div>
-                      <span className="text-xs text-gray-300 mt-1">{dayRewards[day - 1]}</span>
+                      <span className="text-xs text-gray-300 mt-1">
+                        {dayRewards[day - 1]}
+                      </span>
                     </div>
                   );
                 })}
@@ -172,15 +185,15 @@ function AirDrop() {
                       >
                         {completed ? "✓" : day}
                       </div>
-                      <span className="text-xs text-gray-300 mt-1">{dayRewards[day - 1]}</span>
+                      <span className="text-xs text-gray-300 mt-1">
+                        {dayRewards[day - 1]}
+                      </span>
                     </div>
                   );
                 })}
               </div>
             </div>
           </div>
-
-          
         </div>
 
         {/* Success Popup */}
@@ -197,7 +210,9 @@ function AirDrop() {
                 <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
                   <span className="text-white font-bold text-sm">$</span>
                 </div>
-                <span className="text-white text-2xl font-bold">{todayReward}</span>
+                <span className="text-white text-2xl font-bold">
+                  {todayReward}
+                </span>
               </div>
 
               <Button
