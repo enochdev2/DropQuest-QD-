@@ -16,7 +16,7 @@ import { SuccessToast } from "./Success";
 import { motion } from "framer-motion";
 // import { useAuth } from "../lib/AuthProvider";
 import { useLanguage } from "@/contexts/language-context";
-
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 
 const SignIn = () => {
   const { t, language } = useLanguage();
@@ -27,6 +27,25 @@ const SignIn = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showFindIdDialog, setShowFindIdDialog] = useState(false);
+  const [showFindPasswordDialog, setShowFindPasswordDialog] = useState(false);
+  const [findIdData, setFindIdData] = useState({ name: "", phoneNumber: "" });
+  const [findPasswordData, setFindPasswordData] = useState({
+    name: "",
+    phoneNumber: "",
+    email: "",
+  });
+  const [foundEmail, setFoundEmail] = useState("");
+  const [showFoundEmail, setShowFoundEmail] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [resetPasswordData, setResetPasswordData] = useState({
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   // Check if form is valid for submit button
   const isFormValid = () => {
@@ -94,8 +113,111 @@ const SignIn = () => {
     }
   };
 
+  const formatPhoneNumber = (value) => {
+    const numbers = value.replace(/\D/g, "");
+    if (numbers.length <= 3) return numbers;
+    if (numbers.length <= 7)
+      return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+    return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(
+      7,
+      11
+    )}`;
+  };
+
+  const validatePassword = (password) => {
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const isLongEnough = password.length >= 6;
+    return hasLetter && hasNumber && isLongEnough;
+  };
+
+  // Mock user database
+  const mockUsers = [
+    { name: "김코인", phoneNumber: "010-1234-5678", email: "kim@example.com" },
+    { name: "박코인", phoneNumber: "010-2345-6789", email: "park@example.com" },
+    { name: "이코인", phoneNumber: "010-3456-7890", email: "lee@example.com" },
+  ];
+
+  const handleFindIdSubmit = () => {
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    const user = mockUsers.find(
+      (u) =>
+        u.name === findIdData.name && u.phoneNumber === findIdData.phoneNumber
+    );
+
+    if (user) {
+      setFoundEmail(user.email);
+      setShowFoundEmail(true);
+    } else {
+      setErrorMessage(t("incorrectInfo"));
+    }
+  };
+
+  const handleFindPasswordSubmit = () => {
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    const user = mockUsers.find(
+      (u) =>
+        u.name === findPasswordData.name &&
+        u.phoneNumber === findPasswordData.phoneNumber &&
+        u.email === findPasswordData.email
+    );
+
+    if (user) {
+      setShowFindPasswordDialog(false);
+      setShowResetPassword(true);
+    } else {
+      setErrorMessage(t("incorrectInfo"));
+    }
+  };
+
+  const handleResetPasswordSubmit = () => {
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    if (!validatePassword(resetPasswordData.newPassword)) {
+      setErrorMessage(t("passwordRequirement"));
+      return;
+    }
+
+    if (resetPasswordData.newPassword !== resetPasswordData.confirmPassword) {
+      setErrorMessage(t("passwordMismatch"));
+      return;
+    }
+
+    setSuccessMessage(t("passwordChanged"));
+    setTimeout(() => {
+      setShowResetPassword(false);
+      setResetPasswordData({ newPassword: "", confirmPassword: "" });
+      setFindPasswordData({ name: "", phoneNumber: "", email: "" });
+    }, 2000);
+  };
+
+  const handleFindIdInputChange = (field, value) => {
+    let processedValue = value;
+    if (field === "phoneNumber") {
+      processedValue = formatPhoneNumber(value);
+    }
+    setFindIdData((prev) => ({ ...prev, [field]: processedValue }));
+  };
+
+  const handleFindPasswordInputChange = (field, value) => {
+    let processedValue = value;
+    if (field === "phoneNumber") {
+      processedValue = formatPhoneNumber(value);
+    }
+    setFindPasswordData((prev) => ({ ...prev, [field]: processedValue }));
+  };
+
+  const handleResetPasswordInputChange = (field, value) => {
+    setResetPasswordData((prev) => ({ ...prev, [field]: value }));
+  };
+
   return (
-     <div>
+    <div>
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -169,7 +291,7 @@ const SignIn = () => {
           {/* Submit Button */}
           <CardFooter>
             <Button
-              className="w-full text-base md:text-lg font-medium text-white py-3 mb-3 transition-all duration-300"
+              className="w-full text-base md:text-lg font-medium text-white py-3 transition-all duration-300"
               style={{
                 background: isFormValid()
                   ? "linear-gradient(to right, #0d0b3e, #3d2abf)"
@@ -182,8 +304,314 @@ const SignIn = () => {
               {isLoading ? <LoadingSpinner /> : t("login")}
             </Button>
           </CardFooter>
+
+          <div className="flex  justify-between">
+            <button
+              onClick={() => {
+                setShowFindIdDialog(true);
+                setErrorMessage("");
+                setFindIdData({ name: "", phoneNumber: "" });
+              }}
+              className="w-full px-4  cursor-pointer text-white rounded-lg font-medium transition"
+            >
+              {t("findId")}
+            </button>
+            <button
+              onClick={() => {
+                setShowFindPasswordDialog(true);
+                setErrorMessage("");
+                setFindPasswordData({ name: "", phoneNumber: "", email: "" });
+              }}
+              className="w-full py-3 px-4  cursor-pointer text-white rounded-lg font-medium transition"
+            >
+              {t("findPassword")}
+            </button>
+          </div>
         </Card>
       </motion.div>
+
+      <div className="text-center mt-6">
+        <p className="text-gray-400 text-sm">
+          {t("dontHaveAccount")}{" "}
+          <a href="/signup" className="text-purple-400 hover:text-purple-300">
+            {t("signUp")}
+          </a>
+        </p>
+      </div>
+
+      {/* Find ID Dialog */}
+      <Dialog open={showFindIdDialog} onOpenChange={setShowFindIdDialog}>
+        <DialogContent className="bg-gray-900 border-gray-700 text-white lg:max-w-[480px] md:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold">
+              {t("findId")}
+            </DialogTitle>
+          </DialogHeader>
+
+          {!showFoundEmail ? (
+            <div className="space-y-4">
+              <div>
+                <Label className="text-white text-sm font-medium">
+                  {t("name")}
+                </Label>
+                <Input
+                  type="text"
+                  value={findIdData.name}
+                  onChange={(e) =>
+                    handleFindIdInputChange("name", e.target.value)
+                  }
+                  className="mt-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                  placeholder={t("name")}
+                />
+              </div>
+
+              <div>
+                <Label className="text-white text-sm font-medium">
+                  {t("phoneNumber")}
+                </Label>
+                <Input
+                  type="tel"
+                  value={findIdData.phoneNumber}
+                  onChange={(e) =>
+                    handleFindIdInputChange("phoneNumber", e.target.value)
+                  }
+                  className="mt-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                  placeholder="010-0000-0000"
+                  maxLength={13}
+                />
+              </div>
+
+              {errorMessage && (
+                <p className="text-red-500 text-sm">{errorMessage}</p>
+              )}
+
+              <div className="flex gap-3 mt-6">
+                <Button
+                  onClick={() => setShowFindIdDialog(false)}
+                  className="flex-1 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
+                >
+                  {t("cancel")}
+                </Button>
+                <Button
+                  onClick={handleFindIdSubmit}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                >
+                  {t("ok")}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="bg-gray-800 p-4 rounded-lg text-center">
+                <p className="text-gray-400 text-sm mb-2">{t("yourId")}</p>
+                <p className="text-xl font-bold text-blue-400">{foundEmail}</p>
+              </div>
+
+              <Button
+                onClick={() => {
+                  setShowFindIdDialog(false);
+                  setShowFoundEmail(false);
+                  setFindIdData({ name: "", phoneNumber: "" });
+                }}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+              >
+                {t("ok")}
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Find Password Dialog */}
+      <Dialog
+        open={showFindPasswordDialog}
+        onOpenChange={setShowFindPasswordDialog}
+      >
+        <DialogContent className="bg-gray-900 border-gray-700 text-white lg:max-w-[480px] md:max-w-[480px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold">
+              {t("findPassword")}
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div>
+              <Label className="text-white text-sm font-medium">
+                {t("name")}
+              </Label>
+              <Input
+                type="text"
+                value={findPasswordData.name}
+                onChange={(e) =>
+                  handleFindPasswordInputChange("name", e.target.value)
+                }
+                className="mt-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                placeholder={t("name")}
+              />
+            </div>
+
+            <div>
+              <Label className="text-white text-sm font-medium">
+                {t("phoneNumber")}
+              </Label>
+              <Input
+                type="tel"
+                value={findPasswordData.phoneNumber}
+                onChange={(e) =>
+                  handleFindPasswordInputChange("phoneNumber", e.target.value)
+                }
+                className="mt-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                placeholder="010-0000-0000"
+                maxLength={13}
+              />
+            </div>
+
+            <div>
+              <Label className="text-white text-sm font-medium">
+                {t("email")}
+              </Label>
+              <Input
+                type="email"
+                value={findPasswordData.email}
+                onChange={(e) =>
+                  handleFindPasswordInputChange("email", e.target.value)
+                }
+                className="mt-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                placeholder={t("email")}
+              />
+            </div>
+
+            {errorMessage && (
+              <p className="text-red-500 text-sm">{errorMessage}</p>
+            )}
+
+            <div className="flex gap-3 mt-6">
+              <Button
+                onClick={() => setShowFindPasswordDialog(false)}
+                className="flex-1 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
+              >
+                {t("cancel")}
+              </Button>
+              <Button
+                onClick={handleFindPasswordSubmit}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+              >
+                {t("ok")}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Reset Password Dialog */}
+      <Dialog open={showResetPassword} onOpenChange={setShowResetPassword}>
+        <DialogContent className="bg-gray-900 border-gray-700 text-white lg:max-w-[480px] md:max-w-[480px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold">
+              {t("resetPassword")}
+            </DialogTitle>
+          </DialogHeader>
+
+          {!successMessage ? (
+            <div className="space-y-4">
+              <div>
+                <Label className="text-white text-sm font-medium">
+                  {t("newPassword")} <span className="text-red-500">*</span>
+                </Label>
+                <div className="relative mt-1">
+                  <Input
+                    type={showNewPassword ? "text" : "password"}
+                    value={resetPasswordData.newPassword}
+                    onChange={(e) =>
+                      handleResetPasswordInputChange(
+                        "newPassword",
+                        e.target.value
+                      )
+                    }
+                    className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 pr-10"
+                    placeholder={t("newPassword")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                  >
+                    {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <Label className="text-white text-sm font-medium">
+                  {t("confirmPassword")} <span className="text-red-500">*</span>
+                </Label>
+                <div className="relative mt-1">
+                  <Input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={resetPasswordData.confirmPassword}
+                    onChange={(e) =>
+                      handleResetPasswordInputChange(
+                        "confirmPassword",
+                        e.target.value
+                      )
+                    }
+                    className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 pr-10"
+                    placeholder={t("confirmPassword")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {errorMessage && (
+                <p className="text-red-500 text-sm">{errorMessage}</p>
+              )}
+              <p className="text-gray-400 text-xs">
+                * {t("passwordRequirement")}
+              </p>
+
+              <Button
+                onClick={handleResetPasswordSubmit}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+              >
+                {t("ok")}
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="bg-gray-800 p-4 rounded-lg text-center">
+                <p className="text-green-400 font-semibold">{successMessage}</p>
+                <p className="text-gray-400 text-sm mt-2">
+                  {t("tryLoginAgain")}
+                </p>
+              </div>
+
+              <Button
+                onClick={() => {
+                  setShowResetPassword(false);
+                  setSuccessMessage("");
+                  setResetPasswordData({
+                    newPassword: "",
+                    confirmPassword: "",
+                  });
+                }}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+              >
+                {t("ok")}
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
