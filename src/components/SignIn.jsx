@@ -138,7 +138,7 @@ const SignIn = () => {
     { name: "이코인", phoneNumber: "010-3456-7890", email: "lee@example.com" },
   ];
 
-  const handleFindIdSubmit = () => {
+  const handleFindIdSubmits = () => {
     setErrorMessage("");
     setSuccessMessage("");
 
@@ -152,6 +152,46 @@ const SignIn = () => {
       setShowFoundEmail(true);
     } else {
       setErrorMessage(t("incorrectInfo"));
+    }
+  };
+
+  const handleFindIdSubmit = async () => {
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    try {
+      const response = await fetch(
+        // "http://localhost:3000/api/v1/user/check-nameandphone",
+        "https://dropquest-qd-backend.onrender.com/api/v1/user/check-nameandphone",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: findIdData.name,
+            phone: findIdData.phoneNumber, // Adjust key if backend expects 'phone' instead of 'phoneNumber'
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Something went wrong");
+      }
+
+      const userData = await response.json();
+      console.log("🚀 ~ handleFindIdSubmit ~ userData:", userData);
+
+      if (userData.email) {
+        setFoundEmail(userData.email);
+        setShowFoundEmail(true);
+      } else {
+        setErrorMessage(t("incorrectInfo"));
+      }
+    } catch (error) {
+      console.error("Error finding user:", error);
+      setErrorMessage(error.message || t("incorrectInfo"));
     }
   };
 
@@ -305,7 +345,7 @@ const SignIn = () => {
             </Button>
           </CardFooter>
 
-          <div className="flex mb-5 w-[90%] mx-auto gap-20 justify-between">
+          <div className="flex mb-5 w-[90%] mx-auto gap-5 justify-between">
             <button
               onClick={() => {
                 setShowFindIdDialog(true);
