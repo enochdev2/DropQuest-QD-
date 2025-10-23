@@ -46,6 +46,7 @@ const SignIn = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [emailforreset, setEmailforreset] = useState("");
 
   // Check if form is valid for submit button
   const isFormValid = () => {
@@ -131,30 +132,6 @@ const SignIn = () => {
     return hasLetter && hasNumber && isLongEnough;
   };
 
-  // Mock user database
-  const mockUsers = [
-    { name: "김코인", phoneNumber: "010-1234-5678", email: "kim@example.com" },
-    { name: "박코인", phoneNumber: "010-2345-6789", email: "park@example.com" },
-    { name: "이코인", phoneNumber: "010-3456-7890", email: "lee@example.com" },
-  ];
-
-  const handleFindIdSubmits = () => {
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    const user = mockUsers.find(
-      (u) =>
-        u.name === findIdData.name && u.phoneNumber === findIdData.phoneNumber
-    );
-
-    if (user) {
-      setFoundEmail(user.email);
-      setShowFoundEmail(true);
-    } else {
-      setErrorMessage(t("incorrectInfo"));
-    }
-  };
-
   const handleFindIdSubmit = async () => {
     setErrorMessage("");
     setSuccessMessage("");
@@ -195,26 +172,49 @@ const SignIn = () => {
     }
   };
 
-  const handleFindPasswordSubmit = () => {
+  const handleFindPasswordSubmit = async () => {
     setErrorMessage("");
     setSuccessMessage("");
 
-    const user = mockUsers.find(
-      (u) =>
-        u.name === findPasswordData.name &&
-        u.phoneNumber === findPasswordData.phoneNumber &&
-        u.email === findPasswordData.email
-    );
+    try {
+      const response = await fetch(
+        // "http://localhost:3000/api/v1/user/check-nameandphoneandemail",
+        "https://dropquest-qd-backend.onrender.com/api/v1/user/check-nameandphoneandemail",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: findPasswordData.name,
+            phone: findPasswordData.phoneNumber,
+            email: findPasswordData.email, // Adjust key if backend expects 'phone' instead of 'phoneNumber'
+          }),
+        }
+      );
 
-    if (user) {
-      setShowFindPasswordDialog(false);
-      setShowResetPassword(true);
-    } else {
-      setErrorMessage(t("incorrectInfo"));
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Something went wrong");
+      }
+
+      const userData = await response.json();
+      console.log("🚀 ~ handleFindIdSubmit ~ userData:", userData);
+
+      if (userData) {
+        setShowFindPasswordDialog(false);
+        setEmailforreset(userData.email);
+        setShowResetPassword(true);
+      } else {
+        setErrorMessage(t("incorrectInfo"));
+      }
+    } catch (error) {
+      console.error("Error finding user:", error);
+      setErrorMessage(error.message || t("incorrectInfo"));
     }
   };
 
-  const handleResetPasswordSubmit = () => {
+  const handleResetPasswordSubmit = async () => {
     setErrorMessage("");
     setSuccessMessage("");
 
@@ -228,12 +228,40 @@ const SignIn = () => {
       return;
     }
 
-    setSuccessMessage(t("passwordChanged"));
-    setTimeout(() => {
-      setShowResetPassword(false);
-      setResetPasswordData({ newPassword: "", confirmPassword: "" });
-      setFindPasswordData({ name: "", phoneNumber: "", email: "" });
-    }, 2000);
+    try {
+      const response = await fetch(
+        // "http://localhost:3000/api/v1/user/resetpassword",
+        "https://dropquest-qd-backend.onrender.com/api/v1/user/resetpassword",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            newPassword: resetPasswordData.newPassword,
+            email: emailforreset, // Adjust key if backend expects 'phone' instead of 'phoneNumber'
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Something went wrong");
+      }
+
+      const userData = await response.json();
+      console.log("🚀 ~ handleFindIdSubmit ~ userData:", userData.message);
+
+      setSuccessMessage(t("passwordChanged"));
+      setTimeout(() => {
+        setShowResetPassword(false);
+        setResetPasswordData({ newPassword: "", confirmPassword: "" });
+        setFindPasswordData({ name: "", phoneNumber: "", email: "" });
+      }, 2000);
+    } catch (error) {
+      console.error("Error finding user:", error);
+      setErrorMessage(error.message || t("incorrectInfo"));
+    }
   };
 
   const handleFindIdInputChange = (field, value) => {
@@ -595,7 +623,7 @@ const SignIn = () => {
                         e.target.value
                       )
                     }
-                    className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 pr-10"
+                    className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 pr-10 "
                     placeholder={t("confirmPassword")}
                   />
                   <button
