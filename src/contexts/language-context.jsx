@@ -75,7 +75,7 @@ const translations = {
     UploadID: "Upload ID Card",
     login: "Login",
     findId: "Find ID (Email)",
-     findPassword: "Find Password",
+    findPassword: "Find Password",
     resetPassword: "Reset Password",
     yourId: "Your ID (Email)",
     newPassword: "New Password",

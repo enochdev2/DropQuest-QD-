@@ -495,7 +495,7 @@ const SignIn = () => {
         open={showFindPasswordDialog}
         onOpenChange={setShowFindPasswordDialog}
       >
-        <DialogContent className="bg-gray-900 border-gray-700 text-white lg:max-w-[480px] md:max-w-[480px]">
+        <DialogContent className="bg-black/95 border-gray-700 text-white lg:max-w-[480px] md:max-w-[480px]">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">
               {t("findPassword")}
@@ -504,7 +504,7 @@ const SignIn = () => {
 
           <div className="space-y-4">
             <div>
-              <Label className="text-white text-sm font-medium">
+              <Label className="text-white font-bold text-sm font-medium">
                 {t("name")}
               </Label>
               <Input
@@ -513,13 +513,13 @@ const SignIn = () => {
                 onChange={(e) =>
                   handleFindPasswordInputChange("name", e.target.value)
                 }
-                className="mt-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                className="mt-1 bg-black/80 border-gray-700 text-white placeholder-gray-400"
                 placeholder={t("name")}
               />
             </div>
 
             <div>
-              <Label className="text-white text-sm font-medium">
+              <Label className="text-white font-bold text-sm font-medium">
                 {t("phoneNumber")}
               </Label>
               <Input
@@ -528,7 +528,7 @@ const SignIn = () => {
                 onChange={(e) =>
                   handleFindPasswordInputChange("phoneNumber", e.target.value)
                 }
-                className="mt-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                className="mt-1 bg-black/80 border-gray-700 text-white placeholder-gray-400"
                 placeholder="010-0000-0000"
                 maxLength={13}
               />
@@ -544,7 +544,7 @@ const SignIn = () => {
                 onChange={(e) =>
                   handleFindPasswordInputChange("email", e.target.value)
                 }
-                className="mt-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                className="mt-1 bg-black/80 border-gray-700 text-white placeholder-gray-400"
                 placeholder={t("email")}
               />
             </div>
@@ -562,7 +562,7 @@ const SignIn = () => {
               </Button>
               <Button
                 onClick={handleFindPasswordSubmit}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                className="flex-1 bg-main border border-blue-800 hover:bg-blue-700 text-white rounded-lg"
               >
                 {t("ok")}
               </Button>
@@ -573,7 +573,7 @@ const SignIn = () => {
 
       {/* Reset Password Dialog */}
       <Dialog open={showResetPassword} onOpenChange={setShowResetPassword}>
-        <DialogContent className="bg-gray-900 border-gray-700 text-white lg:max-w-[480px] md:max-w-[480px]">
+        <DialogContent className="bg-black border-gray-700 text-white lg:max-w-[480px] md:max-w-[480px]">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">
               {t("resetPassword")}
