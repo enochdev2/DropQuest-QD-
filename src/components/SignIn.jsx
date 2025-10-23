@@ -390,9 +390,9 @@ const SignIn = () => {
                 setErrorMessage("");
                 setFindPasswordData({ name: "", phoneNumber: "", email: "" });
               }}
-              className="w-full py-2 px-2 border border-[#3d2abf]  cursor-pointer text-white rounded-lg font-medium transition"
+              className="w-full py-2 px-2 border border-[#3d2abf]  cursor-pointer text-white text-sm rounded-lg font-medium transition"
             >
-              {t("findPassword")}
+              {t("findPasswords")}
             </button>
           </div>
         </Card>
