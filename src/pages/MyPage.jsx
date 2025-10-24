@@ -9,7 +9,6 @@ import { useLanguage } from "@/contexts/language-context";
 import { getUserProfile, getUserReferralList, getUserTokenSlots } from "@/lib/utilityFunction";
 import { Copy, Loader2, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 // Mock user data
 // const mockUser = {

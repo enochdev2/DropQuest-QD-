@@ -44,8 +44,8 @@ export default function PointTransactionHistory({ tokenSlot }) {
                     rel="noreferrer"
                   >
                     {language === "en"
-                      ? " Telegram message"
-                      : "텔레그램 메시지 확인"}
+                      ? " Telegram"
+                      : "텔레그램"}
                   </a>
                 </td>
               </tr>
