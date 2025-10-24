@@ -203,8 +203,8 @@ const translations = {
     registrationdate: "Registration Date",
     backbutton: "Back button",
     managerEmail: "Manager E-Mail",
-    OkayButton: "OK",
-    CancelButton: "Cancel",
+    // ok: "OK",
+    // cancel: "Cancel",
   
   },
 
@@ -401,8 +401,8 @@ const translations = {
     numberOfUsers: "유저 수",
     registrationdate: "가입 일",
     managerEmail: "매니저 이메일",
-    OkayButton: "확인",
-    CancelButton: "취소",
+    // ok: "확인",
+    // cancel: "취소",
   },
 };
 
