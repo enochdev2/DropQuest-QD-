@@ -653,7 +653,7 @@ const SignUp = () => {
               value={formData.referralEmail}
               onChange={(e) => handleInputChange("referralEmail", e.target.value)}
               onBlur={() => handleBlur("name")}
-              className="placeholder:text-base placeholder:text-white"
+              className="placeholder:text-base placeholder:text-gray-500"
             />
           </div>
         </CardContent>
