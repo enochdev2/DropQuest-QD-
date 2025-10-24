@@ -45,6 +45,7 @@ const SignIn = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessages, setErrorMessages] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [emailforreset, setEmailforreset] = useState("");
 
@@ -184,7 +185,7 @@ const SignIn = () => {
   };
 
   const handleFindPasswordSubmit = async () => {
-    setErrorMessage("");
+    setErrorMessages("");
     setSuccessMessage("");
 
     try {
@@ -217,11 +218,11 @@ const SignIn = () => {
         setEmailforreset(userData.email);
         setShowResetPassword(true);
       } else {
-        setErrorMessage(t("incorrectInfo"));
+        setErrorMessages(t("incorrectInfos"));
       }
     } catch (error) {
       console.error("Error finding user:", error);
-      setErrorMessage(error.message || t("incorrectInfo"));
+      setErrorMessages( t("incorrectInfos") || error.message);
     }
   };
 
@@ -560,8 +561,8 @@ const SignIn = () => {
               />
             </div>
 
-            {errorMessage && (
-              <p className="text-red-500 text-sm">{errorMessage}</p>
+            {errorMessages && (
+              <p className="text-red-500 text-sm">{errorMessages}</p>
             )}
 
             <div className="flex gap-3 mt-6">
