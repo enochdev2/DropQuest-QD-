@@ -469,13 +469,13 @@ const SignIn = () => {
                   onClick={() => setShowFindIdDialog(false)}
                   className="flex-1 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
                 >
-                  {t("CancelButton")}
+                  {t("cancel")}
                 </Button>
                 <Button
                   onClick={handleFindIdSubmit}
                   className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
                 >
-                  {t("OkayButton")}
+                  {t("ok")}
                 </Button>
               </div>
             </div>
@@ -494,7 +494,7 @@ const SignIn = () => {
                 }}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
               >
-                {t("OkayButton")}
+                {t("ok")}
               </Button>
             </div>
           )}
@@ -530,7 +530,7 @@ const SignIn = () => {
             </div>
 
             <div>
-              <Label className="text-white font-bold text-sm font-medium">
+              <Label className="text-white font-bold text-sm ">
                 {t("phoneNumber")}
               </Label>
               <Input
@@ -569,13 +569,13 @@ const SignIn = () => {
                 onClick={() => setShowFindPasswordDialog(false)}
                 className="flex-1 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
               >
-                {t("CancelButton")}
+                {t("cancel")}
               </Button>
               <Button
                 onClick={handleFindPasswordSubmit}
                 className="flex-1 bg-main border border-blue-800 hover:bg-blue-700 text-white rounded-lg"
               >
-                {t("OkayButton")}
+                {t("ok")}
               </Button>
             </div>
           </div>
@@ -662,7 +662,7 @@ const SignIn = () => {
                 onClick={handleResetPasswordSubmit}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
               >
-                {t("OkayButton")}
+                {t("ok")}
               </Button>
             </div>
           ) : (
@@ -685,7 +685,7 @@ const SignIn = () => {
                 }}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
               >
-                {t("OkayButton")}
+                {t("ok")}
               </Button>
             </div>
           )}
