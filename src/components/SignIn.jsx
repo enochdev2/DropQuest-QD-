@@ -138,7 +138,6 @@ const SignIn = () => {
 
     try {
       const response = await fetch(
-        // "http://localhost:3000/api/v1/user/check-nameandphone",
         "https://dropquest-qd-backend.onrender.com/api/v1/user/check-nameandphone",
         {
           method: "POST",
@@ -147,16 +146,27 @@ const SignIn = () => {
           },
           body: JSON.stringify({
             name: findIdData.name,
-            phone: findIdData.phoneNumber, // Adjust key if backend expects 'phone' instead of 'phoneNumber'
+            phone: findIdData.phoneNumber,
           }),
         }
       );
 
+      // ❗ Handle non-200 response first
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Something went wrong");
+        const msg = (errorData.error || "").toLowerCase();
+
+        if (msg.includes("required")) {
+          setErrorMessage(t("namePhoneRequired"));
+        } else if (msg.includes("no user")) {
+          setErrorMessage(t("noUserFound"));
+        } else {
+          setErrorMessage(t("incorrectInfo"));
+        }
+        return;
       }
 
+      // ✅ Success
       const userData = await response.json();
       console.log("🚀 ~ handleFindIdSubmit ~ userData:", userData);
 
@@ -168,7 +178,8 @@ const SignIn = () => {
       }
     } catch (error) {
       console.error("Error finding user:", error);
-      setErrorMessage(error.message || t("incorrectInfo"));
+      // Fallback if something unexpected happens
+      setErrorMessage(t("incorrectInfo"));
     }
   };
 
@@ -458,13 +469,13 @@ const SignIn = () => {
                   onClick={() => setShowFindIdDialog(false)}
                   className="flex-1 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
                 >
-                  {t("cancel")}
+                  {t("CancelButton")}
                 </Button>
                 <Button
                   onClick={handleFindIdSubmit}
                   className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
                 >
-                  {t("ok")}
+                  {t("OkayButton")}
                 </Button>
               </div>
             </div>
@@ -483,7 +494,7 @@ const SignIn = () => {
                 }}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
               >
-                {t("ok")}
+                {t("OkayButton")}
               </Button>
             </div>
           )}
@@ -504,7 +515,7 @@ const SignIn = () => {
 
           <div className="space-y-4">
             <div>
-              <Label className="text-white font-bold text-sm font-medium">
+              <Label className="text-white font-bold text-sm ">
                 {t("name")}
               </Label>
               <Input
@@ -558,13 +569,13 @@ const SignIn = () => {
                 onClick={() => setShowFindPasswordDialog(false)}
                 className="flex-1 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
               >
-                {t("cancel")}
+                {t("CancelButton")}
               </Button>
               <Button
                 onClick={handleFindPasswordSubmit}
                 className="flex-1 bg-main border border-blue-800 hover:bg-blue-700 text-white rounded-lg"
               >
-                {t("ok")}
+                {t("OkayButton")}
               </Button>
             </div>
           </div>
@@ -651,7 +662,7 @@ const SignIn = () => {
                 onClick={handleResetPasswordSubmit}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
               >
-                {t("ok")}
+                {t("OkayButton")}
               </Button>
             </div>
           ) : (
@@ -674,7 +685,7 @@ const SignIn = () => {
                 }}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
               >
-                {t("ok")}
+                {t("OkayButton")}
               </Button>
             </div>
           )}
