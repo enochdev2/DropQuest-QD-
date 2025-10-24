@@ -28,7 +28,7 @@ const translations = {
       "This allows users to gain opportunities and information to generate profits from token sales, airdrops, and other events in various communities.",
     directOpportunities:
       "Users can also directly provide potential opportunities to other users.",
-    goToAirdrop: "Go to Receive Airdrop",
+    goToAirdrop: "Go to Daily Check-in",
 
     pointsForCoins: "Exchange Points for Coins",
     welcome: "Welcome!",
@@ -233,7 +233,7 @@ const translations = {
     connectingUsersToUsers: "사용자와 다른 사용자 연결",
     directOpportunities:
       "사용자들이 다른 사용자들에게 직접 잠재적 기회를 제공할 수도 있습니다.",
-    goToAirdrop: "에어드랍 받으러 가기",
+    goToAirdrop: "출석체크하러가기",
     pointsForCoins: "포인트를 코인으로 교환하기",
     welcome: "환영합니다!",
     dontMissAirdrop: "에어드랍, 놓치지 말고 지금 바로 시작해보세요.",
