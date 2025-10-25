@@ -82,8 +82,10 @@ const translations = {
     newPassword: "New Password",
     ok: "Ok",
     cancel: "Cancel",
-    incorrectInfo: "The information you entered is incorrect. Please try again.",
-    passwordChanged: "Your password has been changed. Please try logging in again.",
+    incorrectInfo:
+      "The information you entered is incorrect. Please try again.",
+    passwordChanged:
+      "Your password has been changed. Please try logging in again.",
     namePhoneRequired: "Name, and phone number are required",
     noUserFound: " No user found with this name and phone number",
     tryLoginAgain: "Please try logging in again.",
@@ -205,7 +207,6 @@ const translations = {
     managerEmail: "Manager E-Mail",
     OkayButton: "OK",
     CancelButton: "Cancel",
-  
   },
 
   ko: {
@@ -289,7 +290,7 @@ const translations = {
     incorrectInfo: "입력하신 정보가 올바르지 않습니다. 다시 시도해주세요.",
     passwordChanged: "비밀번호가 변경되었습니다. 다시 로그인해주세요.",
     namePhoneRequired: "이름과 전화번호는 필수 항목입니다.",
-    noUserFound: "해당 이름과 전화번호로 가입된 사용자가 없습니다.", 
+    noUserFound: "해당 이름과 전화번호로 가입된 사용자가 없습니다.",
     tryLoginAgain: "다시 로그인해주세요.",
     dontHaveAccount: "계정이 없으신가요?",
     loginSuccess: "로그인 성공",
@@ -409,11 +410,11 @@ const translations = {
 const LanguageContext = createContext(undefined);
 
 export function LanguageProvider({ children }) {
-  const [language, setLanguage] = useState("en"); // Default to English
+  const [language, setLanguage] = useState("ko"); // Default to English
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem("language");
-    if (savedLanguage && (savedLanguage === "en" || savedLanguage === "ko")) {
+    if (savedLanguage && (savedLanguage === "ko" || savedLanguage === "en")) {
       setLanguage(savedLanguage);
     }
   }, []);
