@@ -47,112 +47,71 @@ const AnnouncementDetail = () => {
     return <div>Announcement not found</div>;
   }
 
-  return (
-    <div className="min-h-screen pt-14 flex justify-center bg-gray-950">
-      <div className="min-h-screen sm:w-[400px] sm:border border-slate-600 bg-main">
-        <div className="px-4 sm:px-6 lg:px-4 py-3 max-w-4xl mx-auto">
-          <button
-            onClick={() => router(-1)}
-            className="mb-3 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors duration-300 cursor-pointer"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            Back to Announcements
-          </button>
+ return (
+  <div className="min-h-screen pt-14 flex justify-center bg-gray-950">
+    <div className="min-h-screen sm:w-[400px] sm:border border-slate-600 bg-main">
+      <div className="px-4 sm:px-6 py-4 max-w-4xl mx-auto">
 
-          {/* Announcement Detail */}
-          <div className="bg-black/70 min-h-[90vh] rounded-lg py-3 px-2.5 sm:p-3 border border-gray-700">
-            <div className="flex text-white text-base justify-center  mb-8 my-2 space-x-4">
+        {/* Back Button */}
+        <button
+          onClick={() => router(-1)}
+          className="mb-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/>
+          </svg>
+          <span>Back to Announcements</span>
+        </button>
+
+        {/* Wrapper */}
+        <div className="bg-black/80 rounded-lg p-5 border border-gray-700 shadow-lg">
+
+          {/* Tabs */}
+          <div className="flex justify-center mb-6 space-x-3">
+            {["English","Korean"].map(lang => (
               <button
-                onClick={() => setActive("English")}
-                className={`px-8 py-2 border border-slate-500 rounded cursor-pointer ${active === "English" ? "bg-blue-700 font-semibold" : "bg-gray-700"
-                  }`}
+                key={lang}
+                onClick={() => setActive(lang)}
+                className={`px-6 py-2 rounded border border-slate-500 text-sm transition font-medium ${
+                  active === lang ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300"
+                }`}
               >
-                English
+                {lang}
               </button>
-
-              <button
-                onClick={() => setActive("Korean")}
-                className={`px-8 py-2 text-white border border-slate-500 rounded cursor-pointer ${active === "Korean" ? "bg-blue-700 font-semibold " : "bg-gray-700"
-                  }`}
-              >
-                Korean
-              </button>
-            </div>
-            <div className="mb-6">
-              <h1 className="text-xl font-bold text-white mb-4">
-                {active === "English" ? announcement?.title : announcement?.titlekorean}
-              </h1>
-
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300 mb-6">
-                <div className="flex items-center gap-2">
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                  <span>
-                    <strong>Created by:</strong> {announcement.createdBy}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  <span>
-                    <strong>Created at:</strong>{" "}
-                    {new Date(announcement.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="prose prose-invert max-w-none">
-              <div
-                className={`text-gray-300 leading-relaxed text-base ${announcement?.content?.length > 300 ? "max-h-100 overflow-y-auto" : ""
-                  }`}
-              >
-                <p className="mb-4 text-justify">
-                  {active === "English" ? announcement?.content : announcement?.contentkorean}
-                </p>
-              </div>
-            </div>
-
+            ))}
           </div>
+
+          {/* Title */}
+          <h1 className="text-lg font-bold text-white mb-3 leading-snug text-center">
+            {active === "English" ? announcement?.title : announcement?.titlekorean}
+          </h1>
+
+          {/* Meta */}
+          <div className="flex justify-between text-xs text-gray-400 border-y border-gray-700 py-2 mb-6">
+            <span>By: {announcement.createdBy}</span>
+            <span>{new Date(announcement.createdAt).toLocaleDateString()}</span>
+          </div>
+
+          {/* Content with paragraphs */}
+          <div className="text-gray-200 text-sm leading-6 space-y-4">
+            {(active === "English"
+              ? announcement?.content
+              : announcement?.contentkorean
+            )
+              ?.split(/\n\s*\n/)
+              .map((p, idx) => (
+                <p key={idx} className="text-justify">
+                  {p.trim()}
+                </p>
+              ))}
+          </div>
+
         </div>
       </div>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default AnnouncementDetail;
