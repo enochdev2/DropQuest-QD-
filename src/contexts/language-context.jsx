@@ -411,7 +411,7 @@ const translations = {
 const LanguageContext = createContext(undefined);
 
 export function LanguageProvider({ children }) {
-  const [language, setLanguage] = useState("en"); // Default to English
+  const [language, setLanguage] = useState("ko"); // Default to English
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem("language");
