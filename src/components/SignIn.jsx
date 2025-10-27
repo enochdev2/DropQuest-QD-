@@ -99,6 +99,7 @@ const SignIn = () => {
         const errorMsg =
           errorData.error || errorData.message || "Failed to register user";
         toast.error(errorMsg);
+        toast.error("이메일 또는 비밀번호가 틀립니다.");
       } else {
         const data = await response.json();
         localStorage.setItem("token", data.token);
