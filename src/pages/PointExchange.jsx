@@ -119,7 +119,7 @@ function PointExchange() {
       );
 
       // setUserPoints((prev) => prev - amount);
-      toast.success("The exchange request has been completed.");
+      toast.success(language === "en" ? "The exchange request has been completed.": "포인트교환신청이완료되었습니다. 내포인트교환기록에서내역을확인할수있습니다.");
 
       setShowExchangeModal(false);
       setExchangeAmount("");
