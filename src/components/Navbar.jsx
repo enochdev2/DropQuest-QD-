@@ -28,9 +28,9 @@ export default function Navbar() {
     { label: t("myPage"), path: "/my-page" },
     { label: t("pointExchangeTitle"), path: "/point-exchange" },
     { label: t("airdrop"), path: "/air-drop" },
-    { label: t("QnA"), path: "/question-answer" },
+    { label: t("qna"), path: "/question-answer" },
   ];
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user")); 
   const navButtons = user
     ? []
     : [

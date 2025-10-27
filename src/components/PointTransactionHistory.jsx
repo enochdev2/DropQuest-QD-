@@ -140,18 +140,18 @@ export default function PointTransactionHistory({ tokenSlot }) {
       </div>
 
       <Dialog  open={showTelegramGuide} onOpenChange={setShowTelegramGuide}>
-        <DialogContent className="lg:max-w-[380px] max-w-[380px] auto max-h-[90vh] overflow-y-auto bg-gray-900 text-white border-gray-700">
+        <DialogContent className="lg:max-w-[380px] max-w-[340px] auto max-h-[90vh] overflow-y-auto bg-gray-950/80 text-white border-gray-700">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-center mb-6">
+            <DialogTitle className="text-2xl font-bold text-center mt-6 mb-3">
               {language === "en"
                 ? "How to Exchange Points"
                 : "포인트 교환하는 방법"}
             </DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-6 ">
+          <div className="space-y-5 ">
             {telegramSteps.map((item) => (
-              <div key={item.step} className="bg-gray-800 rounded-lg p-4 ">
+              <div key={item.step} className="bg-main rounded-lg px-2 py-4 ">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center font-bold text-lg">
                     {item.step}
@@ -175,8 +175,8 @@ export default function PointTransactionHistory({ tokenSlot }) {
             ))}
 
             {/* Final Message */}
-            <div className="bg-blue-900/30 border-2 border-blue-600/50 rounded-lg p-6">
-              <p className="text-blue-400 font-bold text-center text-lg mb-3">
+            <div className="bg-blue-950/60 border-2 border-blue-600/50 rounded-lg p-6">
+              <p className="text-blue-200 font-bold text-center text-lg mb-3">
                 {language === "en"
                   ? "Have you fully understood the point exchange process?"
                   : "포인트 교환 프로세스를 모두 숙지하셨나요?"}
@@ -206,7 +206,7 @@ export default function PointTransactionHistory({ tokenSlot }) {
             {/* Close Button */}
             <button
               onClick={() => setShowTelegramGuide(false)}
-              className="w-full text-center text-sm text-gray-400 hover:text-white py-2"
+              className="w-full text-center text-lg text-gray-100  bg-main rounded-2xl font-bold hover:text-white py-1"
             >
               {language === "en" ? "Close" : "아래로 나가기"}
             </button>
