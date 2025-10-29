@@ -46,6 +46,7 @@ function PointExchange() {
   const [submitting, setSubmitting] = useState(false);
   const [userProfile, setUserProfile] = useState({});
   const { language } = useLanguage();
+  const [activeSort, setActiveSort] = useState("Default");
 
   useEffect(() => {
     getUserProfileDetails();
@@ -119,7 +120,11 @@ function PointExchange() {
       );
 
       // setUserPoints((prev) => prev - amount);
-      toast.success(language === "en" ? "The exchange request has been completed.": "포인트교환신청이완료되었습니다. 내포인트교환기록에서내역을확인할수있습니다.");
+      toast.success(
+        language === "en"
+          ? "The exchange request has been completed."
+          : "포인트교환신청이완료되었습니다. 내포인트교환기록에서내역을확인할수있습니다."
+      );
 
       setShowExchangeModal(false);
       setExchangeAmount("");
@@ -136,6 +141,16 @@ function PointExchange() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const sortOptions = [
+    { label: t('default') },
+    { label: t('price'), icon: '🔥' },
+    { label: t('popularity'), icon: '🔥' },
+  ];
+
+  const handleSortChange = (label) => {
+    setActiveSort(label);
   };
 
   if (loading) {
@@ -183,6 +198,27 @@ function PointExchange() {
             <h2 className="text-2xl font-bold text-center mb-3 text-white">
               {t("availableTokens")}
             </h2>
+
+            <div className="flex justify-center mb-4">
+              <div className="flex gap-1.5">
+                {sortOptions.map((option) => (
+                  <button
+                    key={option.label}
+                    className={`flex items-center gap-2 ${
+                      activeSort === option.label
+                        ? "bg-blue-600 border-blue-600"
+                        : "bg-blue-400/50 border-gray-700 hover:bg-gray-700"
+                    } text-white text-lg font-bold px-4 py-1 mx-auto my-2 rounded-md cursor-pointer transition-colors border`}
+                    onClick={() => handleSortChange(option.label)}
+                  >
+                    <span>{option.label}</span>
+                    {option.icon && (
+                      <span className="text-base">{option.icon}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* Scrollable container */}
             <div className="max-h-96 px-2 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-gray-900 rounded-lg">
@@ -255,10 +291,7 @@ function PointExchange() {
                         <button
                           className="flex items-center gap-2 bg-[#3757D5] text-white text-lg font-medium px-4 py-2 mx-auto my-2 rounded-md hover:bg-[#4B6EF6] cursor-pointer transition-colors"
                           onClick={() =>
-                            window.open(
-                              selectedToken?.link,
-                              "_blank"
-                            )
+                            window.open(selectedToken?.link, "_blank")
                           }
                         >
                           Token price

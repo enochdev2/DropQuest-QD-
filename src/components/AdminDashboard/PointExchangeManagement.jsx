@@ -31,6 +31,7 @@ import {
   ArrowBigRightDash,
   Loader,
   Loader2,
+  RefreshCw,
   RotateCcw,
   UploadCloud,
 } from "lucide-react";
@@ -43,6 +44,7 @@ import {
 } from "@/lib/utilityFunction";
 import { formatKST } from "@/lib/formatKST";
 import LoadingSpinner from "../LoadingSpinner";
+import { useLanguage } from "@/contexts/language-context";
 
 const initialSlots = [
   {
@@ -63,6 +65,7 @@ const initialSlots = [
 ];
 
 export default function PointExchangeManagement() {
+  const { t } = useLanguage();
   const [tokenSlots, setTokenSlots] = useState(initialSlots);
   const [submitting, setSubmitting] = useState(false);
   const [rawFile, setRawFile] = useState(null);
@@ -75,6 +78,7 @@ export default function PointExchangeManagement() {
   const [tokensAmount, setTokensAmount] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [sortedUsers, setSortedUsers] = useState([]);
+  const [activeSort, setActiveSort] = useState("Default");
   const [configData, setConfigData] = useState({
     link: "",
     tokenName: "",
@@ -190,14 +194,11 @@ export default function PointExchangeManagement() {
 
   const handleReset = async () => {
     setSubmitting(true);
-    console.log("   🚀 ~ handleReset ~ configData.tokenName:", configData.tokenName)
-    await updatePoints(
-      " ",
-      "???",
-      selectedSlot,
-      tokensAmount,
-      points
+    console.log(
+      "   🚀 ~ handleReset ~ configData.tokenName:",
+      configData.tokenName
     );
+    await updatePoints(" ", "???", selectedSlot, tokensAmount, points);
 
     await getUserProfileDetails();
 
@@ -208,12 +209,27 @@ export default function PointExchangeManagement() {
     setConfigData({ tokenName: "", pointRatio: "", logoFile: null });
   };
 
+  const sortOptions = [
+    { label: t("default") },
+    { label: t("price"), icon: "🔥" },
+    { label: t("popularity"), icon: "🔥" },
+  ];
+
+  const handleSortChange = (label) => {
+    setActiveSort(label);
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setUploadedFile(URL.createObjectURL(file));
       setRawFile(file); // store the actual file
     }
+  };
+
+   const handleRefresh = () => {
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 1000);
   };
 
   // const sortedUsers = allTokenSlots.sort((a, b) => {
@@ -226,13 +242,55 @@ export default function PointExchangeManagement() {
     <div className="space-x-2 flex w-full">
       {/* Token Slots Configuration */}
       <Card className="bg-main py-5 border-gray-700 w-[70%]  ">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-white">
-            Token Slots Configuration
-          </CardTitle>
-          <CardDescription className="text-gray-300 font-bold text-lg">
-            Configure the 50 token slots available for point exchange
-          </CardDescription>
+        <CardHeader className="flex justify-between">
+          <div>
+            <CardTitle className="text-2xl font-bold text-white">
+              Token Slots Configuration
+            </CardTitle>
+            <CardDescription className="text-gray-300 font-bold text-lg">
+              Configure the 50 token slots available for point exchange
+            </CardDescription>
+          </div>
+          <div className="space-y-1">
+            <div className="w-full flex justify-between ">
+              <div className="w-[80%] mr-2">
+                <button className="px-5 w-full border font-bold bg-green-700 py-1 rounded-2xl cursor-pointer">
+                  Token Save
+                </button>{" "}
+              </div>
+              <div className="w-[10%] flex items-center justify-center">
+                <button
+                  onClick={handleRefresh}
+                  disabled={isLoading}
+                  className=" bg-blue-600  px-2 py-2 rounded-full hover:from-cyan-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
+                >
+                  <RefreshCw
+                    className={`w-5 h-5 ${
+                      isLoading ? "animate-spin" : ""
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
+            <div className="flex gap-1.5">
+              {sortOptions.map((option) => (
+                <button
+                  key={option.label}
+                  className={`flex items-center gap-2 ${
+                    activeSort === option.label
+                      ? "bg-blue-600 border-blue-600 border"
+                      : "bg-gray-400/50 border-gray-700 hover:bg-gray-700"
+                  } text-white text-lg font-bold py-0.5 mx-auto my-2 rounded-md cursor-pointer transition-colors border border-white px-5`}
+                  onClick={() => handleSortChange(option.label)}
+                >
+                  <span>{option.label}</span>
+                  {option.icon && (
+                    <span className="text-base">{option.icon}</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-10 gap-2">
@@ -307,7 +365,7 @@ export default function PointExchangeManagement() {
               </div>
             </div>
           ) : (
-            <div className="rounded-lg border border-gray-700 overflow-y-auto overflow-hidden">
+            <div className="rounded-lg border border-gray-700 overflow-y-auto h-[600px]">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-gray-700">
@@ -439,7 +497,10 @@ export default function PointExchangeManagement() {
             </div>
 
             <div>
-              <Label htmlFor="logo" className="text-white font-semibold mb-2 text-2xl">
+              <Label
+                htmlFor="logo"
+                className="text-white font-semibold mb-2 text-2xl"
+              >
                 Point Ratio setting :
               </Label>
               <div className="flex items-center space-x-4 w-full justify-center">

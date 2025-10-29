@@ -91,7 +91,7 @@ export default function PointTransactionHistory({ tokenSlot }) {
         </h1>
 
         {/* Table */}
-        <div className="relative min-h-auto bg-main px-2 mt-5 rounded-2xl">
+        <div className="relative h-96 overflow-y-auto bg-main px-2 w-[97%] mt-5 rounded-2xl">
           <table className="w-full mt-4 border border-gray-600 text-sm">
             <thead>
               <tr className="bg-[#000b7d] text-white">
@@ -110,7 +110,7 @@ export default function PointTransactionHistory({ tokenSlot }) {
               {tokenSlot && tokenSlot?.length > 0 ? (
                 tokenSlot?.map((slot, i) => (
                   <tr key={i} className="border-t border-gray-700">
-                    <td className="px-4 py-2">{slot.pointExchanged || "-"}</td>
+                    <td className="px-2 py-2">{slot.pointExchanged || "-"}</td>
                     <td className="px-4 py-2">{slot.tokenName || "-"}</td>
                     <td className="px-4 py-2 text-blue-400">
                       <button
