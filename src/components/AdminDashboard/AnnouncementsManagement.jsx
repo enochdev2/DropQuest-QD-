@@ -147,6 +147,7 @@ export default function AnnouncementsManagement() {
       content: editForm.content,
       contentkorean: editForm.contentkorean,
     };
+    console.log("🚀 ~ creatAnnouncement ~ newAnnouncement:", newAnnouncement)
 
     const announce = await addannouncement(newAnnouncement);
     handleAnnouncementClick();
