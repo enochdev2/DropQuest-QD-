@@ -48,8 +48,8 @@ const AnnouncementDetail = () => {
   }
 
   return (
-    <div className="min-h-screen pt-14 flex justify-center bg-gray-950">
-      <div className="min-h-screen sm:w-[400px] sm:border border-slate-600 bg-main">
+    <div className="h-screen overflow-y-auto pt-14 flex justify-center bg-gray-950">
+      <div className="h-screen sm:w-[400px] sm:border border-slate-600 bg-main">
         <div className="px-4 sm:px-6 py-4 max-w-4xl mx-auto">
           {/* Back Button */}
           <button
@@ -73,7 +73,7 @@ const AnnouncementDetail = () => {
           </button>
 
           {/* Wrapper */}
-          <div className="bg-black/80 rounded-lg p-5 border border-gray-700 shadow-lg">
+          <div className="bg-black/80 h-[90vh] overflow-y-auto rounded-lg p-5 border border-gray-700 shadow-lg">
             {/* Tabs */}
             <div className="flex justify-center mb-6 space-x-3">
               {["English", "Korean"].map((lang) => (
