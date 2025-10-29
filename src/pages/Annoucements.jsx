@@ -79,9 +79,12 @@ function AnnouncementsPage() {
                           {announcement.title}
                         </h3>
 
-                        <p className="text-gray-300 text-xs sm:text-sm mb-0 leading-relaxed line-clamp-2 lg:line-clamp-3">
-                          {announcement.content}
-                        </p>
+                        <div
+                          className="text-gray-300 text-xs sm:text-sm mb-0 leading-relaxed line-clamp-2 lg:line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: announcement.content,
+                          }}
+                        />
                       </div>
 
                       <div className="flex flex-col sm:flex-row items-center gap-2 ml-2">

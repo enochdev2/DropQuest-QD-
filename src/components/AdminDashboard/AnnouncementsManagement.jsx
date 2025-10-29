@@ -38,6 +38,7 @@ import {
   removeannouncement,
 } from "@/lib/utilityFunction";
 import { SuccessToast } from "../Success";
+import { TextFormatter } from "../TextFormatter";
 
 export default function AnnouncementsManagement() {
   const [loading, setLoading] = useState(false);
@@ -225,6 +226,8 @@ export default function AnnouncementsManagement() {
               className="pl-10 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500 transition-all text-white duration-300"
             />
           </div>
+
+          {/* FOR CREATE ANNOUNCEMENT */}
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
@@ -232,22 +235,21 @@ export default function AnnouncementsManagement() {
                 Create Announcement
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-3xl">
-              <DialogHeader>
+
+            <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col">
+              <DialogHeader className="pb-2 border-b border-gray-700">
                 <DialogTitle>Create New Announcement</DialogTitle>
                 <DialogDescription>
                   Create a new announcement that will be visible to all users.
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="title" className="text-right ">
-                    Title (English)
-                  </Label>
+              {/* Scrollable Body */}
+              <div className="flex-1 overflow-y-auto mt-4 pr-1 space-y-6">
+                {/* Title EN */}
+                <div className="flex items-center gap-4">
+                  <Label className="w-40 text-right">Title (English)</Label>
                   <Input
-                    id="title"
-                    placeholder="Announcement title"
                     value={editForm.title}
                     onChange={(e) =>
                       setEditForm((prev) => ({
@@ -255,16 +257,14 @@ export default function AnnouncementsManagement() {
                         title: e.target.value,
                       }))
                     }
-                    className="col-span-3"
+                    placeholder="Enter title in English"
                   />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="title" className="text-right">
-                    Title (Korean)
-                  </Label>
+
+                {/* Title KO */}
+                <div className="flex items-center gap-4">
+                  <Label className="w-40 text-right">Title (Korean)</Label>
                   <Input
-                    id="titlekorean"
-                    placeholder="Announcement title"
                     value={editForm.titlekorean}
                     onChange={(e) =>
                       setEditForm((prev) => ({
@@ -272,50 +272,58 @@ export default function AnnouncementsManagement() {
                         titlekorean: e.target.value,
                       }))
                     }
-                    className="col-span-3"
+                    placeholder="Enter title in Korean"
                   />
                 </div>
-                <div className="grid grid-cols-4 items-start gap-4">
-                  <Label htmlFor="content" className="text-right mt-2 w-40">
+
+                {/* Content EN */}
+                <div className="flex items-start gap-4">
+                  <Label className="w-40 text-right mt-2">
                     Content (English)
                   </Label>
-                  <Textarea
-                    id="content"
-                    placeholder="Announcement content..."
+                  <TextFormatter
                     value={editForm.content}
-                    onChange={(e) =>
+                    onChange={(val) =>
                       setEditForm((prev) => ({
                         ...prev,
-                        content: e.target.value,
+                        content: val,
                       }))
                     }
-                    className="col-span-3 min-h-[100px]"
+                    placeholder="Enter announcement content in English"
+                    className="min-h-[120px]"
                   />
                 </div>
-                <div className="grid grid-cols-4 items-start gap-4">
-                  <Label htmlFor="content" className="text-right mt-2 w-40">
+
+                {/* Content KO */}
+                <div className="flex items-start gap-4">
+                  <Label className="w-40 text-right mt-2">
                     Content (Korean)
                   </Label>
-                  <Textarea
-                    id="contentkorean"
-                    placeholder="Announcement content..."
+                  <TextFormatter
                     value={editForm.contentkorean}
+                    onChange={(val) =>
+                      setEditForm((prev) => ({
+                        ...prev,
+                        contentkorean: val,
+                      }))
+                    }
+                    placeholder="Enter announcement content in Korean"
+                    className="min-h-[120px]"
+                  />
+                </div>
+
+                {/* Priority */}
+                <div className="flex items-center gap-4">
+                  <Label className="w-40 text-right">Priority</Label>
+                  <select
+                    className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    value={editForm.priority}
                     onChange={(e) =>
                       setEditForm((prev) => ({
                         ...prev,
-                        contentkorean: e.target.value,
+                        priority: e.target.value,
                       }))
                     }
-                    className="col-span-3 min-h-[100px]"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="priority" className="text-right">
-                    Priority
-                  </Label>
-                  <select
-                    id="priority"
-                    className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   >
                     <option value="normal">Normal</option>
                     <option value="important">Important</option>
@@ -323,20 +331,16 @@ export default function AnnouncementsManagement() {
                   </select>
                 </div>
               </div>
-              <DialogFooter>
+
+              {/* Footer */}
+              <DialogFooter className="pt-3 border-t border-gray-700">
                 <Button
                   onClick={creatAnnouncement}
                   disabled={loading}
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white cursor-pointer inline-flex items-center gap-2 rounded-md px-4 py-2 disabled:opacity-60"
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white inline-flex items-center gap-2 disabled:opacity-60"
                 >
                   {loading ? (
-                    <>
-                      <Loader2
-                        className="h-4 w-4 animate-spin"
-                        aria-hidden="true"
-                      />
-                      {/* Saving… */}
-                    </>
+                    <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
                     "Publish Announcement"
                   )}
@@ -346,18 +350,26 @@ export default function AnnouncementsManagement() {
           </Dialog>
         </div>
 
+        {/* FOR EDIT ANNOUNCEMENT */}
+
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>Edit Announcement</DialogTitle>
-              <DialogDescription>
-                Update the announcement details.
+          <DialogContent className="lg:max-w-[600px] max-h-[90vh] flex flex-col">
+            {/* Header */}
+            <DialogHeader className="pb-2 border-b border-gray-700">
+              <DialogTitle className="text-lg font-semibold">
+                Edit Announcement
+              </DialogTitle>
+              <DialogDescription className="text-sm text-gray-400">
+                Update the announcement details below.
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-title" className="text-right">
-                  Title
+
+            {/* Scrollable Body */}
+            <div className="flex-1 overflow-y-auto mt-4 pr-1 space-y-5">
+              {/* Title EN */}
+              <div className="flex items-center gap-4">
+                <Label htmlFor="edit-title" className="w-32 text-right">
+                  Title (EN)
                 </Label>
                 <Input
                   id="edit-title"
@@ -365,12 +377,13 @@ export default function AnnouncementsManagement() {
                   onChange={(e) =>
                     setEditForm((prev) => ({ ...prev, title: e.target.value }))
                   }
-                  className="col-span-3"
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-title" className="text-right">
-                  Title (Korean)
+
+              {/* Title KO */}
+              <div className="flex items-center gap-4">
+                <Label htmlFor="edit-titlekorean" className="w-32 text-right">
+                  Title (KO)
                 </Label>
                 <Input
                   id="edit-titlekorean"
@@ -381,43 +394,50 @@ export default function AnnouncementsManagement() {
                       titlekorean: e.target.value,
                     }))
                   }
-                  className="col-span-3"
                 />
               </div>
-              <div className="grid grid-cols-4 items-start gap-4">
-                <Label htmlFor="edit-content" className="text-right mt-2">
-                  Content (English)
+
+              {/* Content EN */}
+              <div className="flex items-start gap-4">
+                <Label htmlFor="edit-content" className="w-32 text-right mt-2">
+                  Content (EN)
                 </Label>
-                <Textarea
+                <TextFormatter
                   id="edit-content"
                   value={editForm.content}
-                  onChange={(e) =>
+                  onChange={(val) =>
                     setEditForm((prev) => ({
                       ...prev,
-                      content: e.target.value,
+                      content: val,
                     }))
                   }
-                  className="col-span-3 min-h-[100px]"
                 />
               </div>
-              <div className="grid grid-cols-4 items-start gap-4">
-                <Label htmlFor="edit-content" className="text-right mt-2">
-                  Content (Korean)
+
+              {/* Content KO */}
+              <div className="flex items-start gap-4">
+                <Label
+                  htmlFor="edit-contentkorean"
+                  className="w-32 text-right mt-2"
+                >
+                  Content (KO)
                 </Label>
-                <Textarea
+                <TextFormatter
                   id="edit-contentkorean"
                   value={editForm.contentkorean}
-                  onChange={(e) =>
+                  onChange={(val) =>
                     setEditForm((prev) => ({
                       ...prev,
-                      contentkorean: e.target.value,
+                      contentkorean: val,
                     }))
                   }
-                  className="col-span-3 min-h-[100px]"
+                  className="min-h-[120px]"
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-priority" className="text-right">
+
+              {/* Priority */}
+              <div className="flex items-center gap-4">
+                <Label htmlFor="edit-priority" className="w-32 text-right">
                   Priority
                 </Label>
                 <select
@@ -429,7 +449,7 @@ export default function AnnouncementsManagement() {
                       priority: e.target.value,
                     }))
                   }
-                  className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
                   <option value="normal">Normal</option>
                   <option value="important">Important</option>
@@ -437,27 +457,23 @@ export default function AnnouncementsManagement() {
                 </select>
               </div>
             </div>
-            <DialogFooter>
+
+            {/* Footer */}
+            <DialogFooter className="pt-3 border-t border-gray-700 flex justify-end gap-3">
               <Button
                 variant="outline"
                 onClick={() => setIsEditDialogOpen(false)}
               >
                 Cancel
               </Button>
+
               <Button
                 onClick={() => EditAnnouncement(editingAnnouncement?._id)}
                 disabled={loading}
-                // onClick={()=> EditAnnouncement(announcement?._id)}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white cursor-pointer inline-flex items-center gap-2 rounded-md px-4 py-2 disabled:opacity-60"
+                className="bg-blue-600 hover:bg-blue-700 text-white inline-flex items-center gap-2 disabled:opacity-60"
               >
                 {loading ? (
-                  <>
-                    <Loader2
-                      className="h-4 w-4 animate-spin"
-                      aria-hidden="true"
-                    />
-                    {/* Saving… */}
-                  </>
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   "Save Changes"
                 )}
