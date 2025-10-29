@@ -52,7 +52,7 @@ export function TextFormatter({ value, onChange, placeholder }) {
 
   return (
     <div className="space-y-0 border border-gray-300 rounded-lg overflow-hidden">
-      {/* ✅ editable area */}
+      
       <div
         ref={editorRef}
         contentEditable
