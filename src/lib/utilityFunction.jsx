@@ -65,6 +65,36 @@ export const getUserTokenSlots = async (userId) => {
     throw error;
   }
 };
+export const updateTokenSlotsOrder = async (userId) => {
+  console.log("🚀 ~ getTokenSlots ~ userId:", userId)
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+      // `http://localhost:3000/api/v1/point/slots`,
+      `https://dropquest-qd-backend.onrender.com/api/v1/point/slots`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      const errorMsg =
+        data.error || data.message || "Failed to fetch token slots";
+      throw new Error(errorMsg);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching token slots:", error);
+    throw error;
+  }
+};
 
 export const getAllUserTokenSlots = async () => {
  
