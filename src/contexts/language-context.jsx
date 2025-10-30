@@ -207,6 +207,9 @@ const translations = {
     default: "Default",
     price: "Price",
     popularity: " Popularity",
+    joincommunity: "Join Community",
+    commmunityevent: "Community Event",
+    phantom: "Download Phantom Wallet",
     // ok: "OK",
     // cancel: "Cancel",
   
@@ -409,6 +412,9 @@ const translations = {
     default: "기본",
     price: "가격순",
     popularity: "인기순",
+    joincommunity: "DQ 커뮤니티 입장",
+    commmunityevent: "커뮤니티 전용 이벤트가 있습니다.",
+    phantom: "팬텀 지갑 다운로드"
     // ok: "확인",
     // cancel: "취소",
   },

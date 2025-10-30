@@ -16,29 +16,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-
+import PhantomDownloadBanner from "@/components/PhantomDownloadBanner";
 
 export default function DropQuestLanding() {
   const { t } = useLanguage();
 
   const frontMenu = [
-  { label: t("announcements"), path: "/announcements" },
-  { label: t("goToAirdrop"), path: "/air-drop" },
-  { label: t("pointsForCoins"), path: "/point-exchange" },
-  { label: t("qna"), path: "/question-answer" },
-];
+    { label: t("announcements"), path: "/announcements" },
+    { label: t("goToAirdrop"), path: "/air-drop" },
+    { label: t("pointsForCoins"), path: "/point-exchange" },
+    { label: t("qna"), path: "/question-answer" },
+  ];
 
   return (
     <div className="min-h-screen pt-18 flex flex-col px-10 items-center bg-black text-white ">
       <div className="sm:w-[400px] sm:border sm:border-gray-700 rounded-lg mb-2  ">
         {/* HERO SECTION */}
-        <section className="flex flex-col items-center  text-center px-4 sm:px-6 py-10 sm:py-12">
+        <section className="flex flex-col items-center  text-center px-4 sm:px-6 py-10 sm:py-12 space-y-">
           <div className="w-[95%] flex sm:w-[400px] gap-4 justify-between  px-2 sm:pr-10 pr-2 ">
             <div className="flex flex-col  space-y-3 text-xl text-left font-medium">
               <p className="text-lg"> {t("airdrop")}</p>
               <p className="text-blue-600 font-semibold">{t("clickAnd")}</p>
-              <p className="font-meduim" >{t("Earn")}</p>
+              <p className="font-meduim">{t("Earn")}</p>
             </div>
 
             <img
@@ -47,11 +46,15 @@ export default function DropQuestLanding() {
               className="w-36 sm:w-32 mb-6 drop-shadow-lg"
             />
           </div>
-          {/* <p className="text-gray-300 text-sm sm:text-base max-w-md mb-6">
-           {t("connectingUsers")}
-            <br />
-            {t("earnAirdrops")}
-        </p> */}
+
+          {/* JOIN COMMUNITY SECTION */}
+          <div className=" w-full h-22 flex justify-center items-center overflow-hidden border-2 bg--500 rounded-2xl py-2 mb-7">
+            <Link to="https://t.me/+k1k8C9ftsL4wMmE1">
+              <div className="text-3xl font-bold ">{t("joincommunity")}</div>
+              <p className="text-gray-500">{t("communityevent")}</p>
+            </Link>
+          </div>
+
           <div className="space-y-4">
             {frontMenu.map(({ label, path }) => (
               <Button
@@ -147,6 +150,12 @@ export default function DropQuestLanding() {
             </div>
           </div>
         </section>
+
+<div className="border-t-8 mt-4 w-[97%] border-blue-800 rounded-t-2xl mx-auto">
+
+        <PhantomDownloadBanner />
+</div>
+
         <Partners />
       </div>
     </div>

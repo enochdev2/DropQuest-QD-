@@ -6,13 +6,15 @@ import { ChevronDown, ExternalLink, Loader2 } from "lucide-react";
 // import { useLanguage } from "@/contexts/LanguageProvider"
 // import { getTokenSlots, submitPointExchange, getUserProfile } from "@/lib/utils"
 import toast from "react-hot-toast";
+
 import { useLanguage } from "@/contexts/language-context";
 import {
   getTokenSlots,
   getUserProfile,
   submitPointExchange,
 } from "@/lib/utilityFunction";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import PhantomDownloadBanner from "@/components/PhantomDownloadBanner";
 
 const initialSlots = [
   {
@@ -144,9 +146,9 @@ function PointExchange() {
   };
 
   const sortOptions = [
-    { label: t('default') },
-    { label: t('price'), icon: '🔥' },
-    { label: t('popularity'), icon: '🔥' },
+    { label: t("default") },
+    { label: t("price"), icon: "🔥" },
+    { label: t("popularity"), icon: "🔥" },
   ];
 
   const handleSortChange = (label) => {
@@ -193,14 +195,19 @@ function PointExchange() {
             </div>
           </div>
         </div>
+
+        {/* Phantom Wallet Download Section */}
+        <PhantomDownloadBanner />
+
+
         <div className="py-6 px-2">
           <div className="">
             <h2 className="text-2xl font-bold text-center mb-3 text-white">
               {t("availableTokens")}
             </h2>
 
-            <div className="flex justify-center mb-4">
-              <div className="flex gap-1.5">
+            <div className="flex w-[95%] mx-auto justify-center mb-4">
+              <div className="flex gap-1">
                 {sortOptions.map((option) => (
                   <button
                     key={option.label}
@@ -208,12 +215,12 @@ function PointExchange() {
                       activeSort === option.label
                         ? "bg-blue-600 border-blue-600"
                         : "bg-blue-400/50 border-gray-700 hover:bg-gray-700"
-                    } text-white text-lg font-bold px-4 py-1 mx-auto my-2 rounded-md cursor-pointer transition-colors border`}
+                    } text-white text-md font-bold px-4 py-1 mx-auto my-2 rounded-md cursor-pointer transition-colors border`}
                     onClick={() => handleSortChange(option.label)}
                   >
                     <span>{option.label}</span>
                     {option.icon && (
-                      <span className="text-base">{option.icon}</span>
+                      <span className="text-sm">{option.icon}</span>
                     )}
                   </button>
                 ))}
