@@ -74,7 +74,7 @@ export default function AdminDashboard() {
         </div>
       </div>
       <div className="w-full flex flex-col items-center justify-center py-5">
-        <div className="bg-white/10 px-4 py-3 rounded-lg shadow-lg">
+        <div className="bg-main px-4 py-3 rounded-lg shadow-lg">
           <h1
             className="text-3xl font-bold text-gray-200"
             style={{ fontFamily: "DM Sans, sans-serif" }}
