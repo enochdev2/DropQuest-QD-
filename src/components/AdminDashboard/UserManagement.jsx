@@ -44,6 +44,7 @@ export default function UserManagement() {
     email: "",
     phone: "",
     telegramId: "",
+    referredByEmail: "",
     walletAddress: "",
     img: "",
   });
@@ -115,6 +116,7 @@ export default function UserManagement() {
       email: user.email,
       phone: user.phone,
       telegramId: user.telegramId,
+      referredByEmail: user.referredByEmail,
       walletAddress: user.walletAddress || "",
       img: user.img || "",
     });
@@ -199,6 +201,7 @@ export default function UserManagement() {
         email: "",
         phone: "",
         telegramId: "",
+        referredByEmail: "",
         walletAddress: "",
         img: "",
       });
@@ -289,6 +292,12 @@ export default function UserManagement() {
                   </Label>
                   <Input id="telegram" className="col-span-3" />
                 </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="referredByEmail" className="text-right">
+                    referred By Email 
+                  </Label>
+                  <Input id="referredByEmail" className="col-span-3" />
+                </div>
               </div>
               <DialogFooter>
                 <Button className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white">
@@ -364,6 +373,25 @@ export default function UserManagement() {
                     setEditFormData({
                       ...editFormData,
                       telegramId: e.target.value,
+                    })
+                  }
+                  className="col-span-3 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label
+                  htmlFor="edit-telegram"
+                  className="text-right font-medium"
+                >
+                  referred By Email
+                </Label>
+                <Input
+                  id="edit-referredByEmail"
+                  value={editFormData.referredByEmail}
+                  onChange={(e) =>
+                    setEditFormData({
+                      ...editFormData,
+                      referredByEmail: e.target.value,
                     })
                   }
                   className="col-span-3 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500"
