@@ -136,8 +136,8 @@ export default function UserManagement() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${selectedUser.email}`,
-        `http://localhost:3000/api/v1/user/users/${selectedUser.email}`,
+        `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${selectedUser.email}`,
+        // `http://localhost:3000/api/v1/user/users/${selectedUser.email}`,
         {
           method: "DELETE",
           headers: {
