@@ -108,6 +108,9 @@ export default function PointExchangeManagement() {
     logoFile: null,
   });
 
+  // Determine if drag mode is enabled (price or popularity)
+  const isDraggableMode = activeSort !== t("default");
+
   // dnd-kit sensors
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -293,8 +296,7 @@ export default function PointExchangeManagement() {
 
   const handleSortChange = (label) => {
     setActiveSort(label);
-    // TODO: Implement actual sorting logic for tokenSlots based on criteria
-    // e.g., if (label === t("price")) { setTokenSlots([...tokenSlots].sort((a, b) => ...)); }
+    // No actual sorting; just toggle draggable mode
   };
 
   const handleFileChange = (e) => {
@@ -336,11 +338,13 @@ export default function PointExchangeManagement() {
         <Card
           {...attributes}
           {...listeners}
-          className={`cursor-pointer transition-all duration-200 flex flex-col items-center justify-center relative ${
+          className={`transition-all duration-200 flex flex-col items-center justify-center relative ${
             token.isConfigured
               ? "bg-main py-2 border-gray-400 hover:bg-gray-600"
               : "bg-gray-900 border-gray-800 hover:bg-gray-800 cursor-not-allowed opacity-50"
-          } ${isDragging ? "shadow-2xl scale-105 z-50 ring-2 ring-blue-500" : ""}`}
+          } ${isDragging ? "shadow-2xl scale-105 z-50 ring-2 ring-blue-500" : ""} ${
+            !isDraggableMode ? "cursor-default" : "cursor-pointer"
+          }`}
           onClick={(e) => {
             e.stopPropagation();
             if (!disabled && !isDragging) handleSlotClick(token);
@@ -355,7 +359,7 @@ export default function PointExchangeManagement() {
                     alt={token.tokenName}
                     className="rounded-full w-full h-full object-cover"
                   />
-                  {!disabled && (
+                  {isDraggableMode && !disabled && (
                     <GripVertical className="absolute -top-1 -right-1 w-4 h-4 text-gray-400 cursor-grab active:cursor-grabbing" />
                   )}
                 </div>
@@ -406,7 +410,10 @@ export default function PointExchangeManagement() {
               Token Slots Configuration
             </CardTitle>
             <CardDescription className="text-gray-300 font-bold text-lg">
-              Drag to reorder the 50 token slots available for point exchange
+              {isDraggableMode 
+                ? `Drag to reorder the 50 token slots available for point exchange (${activeSort} mode)` 
+                : "Configure the 50 token slots available for point exchange (default mode - reordering disabled)"
+              }
             </CardDescription>
           </div>
           <div className="space-y-1">
@@ -467,7 +474,7 @@ export default function PointExchangeManagement() {
                       key={token._id}
                       id={token._id}
                       token={token}
-                      disabled={!token.isConfigured}
+                      disabled={!isDraggableMode || !token.isConfigured}
                     />
                   ))}
                 </div>
