@@ -48,7 +48,7 @@ function PointExchange() {
   const [submitting, setSubmitting] = useState(false);
   const [userProfile, setUserProfile] = useState({});
   const { language } = useLanguage();
-  const [activeSort, setActiveSort] = useState("Default");
+  const [activeSort, setActiveSort] = useState(t("default"));
 
   useEffect(() => {
     getUserProfileDetails();

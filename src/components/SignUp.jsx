@@ -23,6 +23,7 @@ import { SuccessToast } from "./Success";
 
 const SignUp = () => {
   const { t } = useLanguage();
+  const { language } = useLanguage();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const referralCode = queryParams.get("referral");
@@ -526,6 +527,9 @@ const SignUp = () => {
               {errors.phoneNumber && touched.phoneNumber && (
                 <p className="text-xs text-red-500">{errors.phoneNumber}</p>
               )}
+              {language === "ko" && ( 
+                <div className="text-xs text-green-500 font-bold mt-2">추가 본인 인증 시, 50 포인트 추가 지급!!</div>)
+                }
             </div>
           </div>
 
