@@ -36,6 +36,7 @@ import { SuccessToast } from "../Success";
 export default function UserManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [rawFile, setRawFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -121,6 +122,52 @@ export default function UserManagement() {
       img: user.img || "",
     });
     setEditDialogOpen(true);
+  };
+
+  const handleDeleteUser = (user) => {
+    setSelectedUser(user);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!selectedUser) return;
+
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${selectedUser.email}`,
+        `http://localhost:3000/api/v1/user/users/${selectedUser.email}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete user");
+      }
+      const data = await response.json();
+
+      if (data.message === "User deleted successfully") {
+        setUsers((prevUsers) =>
+          prevUsers.filter((u) => u.email !== selectedUser.email)
+        );
+        SuccessToast("User deleted successfully");
+      }
+
+      // Update local state by removing the user
+
+      setDeleteDialogOpen(false);
+      setSelectedUser(null);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      // Optionally add an error toast here
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // const handleSaveEdit = () => {
@@ -294,7 +341,7 @@ export default function UserManagement() {
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="referredByEmail" className="text-right">
-                    referred By Email 
+                    referred By Email
                   </Label>
                   <Input id="referredByEmail" className="col-span-3" />
                 </div>
@@ -483,6 +530,39 @@ export default function UserManagement() {
           </DialogContent>
         </Dialog>
 
+        <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete User</DialogTitle>
+              <DialogDescription className=" font-bold text-2xl flex flex-col gap-2  items-center">
+                Are you sure you want to delete {selectedUser?.name}?
+                <p className="text-red-600 text-lg">
+                  This action cannot be undone.
+                </p>
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setDeleteDialogOpen(false)}
+                className="border-slate-300 hover:bg-slate-50 cursor-pointer"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleDelete}
+                disabled={isLoading}
+                className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 cursor-pointer hover:to-red-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 "
+              >
+                {isLoading ? (
+                  <Loader className="mr-2 h-4 w-4 animate-spin" />
+                ) : null}
+                {isLoading ? "Deleting..." : "Delete"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
         <div className="rounded-xl border border-slate-200 overflow-hidden shadow-lg">
           <Table>
             <TableHeader>
@@ -506,7 +586,7 @@ export default function UserManagement() {
                   Join Date
                 </TableHead>
                 <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
-                  Wallet Address
+                  Points
                 </TableHead>
                 <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">
                   Actions
@@ -526,23 +606,18 @@ export default function UserManagement() {
                     {user.name}
                   </TableCell>
                   <TableCell className="font-semibold">{user.email}</TableCell>
-                  <TableCell className={"font-semibold"} >{user.phone}</TableCell>
-                  <TableCell className={"font-semibold"}>{user.telegramId}</TableCell>
+                  <TableCell className={"font-semibold"}>
+                    {user.phone}
+                  </TableCell>
+                  <TableCell className={"font-semibold"}>
+                    {user.telegramId}
+                  </TableCell>
                   <TableCell className={"font-semibold"}>
                     {new Date(
                       user.createdAt ?? user.joinDate
                     ).toLocaleDateString("en-US")}
                   </TableCell>
-                  <TableCell>
-                    {user.walletAddress || (
-                      <Badge
-                        variant="secondary"
-                        className="bg-slate-100 font-medium text-slate-600"
-                      >
-                        Not Set
-                      </Badge>
-                    )}
-                  </TableCell>
+                  <TableCell className="font-bold text-lg">{user?.points?.totalPoints}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Button
@@ -556,6 +631,7 @@ export default function UserManagement() {
                       <Button
                         size="sm"
                         variant="outline"
+                        onClick={() => handleDeleteUser(user)}
                         className="hover:bg-red-50 hover:border-red-300 text-red-600 transition-all duration-300 bg-transparent"
                       >
                         <Trash2 className="w-3 h-3" />
