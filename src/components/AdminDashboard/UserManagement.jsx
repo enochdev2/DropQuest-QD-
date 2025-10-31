@@ -314,7 +314,6 @@ export default function UserManagement() {
         referralEmail: newFormData.referredByEmail ? newFormData.referredByEmail : "",
         image: imageUrl,
       };
-      console.log("🚀 ~ handleCreateUser ~ createBody:", createBody)
 
       const token = localStorage.getItem("token");
       const response = await fetch(
