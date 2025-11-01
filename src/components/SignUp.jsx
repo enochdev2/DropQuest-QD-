@@ -271,7 +271,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    SuccessToast("Uploading image...");
+    SuccessToast(t("uploadingimage"));
 
     if (!isFormValid()) {
       console.log("Please fill all required fields correctly.");
@@ -300,7 +300,7 @@ const SignUp = () => {
         const imageData = await imageRes.json();
         imageUrl = imageData.url; // Get the Cloudinary URL
       }
-      SuccessToast("Image uploaded successfully!");
+      SuccessToast(t("imageuploaded"));
       console.log("🚀 ~ handleSaveConfig ~ imageUrl:", imageUrl);
       // Build new user data
       const newUser = {
@@ -339,7 +339,7 @@ const SignUp = () => {
       } else {
         console.log("Registration successful!");
         navigate("/my-page");
-        toast.success("Registration successful!");
+        toast.success(t("registrationsuccessful"));
       }
     } catch (error) {
       console.error("Error during sign-up:", error);

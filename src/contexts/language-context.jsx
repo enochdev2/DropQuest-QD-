@@ -210,6 +210,9 @@ const translations = {
     joincommunity: "Join Community",
     commmunityevent: "Community Event",
     phantom: "Download Phantom Wallet",
+    uploadingimage: "Uploading image...",
+    registrationsuccessful: "Registration successful!",
+    imageuploaded: "Image uploaded successfully!",
     // ok: "OK",
     // cancel: "Cancel",
   
@@ -414,7 +417,10 @@ const translations = {
     popularity: "인기순",
     joincommunity: "DQ 커뮤니티 입장",
     commmunityevent: "커뮤니티 전용 이벤트가 있습니다.",
-    phantom: "팬텀 지갑 다운로드"
+    phantom: "팬텀 지갑 다운로드",
+    uploadingimage: "이미지 업로드 중…",
+    registrationsuccessful: "회원가입을 완료했습니다.",
+    imageuploaded: "이미지 업로드 완료!",
     // ok: "확인",
     // cancel: "취소",
   },

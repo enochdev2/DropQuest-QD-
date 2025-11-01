@@ -120,8 +120,7 @@ function App() {
         {/* <Route path="/admin"> */}
         {/* <Route path="points-management" element={<PointsManagement />} />
           <Route path="user-management" element={<UserManagement />} />
-          <Route path="announcements" elem
-          ent={<AnnouncementsManagement />} /> */}
+          <Route path="announcements" element={<AnnouncementsManagement />} /> */}
         {/* </Route> */}
       </Routes>
 
