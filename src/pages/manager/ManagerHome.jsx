@@ -296,6 +296,7 @@ export default function ManagerDashboard() {
 
   const handleMyReferralsClick = async () => {
     if (!personalData) return; // Ensure personalData is set
+    setShowUserManagement(false); // NEW: Hide user management view
     setReferralLoading(true);
     setSelectedManager(personalData);
     setShowManagers(false);
@@ -309,6 +310,7 @@ export default function ManagerDashboard() {
   };
 
   const handleManagerManagementClick = () => {
+    setShowUserManagement(false); // NEW: Hide user management view
     if (!showManagers) {
       if (!unlocked) {
         setShowModal(true);
@@ -327,7 +329,7 @@ export default function ManagerDashboard() {
     setExpandedUser(null);
     setSearchTerm("");
     setCurrentPage(1);
-    await getTotalUsers(); // Fetch all users
+    // No need to fetch here if UserManagement handles it internally
   };
 
 
@@ -392,10 +394,6 @@ export default function ManagerDashboard() {
   const getTotalReferralPages = (manager) =>
     Math.ceil(getFilteredManagerUsersLength(manager) / referralItemsPerPage);
 
-   if (showUserManagement) {
-    return <UserManagement onBack={() => setShowUserManagement(false)} />;
-  }
-
   return (
     <div className="min-h-screen bg-black">
       <div className="px-16 bg-black border-b border-cyan-100  py-6 shadow-sm"></div>
@@ -426,7 +424,7 @@ export default function ManagerDashboard() {
             <div className="w-full flex justify-center">
               <button
                 className="bg-main text-xl font-bold px-5 py-1 rounded-xl shadow-md border"
-                //  onClick={handleUserManagementClick} 
+                 onClick={handleUserManagementClick} 
               >
                 User <br />
                 Management
@@ -754,138 +752,144 @@ export default function ManagerDashboard() {
               </>
             ) : (
               <>
-                {/* Search & Stats for Referrals */}
-                <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      placeholder="Search for a user name"
-                      value={searchTerm}
-                      onChange={(e) => {
-                        setSearchTerm(e.target.value);
-                        setCurrentPage(1);
-                      }}
-                      className="bg-gray-900/20 border  border-blue-900 text-white text-xl px-3 py-2 rounded-md focus:outline-none"
-                    />
-                    <button className="bg-main border border-blue-300 hover:bg-gray-600 text-xl font-bold px-4 py-2 rounded-md">
-                      Enter
-                    </button>
-                  </div>
+                {showUserManagement ? (
+                  <UserManagement onBack={() => setShowUserManagement(false)} />
+                ) : (
+                  <>
+                    {/* Search & Stats for Referrals */}
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          placeholder="Search for a user name"
+                          value={searchTerm}
+                          onChange={(e) => {
+                            setSearchTerm(e.target.value);
+                            setCurrentPage(1);
+                          }}
+                          className="bg-gray-900/20 border  border-blue-900 text-white text-xl px-3 py-2 rounded-md focus:outline-none"
+                        />
+                        <button className="bg-main border border-blue-300 hover:bg-gray-600 text-xl font-bold px-4 py-2 rounded-md">
+                          Enter
+                        </button>
+                      </div>
 
-                  <div className="flex items-center gap-">
-                    <span className="bg-main font-semibold border border-blue-900 px-4 py-2 text-lg rounded-md">
-                      {t("numberOfUsers")}
-                    </span>
-                    <span className="h-1 w-8 bg-main"></span>
-                    <span className="bg-main px-4 py-2 font-bold text-xl rounded-md">
-                      {searchedAndSorted.length}
-                    </span>
-                  </div>
+                      <div className="flex items-center gap-">
+                        <span className="bg-main font-semibold border border-blue-900 px-4 py-2 text-lg rounded-md">
+                          {t("numberOfUsers")}
+                        </span>
+                        <span className="h-1 w-8 bg-main"></span>
+                        <span className="bg-main px-4 py-2 font-bold text-xl rounded-md">
+                          {searchedAndSorted.length}
+                        </span>
+                      </div>
 
-                  <div className="bg-main px-4 py-2 text-xl font-semibold rounded-md">
-                    Target : {selectedManager}
-                  </div>
-                </div>
-
-                {/* Referral Table */}
-                <div className="bg-main mt-10 border border-[#000b7d] rounded-lg overflow-hidden">
-                  {referralLoading ? (
-                    <div className="flex justify-center items-center py-8">
-                      <Loader2 className="w-8 h-8 animate-spin text-blue-500 mr-2" />
-                      <span className="text-gray-400">
-                        Loading referrals...
-                      </span>
+                      <div className="bg-main px-4 py-2 text-xl font-semibold rounded-md">
+                        Target : {selectedManager}
+                      </div>
                     </div>
-                  ) : searchedAndSorted.length > 0 ? (
-                    <table className="w-full text-left">
-                      <thead className="bg-blue-500/30">
-                        <tr>
-                          <th className="px-4 py-3">{t("email")}</th>
-                          <th className="px-4 py-3">{t("name")}</th>
-                          <th className="px-4 py-3">{t("phoneNumber")}</th>
-                          <th className="px-4 py-3">{t("telegramId")}</th>
-                          <th className="px-4 py-3">{t("referralEmails")}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {displayedUsers.map((user, i) => {
-                          const isExpanded = expandedUser === user.email;
-                          return (
-                            <>
-                              <tr
-                                key={i}
-                                className="border-t border-[#000b7d] hover:bg-[#000b7d]  font-semibold cursor-pointer"
-                                onClick={() => toggleUserExpand(user.email)}
-                              >
-                                <td className="px-4 py-3 bg-black/20">
-                                  {user.email}
-                                </td>
-                                <td className="px-4 py-3 ">{user.name}</td>
-                                <td className="px-4 py-3 bg-black/20">
-                                  {user.phone}
-                                </td>
-                                <td className="px-4 py-3">{user.telegram}</td>
-                                <td className="px-4 py-3 bg-black/20">
-                                  {user.referral}
-                                </td>
-                              </tr>
-                              {isExpanded && (
-                                <tr>
-                                  <td
-                                    colSpan={5}
-                                    className="px-4 py-2 bg-[#000856]"
+
+                    {/* Referral Table */}
+                    <div className="bg-main mt-10 border border-[#000b7d] rounded-lg overflow-hidden">
+                      {referralLoading ? (
+                        <div className="flex justify-center items-center py-8">
+                          <Loader2 className="w-8 h-8 animate-spin text-blue-500 mr-2" />
+                          <span className="text-gray-400">
+                            Loading referrals...
+                          </span>
+                        </div>
+                      ) : searchedAndSorted.length > 0 ? (
+                        <table className="w-full text-left">
+                          <thead className="bg-blue-500/30">
+                            <tr>
+                              <th className="px-4 py-3">{t("email")}</th>
+                              <th className="px-4 py-3">{t("name")}</th>
+                              <th className="px-4 py-3">{t("phoneNumber")}</th>
+                              <th className="px-4 py-3">{t("telegramId")}</th>
+                              <th className="px-4 py-3">{t("referralEmails")}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {displayedUsers.map((user, i) => {
+                              const isExpanded = expandedUser === user.email;
+                              return (
+                                <>
+                                  <tr
+                                    key={i}
+                                    className="border-t border-[#000b7d] hover:bg-[#000b7d]  font-semibold cursor-pointer"
+                                    onClick={() => toggleUserExpand(user.email)}
                                   >
-                                    <div className="pl-4 ">
-                                      <span className="text-sm  text-gray-300 font-semibold">
-                                        {t("registrationdate")}:{" "}
-                                        {user.registrationDate}
-                                      </span>
-                                    </div>
-                                  </td>
-                                </tr>
-                              )}
-                            </>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  ) : (
-                    <div className="flex justify-center py-8 items-center ">
-                      <p className="text-gray-100 text-3xl font-bold">
-                        No referral yet
-                      </p>
+                                    <td className="px-4 py-3 bg-black/20">
+                                      {user.email}
+                                    </td>
+                                    <td className="px-4 py-3 ">{user.name}</td>
+                                    <td className="px-4 py-3 bg-black/20">
+                                      {user.phone}
+                                    </td>
+                                    <td className="px-4 py-3">{user.telegram}</td>
+                                    <td className="px-4 py-3 bg-black/20">
+                                      {user.referral}
+                                    </td>
+                                  </tr>
+                                  {isExpanded && (
+                                    <tr>
+                                      <td
+                                        colSpan={5}
+                                        className="px-4 py-2 bg-[#000856]"
+                                      >
+                                        <div className="pl-4 ">
+                                          <span className="text-sm  text-gray-300 font-semibold">
+                                            {t("registrationdate")}:{" "}
+                                            {user.registrationDate}
+                                          </span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  )}
+                                </>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      ) : (
+                        <div className="flex justify-center py-8 items-center ">
+                          <p className="text-gray-100 text-3xl font-bold">
+                            No referral yet
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
 
-                {!referralLoading && searchedAndSorted.length > 0 && (
-                  /* Pagination for Referrals */
-                  <div className="flex justify-center items-center gap-3 mt-20">
-                    <span className="bg-blue-700 px-3 py-2 rounded-md">
-                      Page
-                    </span>
-                    {Array.from(
-                      { length: Math.min(5, totalMainPages) },
-                      (_, i) => i + 1
-                    ).map((n) => (
-                      <button
-                        key={n}
-                        className={`px-3 py-2 rounded-md ${
-                          n === currentPage
-                            ? "bg-blue-600"
-                            : "bg-gray-700 hover:bg-gray-600"
-                        }`}
-                        onClick={() => setCurrentPage(n)}
-                      >
-                        {n}
-                      </button>
-                    ))}
-                    {totalMainPages > 5 && (
-                      <span className="text-gray-500 text-2xl font-bold">
-                        ...
-                      </span>
+                    {!referralLoading && searchedAndSorted.length > 0 && (
+                      /* Pagination for Referrals */
+                      <div className="flex justify-center items-center gap-3 mt-20">
+                        <span className="bg-blue-700 px-3 py-2 rounded-md">
+                          Page
+                        </span>
+                        {Array.from(
+                          { length: Math.min(5, totalMainPages) },
+                          (_, i) => i + 1
+                        ).map((n) => (
+                          <button
+                            key={n}
+                            className={`px-3 py-2 rounded-md ${
+                              n === currentPage
+                                ? "bg-blue-600"
+                                : "bg-gray-700 hover:bg-gray-600"
+                            }`}
+                            onClick={() => setCurrentPage(n)}
+                          >
+                            {n}
+                          </button>
+                        ))}
+                        {totalMainPages > 5 && (
+                          <span className="text-gray-500 text-2xl font-bold">
+                            ...
+                          </span>
+                        )}
+                      </div>
                     )}
-                  </div>
+                  </>
                 )}
               </>
             )}
