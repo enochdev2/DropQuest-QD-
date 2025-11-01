@@ -489,7 +489,7 @@ const SignUp = () => {
           </div>
 
           {/* Name and Phone Number Row */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
               <Label htmlFor="name" className="text-sm font-medium">
                 {t("name")} <span className="text-red-500">*</span>
@@ -528,7 +528,7 @@ const SignUp = () => {
                 <p className="text-xs text-red-500">{errors.phoneNumber}</p>
               )}
               {language === "ko" && ( 
-                <div className="text-xs text-green-500 font-bold mt-2">추가 본인 인증 시, 50 포인트 추가 지급!!</div>)
+                <div className="text-[10px] text-green-500 font-bold mt-2">추가 본인 인증 시, 50 포인트 추가 지급!!</div>)
                 }
             </div>
           </div>
