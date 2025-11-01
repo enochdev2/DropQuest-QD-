@@ -528,7 +528,7 @@ const SignUp = () => {
                 <p className="text-xs text-red-500">{errors.phoneNumber}</p>
               )}
               {language === "ko" && ( 
-                <div className="text-[6px] text-green-500 font-bold mt-2">추가 본인 인증 시, 50 포인트 추가 지급!!</div>)
+                <div className="text-[6.9px] text-green-500 font-bold mt-2">추가 본인 인증 시, 50 포인트 추가 지급!!</div>)
                 }
             </div>
           </div>
