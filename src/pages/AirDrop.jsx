@@ -115,71 +115,69 @@ function AirDrop() {
   };
 
   const getUserProfileDetails = async () => {
-    setIsLoadingProfile(true); // Set loading at start
-    try {
-      const userInfo = JSON.parse(localStorage.getItem("user"));
-      const user = await getUserProfile(userInfo.email);
-      console.log("🚀 ~ getUserProfileDetails ~ user:", user);
-      // setUserProfile(user);
+  setIsLoadingProfile(true); // Set loading at start
+  try {
+    const userInfo = JSON.parse(localStorage.getItem("user"));
+    const user = await getUserProfile(userInfo.email);
+    console.log("🚀 ~ getUserProfileDetails ~ user:", user);
+    // setUserProfile(user);
 
-      const points = user?.points;
-      if (!points) {
-        // This should not happen for any account (new or existing), as all start with some points
-        console.error(
-          "No points data found for user. This indicates an error - all accounts should have points initialized."
-        );
-        setMessage(
-          language === "en"
-            ? "Error loading your profile. Please refresh or contact support."
-            : "프로필 로딩 오류. 새로고침하거나 지원팀에 문의하세요."
-        );
-        // Do not set streak/reward/checked states to avoid invalid UI
-        // Optionally, retry fetch here or redirect to error page
-        setCurrentStreak(0); // Fallback, but UI will show error message
-        setTodayChecked(false); // Conservative fallback, but thorough check failed
-        setTodayReward(100); // Fallback
-        setTotalPoints(0); // Fallback
-        return;
-      }
-
-      setTotalPoints(points.totalPoints || 0);
-
-      const today = new Date();
-      // Parse lastClaimed string to Date (handles ISO strings from backend)
-      const lastClaimedDate = points.lastClaimed
-        ? new Date(points.lastClaimed)
-        : null;
-
-      // Validate parsed date (guards against invalid strings)
-      const isValidDate =
-        lastClaimedDate instanceof Date && !isNaN(lastClaimedDate);
-
-      // KST-aware comparison: Get YYYY-MM-DD for both in Asia/Seoul
-      const todayKST = getKSTDateString(today);
-      const lastClaimedKST = isValidDate
-        ? getKSTDateString(lastClaimedDate)
-        : null;
-      const alreadyClaimedToday = lastClaimedKST === todayKST;
-      // const alreadyClaimedToday =
-      // isValidDate && isSameDay(lastClaimedDate, today);
-
-      console.log(
-        "🚀 ~ getUserProfileDetails ~ alreadyClaimedToday:",
-        alreadyClaimedToday
+    const points = user?.points;
+    if (!points) {
+      // This should not happen for any account (new or existing), as all start with some points
+      console.error("No points data found for user. This indicates an error - all accounts should have points initialized.");
+      setMessage(
+        language === "en"
+          ? "Error loading your profile. Please refresh or contact support."
+          : "프로필 로딩 오류. 새로고침하거나 지원팀에 문의하세요."
       );
-      setTodayChecked(alreadyClaimedToday);
+      // Do not set streak/reward/checked states to avoid invalid UI
+      // Optionally, retry fetch here or redirect to error page
+      setCurrentStreak(0); // Fallback, but UI will show error message
+      setTodayChecked(false); // Conservative fallback, but thorough check failed
+      setTodayReward(100); // Fallback
+      setTotalPoints(0); // Fallback
+      return;
+    }
 
-      if (alreadyClaimedToday) {
-        setMessage(
-          language === "en"
-            ? "You have already claimed your points for the day."
-            : "일일 출석 체크를 이미 완료했습니다."
-        );
-      } else {
-        setMessage("");
-      }
+    setTotalPoints(points.totalPoints || 0);
 
-      // New logic: Validate streak continuity
+    const today = new Date();
+    // Parse lastClaimed string to Date (handles ISO strings from backend)
+    const lastClaimedDate = points.lastClaimed
+      ? new Date(points.lastClaimed)
+      : null;
+
+    // Validate parsed date (guards against invalid strings)
+    const isValidDate =
+      lastClaimedDate instanceof Date && !isNaN(lastClaimedDate);
+
+    // KST-aware comparison: Get YYYY-MM-DD for both in Asia/Seoul
+    const todayKST = getKSTDateString(today);
+    const lastClaimedKST = isValidDate
+      ? getKSTDateString(lastClaimedDate)
+      : null;
+    const alreadyClaimedToday = lastClaimedKST === todayKST;
+    // const alreadyClaimedToday =
+    // isValidDate && isSameDay(lastClaimedDate, today);
+
+    console.log(
+      "🚀 ~ getUserProfileDetails ~ alreadyClaimedToday:",
+      alreadyClaimedToday
+    );
+    setTodayChecked(alreadyClaimedToday);
+
+    if (alreadyClaimedToday) {
+      setMessage(
+        language === "en"
+          ? "You have already claimed your points for the day."
+          : "일일 출석 체크를 이미 완료했습니다."
+      );
+      // When already claimed today, trust the backend streak (includes today's claim)
+      setCurrentStreak(points.currentStreak || 0);
+    } else {
+      setMessage("");
+      // Validate streak continuity only when no claim today (for preview)
       let effectiveStreak = points.currentStreak || 0;
       if (effectiveStreak > 0 && isValidDate) {
         // Compute yesterday in KST
@@ -195,7 +193,6 @@ function AirDrop() {
           effectiveStreak = 0;
         }
       }
-
       // Set the validated streak for UI
       setCurrentStreak(effectiveStreak);
       console.log(
@@ -205,14 +202,89 @@ function AirDrop() {
 
       // Preview today's reward based on validated streak
       setTodayReward(computeTodayReward(effectiveStreak));
-    } catch (error) {
-      console.error("Profile fetch error:", error);
-    } finally {
-      setIsLoadingProfile(false); // Always stop loading
     }
-  };
+  } catch (error) {
+    console.error("Profile fetch error:", error);
+  } finally {
+    setIsLoadingProfile(false); // Always stop loading
+  }
+};;
 
-  
+  //  const getUserProfileDetails = async () => {
+  //   setIsLoadingProfile(true); // Set loading at start
+  //   try {
+  //     const userInfo = JSON.parse(localStorage.getItem("user"));
+  //     const user = await getUserProfile(userInfo.email);
+  //     console.log("🚀 ~ getUserProfileDetails ~ user:", user);
+  //     // setUserProfile(user);
+
+  //     const points = user?.points;
+  //     if (!points) {
+  //       // This should not happen for any account (new or existing), as all start with some points
+  //       console.error("No points data found for user. This indicates an error - all accounts should have points initialized.");
+  //       setMessage(
+  //         language === "en"
+  //           ? "Error loading your profile. Please refresh or contact support."
+  //           : "프로필 로딩 오류. 새로고침하거나 지원팀에 문의하세요."
+  //       );
+  //       // Do not set streak/reward/checked states to avoid invalid UI
+  //       // Optionally, retry fetch here or redirect to error page
+  //       setCurrentStreak(0); // Fallback, but UI will show error message
+  //       setTodayChecked(false); // Conservative fallback, but thorough check failed
+  //       setTodayReward(100); // Fallback
+  //       setTotalPoints(0); // Fallback
+  //       return;
+  //     }
+
+  //     setCurrentStreak(points.currentStreak || 0);
+  //     setTotalPoints(points.totalPoints || 0);
+
+  //     console.log(
+  //       "🚀 ~ getUserProfileDetails ~ setCurrentStreak:",
+  //       currentStreak
+  //     );
+  //     const today = new Date();
+  //     // Parse lastClaimed string to Date (handles ISO strings from backend)
+  //     const lastClaimedDate = points.lastClaimed
+  //       ? new Date(points.lastClaimed)
+  //       : null;
+
+  //     // Validate parsed date (guards against invalid strings)
+  //     const isValidDate =
+  //       lastClaimedDate instanceof Date && !isNaN(lastClaimedDate);
+
+  //     // KST-aware comparison: Get YYYY-MM-DD for both in Asia/Seoul
+  //     const todayKST = getKSTDateString(today);
+  //     const lastClaimedKST = isValidDate
+  //       ? getKSTDateString(lastClaimedDate)
+  //       : null;
+  //       const alreadyClaimedToday = lastClaimedKST === todayKST;
+  //       // const alreadyClaimedToday =
+  //       // isValidDate && isSameDay(lastClaimedDate, today);
+
+  //     console.log(
+  //       "🚀 ~ getUserProfileDetails ~ alreadyClaimedToday:",
+  //       alreadyClaimedToday
+  //     );
+  //     setTodayChecked(alreadyClaimedToday);
+
+  //     if (alreadyClaimedToday) {
+  //       setMessage(
+  //         language === "en"
+  //           ? "You have already claimed your points for the day."
+  //           : "일일 출석 체크를 이미 완료했습니다."
+  //       );
+  //     } else {
+  //       setMessage("");
+  //       // Preview today's reward (next day)
+  //       setTodayReward(computeTodayReward(points.currentStreak));
+  //     }
+  //   } catch (error) {
+  //     console.error("Profile fetch error:", error);
+  //   } finally {
+  //     setIsLoadingProfile(false); // Always stop loading
+  //   }
+  // };
 
   const isDayCompleted = (day) => day <= currentStreak; // Days 1 to currentStreak are completed
 
