@@ -125,7 +125,9 @@ function AirDrop() {
       const points = user?.points;
       if (!points) {
         // This should not happen for any account (new or existing), as all start with some points
-        console.error("No points data found for user. This indicates an error - all accounts should have points initialized.");
+        console.error(
+          "No points data found for user. This indicates an error - all accounts should have points initialized."
+        );
         setMessage(
           language === "en"
             ? "Error loading your profile. Please refresh or contact support."
@@ -140,13 +142,8 @@ function AirDrop() {
         return;
       }
 
-      setCurrentStreak(points.currentStreak || 0);
       setTotalPoints(points.totalPoints || 0);
 
-      console.log(
-        "🚀 ~ getUserProfileDetails ~ setCurrentStreak:",
-        currentStreak
-      );
       const today = new Date();
       // Parse lastClaimed string to Date (handles ISO strings from backend)
       const lastClaimedDate = points.lastClaimed
@@ -162,9 +159,9 @@ function AirDrop() {
       const lastClaimedKST = isValidDate
         ? getKSTDateString(lastClaimedDate)
         : null;
-        const alreadyClaimedToday = lastClaimedKST === todayKST;
-        // const alreadyClaimedToday =
-        // isValidDate && isSameDay(lastClaimedDate, today);
+      const alreadyClaimedToday = lastClaimedKST === todayKST;
+      // const alreadyClaimedToday =
+      // isValidDate && isSameDay(lastClaimedDate, today);
 
       console.log(
         "🚀 ~ getUserProfileDetails ~ alreadyClaimedToday:",
@@ -180,15 +177,42 @@ function AirDrop() {
         );
       } else {
         setMessage("");
-        // Preview today's reward (next day)
-        setTodayReward(computeTodayReward(points.currentStreak));
       }
+
+      // New logic: Validate streak continuity
+      let effectiveStreak = points.currentStreak || 0;
+      if (effectiveStreak > 0 && isValidDate) {
+        // Compute yesterday in KST
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1); // Local subtract, but normalize to KST
+        const yesterdayKST = getKSTDateString(yesterday);
+
+        const isConsecutiveToYesterday = lastClaimedKST === yesterdayKST;
+        if (!isConsecutiveToYesterday) {
+          console.warn(
+            `Streak validation failed: currentStreak=${effectiveStreak} but lastClaimed (${lastClaimedKST}) != yesterday (${yesterdayKST}). Resetting to 0 for UI.`
+          );
+          effectiveStreak = 0;
+        }
+      }
+
+      // Set the validated streak for UI
+      setCurrentStreak(effectiveStreak);
+      console.log(
+        "🚀 ~ getUserProfileDetails ~ setCurrentStreak (validated):",
+        effectiveStreak
+      );
+
+      // Preview today's reward based on validated streak
+      setTodayReward(computeTodayReward(effectiveStreak));
     } catch (error) {
       console.error("Profile fetch error:", error);
     } finally {
       setIsLoadingProfile(false); // Always stop loading
     }
   };
+
+  
 
   const isDayCompleted = (day) => day <= currentStreak; // Days 1 to currentStreak are completed
 
@@ -244,7 +268,7 @@ function AirDrop() {
             disabled={todayChecked || loading || isLoadingProfile}
             className="bg-[#000b7d] hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-semibold mb-8 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {(loading || isLoadingProfile) ? <LoadingSpinner /> : null}
+            {loading || isLoadingProfile ? <LoadingSpinner /> : null}
             <span>{language === "en" ? "Attendance Check" : "출석 체크"}</span>
           </Button>
 
@@ -349,43 +373,6 @@ function AirDrop() {
 }
 
 export default AirDrop;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // "use client";
 
