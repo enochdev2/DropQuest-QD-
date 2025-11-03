@@ -606,7 +606,7 @@ const SignUp = () => {
               </Button>
               <button
                 type="button"
-                className="text-sm text-blue-600 hover:underline"
+                className="text-sm text-green-500 hover:underline"
                 onClick={() => setShowGuide(true)}
               >
                 {t("kycPhotoTitle")}
