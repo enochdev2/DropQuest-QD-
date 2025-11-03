@@ -21,6 +21,7 @@ const BASE_URL = "https://dropquest-qd-backend.onrender.com";
 
 export default function ManagerDashboard() {
   const { t } = useLanguage();
+  const { language } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingManDel, setLoadingManDel] = useState(false);
   const [referralLoading, setReferralLoading] = useState(false);
@@ -332,7 +333,6 @@ export default function ManagerDashboard() {
     // No need to fetch here if UserManagement handles it internally
   };
 
-
   const dataSource = showManagers ? allUsers : myReferrals;
 
   const searchedAndSorted = dataSource
@@ -403,7 +403,7 @@ export default function ManagerDashboard() {
             className="text-3xl font-bold text-gray-200"
             style={{ fontFamily: "DM Sans, sans-serif" }}
           >
-            DropQuest Manager Dashboard
+            {t("managerDashboard")}
           </h1>
         </div>
       </div>
@@ -417,24 +417,24 @@ export default function ManagerDashboard() {
                 Login : {personalData}
               </div>
               <h1 className="text-2xl font-bold hidden bg-gray-800 px-4 py-2 rounded-md">
-                DropQuest Manager Dashboard
+                {t("managerDashboard")}
               </h1>
             </div>
 
             <div className="w-full flex justify-center">
               <button
-                className="bg-main text-xl font-bold px-5 py-1 rounded-xl shadow-md border"
-                 onClick={handleUserManagementClick} 
+                className="bg-main w-44 text-xl font-bold px-5 py-1 rounded-xl shadow-md border cursor-pointer"
+                onClick={handleUserManagementClick}
               >
-                User <br />
-                Management
+                {language === "ko" ? "유저 관리" : "User Management"}
+                <br />
               </button>
             </div>
 
             {/* Buttons */}
-            <div className="flex justify-center mt-10 gap-10 mb-10 ">
+            <div className="flex justify-center mt-10 gap-4 mb-10 ">
               <button
-                className={`font-semibold px-6 py-2 text-xl rounded-full shadow-md ${
+                className={`font-semibold px-6 py-2 text-[17px] rounded-full shadow-md cursor-pointer ${
                   showManagers
                     ? "bg-gray-600 text-gray-300 cursor-not-allowed"
                     : "bg-main border hover:bg-blue-700 text-white"
@@ -444,14 +444,24 @@ export default function ManagerDashboard() {
                 {t("myReferralList")}
               </button>
               <button
-                className={`font-semibold px-6 py-2 text-xl rounded-full shadow-md ${
+                className={`font-semibold px-6 py-2 text-[17px] rounded-full shadow-md ${
                   showManagers
                     ? "bg-orange-500 border"
                     : "bg-orange-600 hover:bg-orange-700"
-                }  text-white`}
+                }  text-white cursor-pointer`}
                 onClick={handleManagerManagementClick}
               >
                 {t("managermanagement")}
+              </button>
+              <button
+                className={`font-semibold px-6 py-2 text-[17px] rounded-full shadow-md ${
+                  showManagers
+                    ? "bg-gray-600 text-gray-300 cursor-not-allowed"
+                    : "bg-main border hover:bg-blue-700 text-white"
+                }  text-white cursor-pointer`}
+                // onClick={handleManagerManagementClick}
+              >
+                {t("pointmanagement")}
               </button>
             </div>
 
@@ -806,7 +816,9 @@ export default function ManagerDashboard() {
                               <th className="px-4 py-3">{t("name")}</th>
                               <th className="px-4 py-3">{t("phoneNumber")}</th>
                               <th className="px-4 py-3">{t("telegramId")}</th>
-                              <th className="px-4 py-3">{t("referralEmails")}</th>
+                              <th className="px-4 py-3">
+                                {t("referralEmails")}
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -826,7 +838,9 @@ export default function ManagerDashboard() {
                                     <td className="px-4 py-3 bg-black/20">
                                       {user.phone}
                                     </td>
-                                    <td className="px-4 py-3">{user.telegram}</td>
+                                    <td className="px-4 py-3">
+                                      {user.telegram}
+                                    </td>
                                     <td className="px-4 py-3 bg-black/20">
                                       {user.referral}
                                     </td>
@@ -940,44 +954,6 @@ export default function ManagerDashboard() {
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // "use client";
 
