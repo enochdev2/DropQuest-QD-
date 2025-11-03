@@ -232,11 +232,12 @@ export default function UserManagement() {
       const updatedUserFromServer = await response.json();
 
       // ✅ Update the local state (so UI stays in sync)
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === selectedUser.id ? updatedUserFromServer : user
-        )
-      );
+      // setUsers((prevUsers) =>
+      //   prevUsers.map((user) =>
+      //     user.id === selectedUser.id ? updatedUserFromServer : user
+      //   )
+      // );
+       await getTotalUsers();
 
       SuccessToast("updated user successfully");
 
@@ -254,7 +255,7 @@ export default function UserManagement() {
       // if (fileInputRef.current) fileInputRef.current.value = "";
 
       getTotalUsers();
-      window.location.reload();
+      // window.location.reload();
       setEditDialogOpen(false);
       setSelectedUser(null);
     } catch (error) {
