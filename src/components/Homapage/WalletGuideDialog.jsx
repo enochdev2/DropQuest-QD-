@@ -18,7 +18,8 @@ export default function WalletGuideDialog({ open, onOpenChange }) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="lg:max-w-[400px] w-full max-w-[400px] max-h-[90vh] overflow-y-auto bg-gray-900 text-white border-gray-700">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center mb-6">지갑 설정 가이드</DialogTitle>
+          <DialogTitle className="text-2xl font-bold text-center mb-1">지갑 설정 가이드</DialogTitle>
+          <DialogTitle className="text-xl font-bold text-center mb-6">잠시만 기다려 주시면, 이미지가 표시됩니다.</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -35,8 +36,8 @@ export default function WalletGuideDialog({ open, onOpenChange }) {
           {/* STEP 2 */}
           <GuideStep
             number={2}
-            title="표시된 [⋯] 클릭"
-            description="코인 목록 우측 상단의 [⋯] 아이콘을 클릭합니다"
+            title="표시된 [토큰] 버튼 클릭"
+            description="코인 목록 위의 [토큰] 버튼을 클릭합니다."
             image={imageGuide2}
             alt="imageGuide2"
           />
@@ -44,8 +45,8 @@ export default function WalletGuideDialog({ open, onOpenChange }) {
           {/* STEP 3 */}
           <GuideStep
             number={3}
-            title="[토큰 관리] 클릭"
-            description="토큰 관리 메뉴를 선택합니다"
+            title="우측 상단의 [버튼] 클릭"
+            description="토큰 관리 메뉴로 들어가게 됩니다."
             image={imageGuide3}
             alt="imageGuide3"
           />
