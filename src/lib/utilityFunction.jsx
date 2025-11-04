@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 // Fetch Token Slots
 export const getTokenSlots = async (userId) => {
-  console.log("🚀 ~ getTokenSlots ~ userId:", userId)
+  console.log("🚀 ~ getTokenSlots ~ userId:", userId);
   try {
     const token = localStorage.getItem("token");
 
@@ -36,7 +36,7 @@ export const getTokenSlots = async (userId) => {
 };
 
 export const getUserTokenSlots = async (userId) => {
-  console.log("🚀 ~ getTokenSlots ~ userId:", userId)
+  console.log("🚀 ~ getTokenSlots ~ userId:", userId);
   try {
     const token = localStorage.getItem("token");
 
@@ -66,7 +66,7 @@ export const getUserTokenSlots = async (userId) => {
   }
 };
 export const updateTokenSlotsOrder = async (userId) => {
-  console.log("🚀 ~ getTokenSlots ~ userId:", userId)
+  console.log("🚀 ~ getTokenSlots ~ userId:", userId);
   try {
     const token = localStorage.getItem("token");
 
@@ -97,7 +97,6 @@ export const updateTokenSlotsOrder = async (userId) => {
 };
 
 export const getAllUserTokenSlots = async () => {
- 
   try {
     const token = localStorage.getItem("token");
 
@@ -128,9 +127,14 @@ export const getAllUserTokenSlots = async () => {
 };
 
 // Submit Point Exchange
-export const submitPointExchange = async ( slotId, amount, tokenName, imageUrl) => {
-  const userId = JSON.parse(localStorage.getItem("user"))._id
-  console.log("🚀 ~ submitPointExchange ~ userId:", userId)
+export const submitPointExchange = async (
+  slotId,
+  amount,
+  tokenName,
+  imageUrl
+) => {
+  const userId = JSON.parse(localStorage.getItem("user"))._id;
+  console.log("🚀 ~ submitPointExchange ~ userId:", userId);
   try {
     // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${email}`,
     const token = localStorage.getItem("token");
@@ -157,7 +161,7 @@ export const submitPointExchange = async ( slotId, amount, tokenName, imageUrl) 
     if (!response.ok) {
       const errorMsg =
         data.error || data.message || "Failed to submit exchange";
-        toast.error(errorMsg);
+      toast.error(errorMsg);
       throw new Error(errorMsg);
     }
 
@@ -168,8 +172,15 @@ export const submitPointExchange = async ( slotId, amount, tokenName, imageUrl) 
   }
 };
 
-export const updatePoints = async (link, name = "???", slotId, tokensAmount, points, imageUrl) => {
-  console.log("🚀 ~ updatePoints ~ slotId, name:", slotId, name)
+export const updatePoints = async (
+  link,
+  name = "???",
+  slotId,
+  tokensAmount,
+  points,
+  imageUrl
+) => {
+  console.log("🚀 ~ updatePoints ~ slotId, name:", slotId, name);
   try {
     // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${email}`,
     const token = localStorage.getItem("token");
@@ -229,7 +240,7 @@ export const getUserProfile = async (email) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
-          window.location.href = "/";
+        window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }
@@ -297,7 +308,7 @@ export const claimPoints = async () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
-          window.location.href = "/";
+        window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }
@@ -425,7 +436,7 @@ export const getAllUser = async () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
-         window.location.href = "/";
+        window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }
@@ -474,7 +485,7 @@ export const addannouncement = async (newAnnouncement) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
-         window.location.href = "/";
+        window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }
@@ -509,7 +520,7 @@ export const removeannouncement = async (announcementId) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
-         window.location.href = "/";
+        window.location.href = "/";
       }
       toast.error(errorMsg);
     } else {
@@ -548,7 +559,7 @@ export const Changeannouncement = async (newAnnouncement, announcementId) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
-         window.location.href = "/";
+        window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }
@@ -559,12 +570,15 @@ export const Changeannouncement = async (newAnnouncement, announcementId) => {
   }
 };
 
-
-export const modifyuserPoints = async (selectedUser, points ) => {
-  console.log("🚀 ~ modifyuserPoints ~ selectedUser, points:", selectedUser, points)
+export const modifyuserPoints = async (selectedUser, points) => {
+  console.log(
+    "🚀 ~ modifyuserPoints ~ selectedUser, points:",
+    selectedUser,
+    points
+  );
   try {
     const token = localStorage.getItem("token");
-    
+
     const response = await fetch(
       // `http://localhost:3000/api/v1/point/points/usermodify`,
       `https://dropquest-qd-backend.onrender.com/api/v1/point/points/usermodify`,
@@ -578,21 +592,19 @@ export const modifyuserPoints = async (selectedUser, points ) => {
           userId: selectedUser,
           points: points,
         }),
-        //  body: JSON.stringify({
-        //   userId: selectedUser,
-        //   points: Number(points),
-        // }),
       }
     );
 
     const data = await response.json();
     if (!response.ok) {
-      const errorMsg = data.error || data.message || "Failed to register user";
+      const errorMsg =
+        data.error || data.message || "Failed to modify user points";
+      toast.error(errorMsg);
       if (errorMsg === "Invalid or expired token") {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("isLoggedIn");
-         window.location.href = "/";
+        window.location.href = "/";
       }
       // ErrorToast(errorMsg);
     }

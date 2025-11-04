@@ -12,17 +12,17 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/dq.png";
-import { getAllUser, getUserProfile } from "@/lib/utilityFunction";
+import {  getUserProfile } from "@/lib/utilityFunction";
 import { useLanguage } from "@/contexts/language-context";
 import UserManagement from "@/components/AdminDashboard/UserManagement";
+import PointsManagement from "@/components/AdminDashboard/PointsManagement";
 
 const BASE_URL = "https://dropquest-qd-backend.onrender.com";
 
 export default function ManagerDashboard() {
   const { t } = useLanguage();
   const { language } = useLanguage();
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [loadingManDel, setLoadingManDel] = useState(false);
   const [referralLoading, setReferralLoading] = useState(false);
   const [managerReferralLoading, setManagerReferralLoading] = useState({}); // CHANGED: Added state for per-manager loading
@@ -44,7 +44,7 @@ export default function ManagerDashboard() {
   const [allManagers, setAllManagers] = useState([]);
   const inputRefs = useRef([]);
   const [showUserManagement, setShowUserManagement] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [showPointManagement, setShowPointManagement] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   const [password, setPassword] = useState(["", "", "", ""]);
@@ -91,12 +91,7 @@ export default function ManagerDashboard() {
     }
   };
 
-  const getTotalUsers = async () => {
-    const user = await getAllUser();
-    console.log("🚀 ~ getUserProfileDetails ~ user:", user);
-    setUsers(user);
-    // setTotalPoints(user.totalPoints);
-  };
+
 
   const fetchMyReferrals = async () => {
     try {
@@ -332,6 +327,16 @@ export default function ManagerDashboard() {
     setCurrentPage(1);
     // No need to fetch here if UserManagement handles it internally
   };
+  const handlePointManagementClick = async () => {
+    setShowPointManagement(true);
+    setShowUserManagement(false);
+    setShowManagers(false);
+    setExpandedManager(null);
+    setExpandedUser(null);
+    setSearchTerm("");
+    setCurrentPage(1);
+    // No need to fetch here if UserManagement handles it internally
+  };
 
   const dataSource = showManagers ? allUsers : myReferrals;
 
@@ -459,7 +464,7 @@ export default function ManagerDashboard() {
                     ? "bg-gray-600 text-gray-300 cursor-not-allowed"
                     : "bg-main border hover:bg-blue-700 text-white"
                 }  text-white cursor-pointer`}
-                // onClick={handleManagerManagementClick}
+                onClick={handlePointManagementClick}
               >
                 {t("pointmanagement")}
               </button>
@@ -764,6 +769,10 @@ export default function ManagerDashboard() {
               <>
                 {showUserManagement ? (
                   <UserManagement onBack={() => setShowUserManagement(false)} />
+                ) : showPointManagement ? (
+                  <PointsManagement
+                    onBack={() => setShowPointManagement(false)}
+                  />
                 ) : (
                   <>
                     {/* Search & Stats for Referrals */}

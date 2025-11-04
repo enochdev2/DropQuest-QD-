@@ -33,6 +33,7 @@ import { Search, Award, Loader2 } from "lucide-react";
 import { getAllUser, modifyuserPoints } from "@/lib/utilityFunction";
 import { UserSearch } from "../UserSearch";
 import { SuccessToast } from "../Success";
+import { EmailSearch } from "../EmailSearch";
 
 export default function PointsManagement() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -104,7 +105,7 @@ export default function PointsManagement() {
     const users = await getTotalUsers();
     console.log("🚀 ~ getUserProfileDetails ~ user:", users);
     if (users || user) {
-      SuccessToast("Announcement updated successfully");
+      SuccessToast("Points updated successfully");
     }
     setLoading(false);
     setIsModalOpen(false);
@@ -146,9 +147,9 @@ export default function PointsManagement() {
             />
           </div>
 
-          <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <Dialog open={isModalOpen} onOpenChange={setIsModalOpen} className="">
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+              <Button className="bg-gradient-to-r from-emerald-600 to-cyan-600   hover:from-emerald-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 <Award className="w-4 h-4 mr-2" />
                 Allocate Points
               </Button>
@@ -161,32 +162,30 @@ export default function PointsManagement() {
                   Grant points for a specific user.
                 </DialogDescription>
               </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="user-select" className="text-right">
+              <div className="grid gap-4 py-4 ">
+                <div className="grid  grid-cols-4 items-center gap-4 -mt-8 mb-4">
+                  <Label htmlFor="user-select" className="text-right font-bold">
                     User
                   </Label>
-                  {/* <select
-                    id="user-select"
-                    className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    value={selectedUser}
-                    onChange={(e) => setSelectedUser(e.target.value)}
-                  >
-                    <option value="">Select user</option>
-                    {users.map((user) => (
-                      <option key={user._id} value={user._id}>
-                        {user.name}
-                      </option>
-                    ))}
-                  </select> */}
+
                   <UserSearch
                     users={users}
                     selectedUser={selectedUser}
                     setSelectedUser={setSelectedUser}
                   />
                 </div>
+                <div className="grid grid-cols-4 items-center gap-4 -mt-5">
+                  <Label htmlFor="user-select" className="text-right font-bold">
+                    Email
+                  </Label>
+                  <EmailSearch
+                    users={users}
+                    selectedUser={selectedUser}
+                    setSelectedUser={setSelectedUser}
+                  />
+                </div>
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="points" className="text-right">
+                  <Label htmlFor="points" className="text-right font-bold">
                     Points
                   </Label>
                   <Input
@@ -258,7 +257,9 @@ export default function PointsManagement() {
                   <TableCell className="font-semibold text-slate-100">
                     {user.name}
                   </TableCell>
-                  <TableCell className="text-base font-semibold">{user.email}</TableCell>
+                  <TableCell className="text-base font-semibold">
+                    {user.email}
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Badge
