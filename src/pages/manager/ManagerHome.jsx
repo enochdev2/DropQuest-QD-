@@ -293,6 +293,7 @@ export default function ManagerDashboard() {
   const handleMyReferralsClick = async () => {
     if (!personalData) return; // Ensure personalData is set
     setShowUserManagement(false); // NEW: Hide user management view
+    setShowPointManagement(false); // NEW: Hide user management view
     setReferralLoading(true);
     setSelectedManager(personalData);
     setShowManagers(false);
