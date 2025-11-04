@@ -23,7 +23,7 @@ function AirDrop() {
   const [currentStreak, setCurrentStreak] = useState(0); // From backend: previous completions
   const [, setTotalPoints] = useState(0); // Track total for display if needed
   const [todayReward, setTodayReward] = useState(100); // Computed dynamically
-  const [isOpen, setIsOpen] = useState(true); // Set to false initially if needed
+  const [isOpen, setIsOpen] = useState(false); // Set to false initially if needed
 
 
   // Rewards per streak day (1-based: Day 1=100, ..., Day 7=300)
