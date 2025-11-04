@@ -20,7 +20,7 @@ const SolanaMissionModal = ({isOpen, setIsOpen}) => {
 
         {/* Button */}
         <button
-          onClick={closeModal} // Replace with actual guide/mission handler
+          // onClick={} // Replace with actual guide/mission handler
           className="px-14 py-1 my-12 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-105 text-base"
         >
           Read the guide and <br/> join the mission
