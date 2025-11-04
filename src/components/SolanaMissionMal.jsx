@@ -1,5 +1,7 @@
+import { useLanguage } from '@/contexts/language-context';
 import Solanamission from '../assets/solanamission.png';
 const SolanaMissionModal = ({isOpen, setIsOpen}) => {
+   const { t } = useLanguage();
 
   const closeModal = () => {
     setIsOpen(false);
@@ -23,7 +25,8 @@ const SolanaMissionModal = ({isOpen, setIsOpen}) => {
           // onClick={} // Replace with actual guide/mission handler
           className="px-14 py-1 my-12 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-105 text-base"
         >
-          Read the guide and <br/> join the mission
+          {t("readguide")} <br/> {t("joinmission")}
+          
         </button>
 
          {/* New Mission Text */}

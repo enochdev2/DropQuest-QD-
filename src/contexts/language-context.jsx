@@ -218,7 +218,9 @@ const translations = {
     imageuploaded: "Image uploaded successfully!",
     depositCoin: " Do you know how to deposit coins?",
     mission: "Go to the next mission",
-    click: "click!!"
+    click: "click!!",
+    readguide: "Read the guide and",
+    joinmission: "join the mission",
     // ok: "OK",
     // cancel: "Cancel",
   
@@ -432,6 +434,8 @@ const translations = {
     depositCoin: "코인 입금 미션",
     mission: "다음 미션으로 이동",
     click: "클릭!!", 
+    readguide: "가이드 보고",
+    joinmission: "미션 수행하러 가기",
     // ok: "확인",
     // cancel: "취소",
   },
