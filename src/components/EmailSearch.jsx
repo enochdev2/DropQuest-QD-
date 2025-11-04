@@ -25,7 +25,7 @@ export function EmailSearch({ users, selectedUser, setSelectedUser }) {
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0">
         <Command>
-          <CommandInput placeholder="Search user..." />
+          <CommandInput placeholder="Search E-mail..." />
           <CommandEmpty>No Email found.</CommandEmpty>
           <CommandGroup>
             {users.map((user) => (

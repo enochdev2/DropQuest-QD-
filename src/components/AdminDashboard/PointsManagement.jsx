@@ -176,7 +176,7 @@ export default function PointsManagement() {
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4 -mt-5">
                   <Label htmlFor="user-select" className="text-right font-bold">
-                    Email
+                    E-mail
                   </Label>
                   <EmailSearch
                     users={users}
