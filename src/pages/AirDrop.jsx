@@ -5,7 +5,11 @@ import { useLanguage } from "@/contexts/language-context";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import umbrellaCoin from "@/assets/dqLogo.png";
-import { claimPoints, getUserProfile } from "@/lib/utilityFunction";
+import {
+  claimPoints,
+  getUserProfile,
+  getUserTokenSlots,
+} from "@/lib/utilityFunction";
 import { SuccessToast } from "@/components/Success";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import SolanaMissionModal from "@/components/SolanaMissionMal";
@@ -24,14 +28,21 @@ function AirDrop() {
   const [, setTotalPoints] = useState(0); // Track total for display if needed
   const [todayReward, setTodayReward] = useState(100); // Computed dynamically
   const [isOpen, setIsOpen] = useState(false); // Set to false initially if needed
-
+  const [tokenSlots, setTokenSlots] = useState([]);
+  console.log("🚀 ~ AirDrop ~ tokenSlots:", tokenSlots);
 
   // Rewards per streak day (1-based: Day 1=100, ..., Day 7=300)
   const dayRewards = [100, 100, 100, 100, 100, 200, 300];
 
   useEffect(() => {
     getUserProfileDetails();
+    getUserProfileDetail();
   }, []);
+
+  const getUserProfileDetail = async () => {
+    const userSlots = await getUserTokenSlots();
+    setTokenSlots(userSlots);
+  };
 
   // Helper: Get YYYY-MM-DD string in KST (Asia/Seoul) for consistent day comparison
   const getKSTDateString = (date) => {
@@ -74,10 +85,6 @@ function AirDrop() {
     return dayRewards[nextDay - 1] || 100;
   };
 
-  // const handleAttendanceCheck = () => {
-  //   setShowSuccess(true);
-  // };
-
   const handleCheck = async () => {
     setLoading(true);
     try {
@@ -119,102 +126,102 @@ function AirDrop() {
   };
 
   const getUserProfileDetails = async () => {
-  setIsLoadingProfile(true); // Set loading at start
-  try {
-    const userInfo = JSON.parse(localStorage.getItem("user"));
-    const user = await getUserProfile(userInfo.email);
-    console.log("🚀 ~ getUserProfileDetails ~ user:", user);
-    // setUserProfile(user);
+    setIsLoadingProfile(true); // Set loading at start
+    try {
+      const userInfo = JSON.parse(localStorage.getItem("user"));
+      const user = await getUserProfile(userInfo.email);
+      console.log("🚀 ~ getUserProfileDetails ~ user:", user);
+      // setUserProfile(user);
 
-    const points = user?.points;
-    if (!points) {
-      // This should not happen for any account (new or existing), as all start with some points
-      console.error("No points data found for user. This indicates an error - all accounts should have points initialized.");
-      setMessage(
-        language === "en"
-          ? "Error loading your profile. Please refresh or contact support."
-          : "프로필 로딩 오류. 새로고침하거나 지원팀에 문의하세요."
-      );
-      // Do not set streak/reward/checked states to avoid invalid UI
-      // Optionally, retry fetch here or redirect to error page
-      setCurrentStreak(0); // Fallback, but UI will show error message
-      setTodayChecked(false); // Conservative fallback, but thorough check failed
-      setTodayReward(100); // Fallback
-      setTotalPoints(0); // Fallback
-      return;
-    }
-
-    setTotalPoints(points.totalPoints || 0);
-
-    const today = new Date();
-    // Parse lastClaimed string to Date (handles ISO strings from backend)
-    const lastClaimedDate = points.lastClaimed
-      ? new Date(points.lastClaimed)
-      : null;
-
-    // Validate parsed date (guards against invalid strings)
-    const isValidDate =
-      lastClaimedDate instanceof Date && !isNaN(lastClaimedDate);
-
-    // KST-aware comparison: Get YYYY-MM-DD for both in Asia/Seoul
-    const todayKST = getKSTDateString(today);
-    const lastClaimedKST = isValidDate
-      ? getKSTDateString(lastClaimedDate)
-      : null;
-    const alreadyClaimedToday = lastClaimedKST === todayKST;
-    // const alreadyClaimedToday =
-    // isValidDate && isSameDay(lastClaimedDate, today);
-
-    console.log(
-      "🚀 ~ getUserProfileDetails ~ alreadyClaimedToday:",
-      alreadyClaimedToday
-    );
-    setTodayChecked(alreadyClaimedToday);
-
-    if (alreadyClaimedToday) {
-      setMessage(
-        language === "en"
-          ? "Daily check-in has been completed."
-          : "일일 출석 체크를 이미 완료했습니다."
-      );
-      // When already claimed today, trust the backend streak (includes today's claim)
-      setCurrentStreak(points.currentStreak || 0);
-    } else {
-      setMessage("");
-      // Validate streak continuity only when no claim today (for preview)
-      let effectiveStreak = points.currentStreak || 0;
-      if (effectiveStreak > 0 && isValidDate) {
-        // Compute yesterday in KST
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1); // Local subtract, but normalize to KST
-        const yesterdayKST = getKSTDateString(yesterday);
-
-        const isConsecutiveToYesterday = lastClaimedKST === yesterdayKST;
-        if (!isConsecutiveToYesterday) {
-          console.warn(
-            `Streak validation failed: currentStreak=${effectiveStreak} but lastClaimed (${lastClaimedKST}) != yesterday (${yesterdayKST}). Resetting to 0 for UI.`
-          );
-          effectiveStreak = 0;
-        }
+      const points = user?.points;
+      if (!points) {
+        // This should not happen for any account (new or existing), as all start with some points
+        console.error(
+          "No points data found for user. This indicates an error - all accounts should have points initialized."
+        );
+        setMessage(
+          language === "en"
+            ? "Error loading your profile. Please refresh or contact support."
+            : "프로필 로딩 오류. 새로고침하거나 지원팀에 문의하세요."
+        );
+        // Do not set streak/reward/checked states to avoid invalid UI
+        // Optionally, retry fetch here or redirect to error page
+        setCurrentStreak(0); // Fallback, but UI will show error message
+        setTodayChecked(false); // Conservative fallback, but thorough check failed
+        setTodayReward(100); // Fallback
+        setTotalPoints(0); // Fallback
+        return;
       }
-      // Set the validated streak for UI
-      setCurrentStreak(effectiveStreak);
+
+      setTotalPoints(points.totalPoints || 0);
+
+      const today = new Date();
+      // Parse lastClaimed string to Date (handles ISO strings from backend)
+      const lastClaimedDate = points.lastClaimed
+        ? new Date(points.lastClaimed)
+        : null;
+
+      // Validate parsed date (guards against invalid strings)
+      const isValidDate =
+        lastClaimedDate instanceof Date && !isNaN(lastClaimedDate);
+
+      // KST-aware comparison: Get YYYY-MM-DD for both in Asia/Seoul
+      const todayKST = getKSTDateString(today);
+      const lastClaimedKST = isValidDate
+        ? getKSTDateString(lastClaimedDate)
+        : null;
+      const alreadyClaimedToday = lastClaimedKST === todayKST;
+      // const alreadyClaimedToday =
+      // isValidDate && isSameDay(lastClaimedDate, today);
+
       console.log(
-        "🚀 ~ getUserProfileDetails ~ setCurrentStreak (validated):",
-        effectiveStreak
+        "🚀 ~ getUserProfileDetails ~ alreadyClaimedToday:",
+        alreadyClaimedToday
       );
+      setTodayChecked(alreadyClaimedToday);
 
-      // Preview today's reward based on validated streak
-      setTodayReward(computeTodayReward(effectiveStreak));
+      if (alreadyClaimedToday) {
+        setMessage(
+          language === "en"
+            ? "Daily check-in has been completed."
+            : "일일 출석 체크를 이미 완료했습니다."
+        );
+        // When already claimed today, trust the backend streak (includes today's claim)
+        setCurrentStreak(points.currentStreak || 0);
+      } else {
+        setMessage("");
+        // Validate streak continuity only when no claim today (for preview)
+        let effectiveStreak = points.currentStreak || 0;
+        if (effectiveStreak > 0 && isValidDate) {
+          // Compute yesterday in KST
+          const yesterday = new Date(today);
+          yesterday.setDate(yesterday.getDate() - 1); // Local subtract, but normalize to KST
+          const yesterdayKST = getKSTDateString(yesterday);
+
+          const isConsecutiveToYesterday = lastClaimedKST === yesterdayKST;
+          if (!isConsecutiveToYesterday) {
+            console.warn(
+              `Streak validation failed: currentStreak=${effectiveStreak} but lastClaimed (${lastClaimedKST}) != yesterday (${yesterdayKST}). Resetting to 0 for UI.`
+            );
+            effectiveStreak = 0;
+          }
+        }
+        // Set the validated streak for UI
+        setCurrentStreak(effectiveStreak);
+        console.log(
+          "🚀 ~ getUserProfileDetails ~ setCurrentStreak (validated):",
+          effectiveStreak
+        );
+
+        // Preview today's reward based on validated streak
+        setTodayReward(computeTodayReward(effectiveStreak));
+      }
+    } catch (error) {
+      console.error("Profile fetch error:", error);
+    } finally {
+      setIsLoadingProfile(false); // Always stop loading
     }
-  } catch (error) {
-    console.error("Profile fetch error:", error);
-  } finally {
-    setIsLoadingProfile(false); // Always stop loading
-  }
-};;
-
-  
+  };
 
   const isDayCompleted = (day) => day <= currentStreak; // Days 1 to currentStreak are completed
 
@@ -235,8 +242,9 @@ function AirDrop() {
             {showDropdown && (
               <div className="absolute top-full left-0 right-0 mt-2 bg-main text-white rounded-lg shadow-lg z-10">
                 <div className="p-2">
-                  <button className="px-3 py-2 text-base font-bold text-gray-100 border-b border-slate-500"
-                  onClick={() => setIsOpen(true)}
+                  <button
+                    className="px-3 py-2 text-base font-bold text-gray-100 border-b border-slate-500"
+                    onClick={() => setIsOpen(true)}
                   >
                     {t("depositCoin")}
                   </button>
@@ -317,34 +325,42 @@ function AirDrop() {
                 <div className="flex justify-between   gap-3">
                   {" "}
                   <div className="flex gap-2">
-                  {/* Fixed typo: justify-cente -> justify-center */}
-                  {Array.from({ length: 2 }, (_, i) => i + 6).map((day) => {
-                    const completed = isDayCompleted(day);
-                    return (
-                      <div key={day} className="flex flex-col items-center">
-                        <div
-                          className={`w-13 h-13 rounded-full flex items-center justify-center text-sm font-medium transition-colors border-2 ${
-                            completed
-                              ? "bg-green-600 text-white border-green-600"
-                              : "bg-transparent text-gray-400 border-gray-600"
-                          }`}
-                        >
-                          {completed ? "✓" : day}
+                    {/* Fixed typo: justify-cente -> justify-center */}
+                    {Array.from({ length: 2 }, (_, i) => i + 6).map((day) => {
+                      const completed = isDayCompleted(day);
+                      return (
+                        <div key={day} className="flex flex-col items-center">
+                          <div
+                            className={`w-13 h-13 rounded-full flex items-center justify-center text-sm font-medium transition-colors border-2 ${
+                              completed
+                                ? "bg-green-600 text-white border-green-600"
+                                : "bg-transparent text-gray-400 border-gray-600"
+                            }`}
+                          >
+                            {completed ? "✓" : day}
+                          </div>
+                          <span className="text-xs text-gray-300 mt-1">
+                            {dayRewards[day - 1]}
+                          </span>
                         </div>
-                        <span className="text-xs text-gray-300 mt-1">
-                          {dayRewards[day - 1]}
-                        </span>
-                      </div>
-                    );
-                  })}
-
+                      );
+                    })}
                   </div>
-                  <button className=" text-xs rounded-xl h-14 my-auto cursor-pointer bg-green-600 border-b-2 border-black shadow-2xl px-2  "
-                    onClick={() => setIsOpen(true)}
-                  >
-                     {t("mission")} <br />
-                     {t("click")}
-                  </button>
+                  {!tokenSlots || tokenSlots.length === 0 ? ( <button
+                      className=" text-xs rounded-xl h-14 my-auto cursor-pointer bg-gray-600 border-b-2 border-black shadow-2xl px-2  "
+                      disabled={true}
+                    >
+                      {t("mission")} <br />
+                      {t("click")}
+                    </button>) : (
+                    <button
+                      className=" text-xs rounded-xl h-14 my-auto cursor-pointer bg-green-600 border-b-2 border-black shadow-2xl px-2  "
+                      onClick={() => setIsOpen(true)}
+                    >
+                      {t("mission")} <br />
+                      {t("click")}
+                    </button>
+                  )}
                 </div>
               </div>
             )}

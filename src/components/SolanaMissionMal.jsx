@@ -178,7 +178,7 @@ const SolanaMissionModal = ({ isOpen, setIsOpen }) => {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="relative z-50 sm:w-[380px] w-[380px] max-w-md mx-auto bg-gray-900 rounded-2xl p-6 m-4"
+              className="relative z-50 sm:w-[330px] w-[340px] max-w-md mx-auto bg-main rounded-2xl p-6 m-4"
             >
               <button
                 onClick={closeModal}
@@ -259,7 +259,7 @@ const SolanaMissionModal = ({ isOpen, setIsOpen }) => {
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
               transition={{ duration: 0.3 }}
-              className="relative sm:w-[380px] w-[380px] z-50 max-w-md mx-auto bg-gray-900 rounded-2xl p-6 m-4"
+              className="relative sm:w-[340px] w-[340px] z-50 max-w-md mx-auto bg-gray-950 rounded-2xl p-6 m-4"
             >
               <button
                 onClick={closeModal}
@@ -312,7 +312,7 @@ const SolanaMissionModal = ({ isOpen, setIsOpen }) => {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="relative sm:w-[380px] w-[380px] z-50 max-w-md mx-auto bg-gray-900 rounded-2xl p-6 m-4 text-center"
+              className="relative sm:w-[340px] w-[340px] z-50 max-w-md mx-auto bg-gray-950 border border-slate-600 rounded-2xl p-6 m-4 text-center"
             >
               <p className="text-white text-base mb-6 whitespace-pre-line">
                 {t("depositMissionRestricted")}
@@ -338,14 +338,14 @@ const SolanaMissionModal = ({ isOpen, setIsOpen }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
           >
             <motion.div
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 50, opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="sm:w-[380px] w-[380px] max-w-md mx-auto max-h-[85vh] overflow-y-auto bg-gray-900 rounded-2xl p-6 flex flex-col m-4"
+              className="sm:w-[340px] w-[340px] max-w-md mx-auto max-h-[90vh] overflow-y-auto bg-main rounded-2xl p-6 flex flex-col mt-16 m-4"
             >
               {/* Header with close button */}
               <div className="flex justify-between items-center mb-6">

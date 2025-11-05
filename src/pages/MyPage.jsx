@@ -10,17 +10,6 @@ import { getUserProfile, getUserReferralList, getUserTokenSlots } from "@/lib/ut
 import { Copy, Loader2, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 
-// Mock user data
-// const mockUser = {
-//   name: "김코인",
-//   points: 1000000,
-//   referralCode: "1248soeniu13",
-//   referralList: [
-//     { id: 1, name: "박코인", points: 6000, joinDate: "2024-01-10" },
-//     { id: 2, name: "이코인", points: 4500, joinDate: "2024-01-12" },
-//     { id: 3, name: "최코인", points: 3200, joinDate: "2024-01-15" },
-//   ],
-// };
 
 function MyPage() {
   const { t, language } = useLanguage();
