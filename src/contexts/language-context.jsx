@@ -37,8 +37,29 @@ const translations = {
     roadmap: "Roadmap",
     dropquest: "DropQuest",
     comingSoon: "Coming Soon",
+
     // Airdrop
     claimSuccess: "You have successfully claimed your airdrop for the day",
+    solanaDepositGuide: "Solana Deposit Guide",
+    depositMissionRestricted:
+      "Deposit missions are only available to users with point exchange history.",
+    participateGuideIntro: "Press the participate button and we will",
+    participateGuideEnd: "guide you.",
+    participateGuideNote:
+      "Please proceed through consultation with a counselor.",
+    participateButton: "Participate in Solana Deposit",
+    confirmTitle1: "Exchange coins easily",
+    confirmTitle2: "Let's exchange for coins",
+    confirmMissionTitle: "Solana Deposit Mission",
+    confirmMissionDesc:
+      "Exchange Solana for other coins and\nget 1,000 points!",
+    confirmQuestion:
+      "Have you exchanged points for coins\nat DropQuest exchange?",
+    confirmYes: "Yes",
+    confirmNo: "No",
+    introTitle: "Do you know how to deposit coins?",
+    introButton: "Read the guide and \njoin the mission",
+    newMission: "New Mission !!!",
 
     // Auth
     signUp: "Sign Up",
@@ -82,9 +103,12 @@ const translations = {
     newPassword: "New Password",
     ok: "Ok",
     cancel: "Cancel",
-    incorrectInfo: "The information you entered is incorrect. Please try again.",
-    incorrectInfos: "The information you entered is incorrect. Please try again.",
-    passwordChanged: "Your password has been changed. Please try logging in again.",
+    incorrectInfo:
+      "The information you entered is incorrect. Please try again.",
+    incorrectInfos:
+      "The information you entered is incorrect. Please try again.",
+    passwordChanged:
+      "Your password has been changed. Please try logging in again.",
     namePhoneRequired: "Name, and phone number are required",
     noUserFound: " No user found with this name and phone number",
     tryLoginAgain: "Please try logging in again.",
@@ -173,9 +197,9 @@ const translations = {
     walletGuideStep1:
       "Open the Phantom wallet → Click [Tokens] at the top left of the coin list",
     walletGuideStep2: "Click the [Manage] button at the top right",
-    walletGuideStep3:
-      "Turn ON the toggle switch next to the deposited coin",
-    walletGuideStep4: 'Return to the main screen of the Phantom wallet and select the deposited coin',
+    walletGuideStep3: "Turn ON the toggle switch next to the deposited coin",
+    walletGuideStep4:
+      "Return to the main screen of the Phantom wallet and select the deposited coin",
     walletGuideStep5: "Tap the [Report as not spam] button at the bottom",
     walletGuideStep6: "The coin will now be displayed normally",
 
@@ -223,7 +247,6 @@ const translations = {
     joinmission: "join the mission",
     // ok: "OK",
     // cancel: "Cancel",
-  
   },
 
   ko: {
@@ -259,8 +282,28 @@ const translations = {
     roadmap: "로드맵",
     dropquest: "드롭퀘스트",
     comingSoon: "출시 예정",
+
     // Airdrop
     claimSuccess: "일일 출석 체크를 완료했습니다",
+    solanaDepositGuide: "솔라나 입금 가이드",
+    depositMissionRestricted:
+      "입금 미션은 포인트 교환 이력이 있는 유저만 가능합니다.",
+    participateGuideIntro: "참여 버튼을 누르시면 가이드를",
+    participateGuideEnd: "안내해 드립니다.",
+    participateGuideNote: "꼭 상담원과 상담을 통해 진행하여 주세요.",
+    participateButton: "솔라나 입금 참여하기",
+    confirmTitle1: "코인을 간편하게",
+    confirmTitle2: "코인으로 바꾸자",
+    confirmMissionTitle: "솔라나 입금 미션",
+    confirmMissionDesc:
+      "솔라나를 다른 코인으로 바꾸고\n1,000 포인트 받아가세요!",
+    confirmQuestion:
+      "DropQuest 포인트 교환소에서\n포인트를 코인으로 교환해 보셨나요?",
+    confirmYes: "네",
+    confirmNo: "아니오",
+    introTitle: "코인 입금 미션",
+    introButton: "가이드 보고 \n미션 수행하러 가기",
+    newMission: "새로운 미션 !!!",
 
     // Auth
     signUp: "회원가입",
@@ -308,7 +351,7 @@ const translations = {
     incorrectInfos: "입력하신 정보가 올바르지 않습니다. 다시 시도해주세요.",
     passwordChanged: "비밀번호가 변경되었습니다. 다시 로그인해주세요.",
     namePhoneRequired: "이름과 전화번호는 필수 항목입니다.",
-    noUserFound: "해당 이름과 전화번호로 가입된 사용자가 없습니다.", 
+    noUserFound: "해당 이름과 전화번호로 가입된 사용자가 없습니다.",
     tryLoginAgain: "다시 로그인해주세요.",
     dontHaveAccount: "계정이 없으신가요?",
     loginSuccess: "로그인 성공",
@@ -433,7 +476,7 @@ const translations = {
     imageuploaded: "이미지 업로드 완료!",
     depositCoin: "코인 입금 미션",
     mission: "다음 미션으로 이동",
-    click: "클릭!!", 
+    click: "클릭!!",
     readguide: "가이드 보고",
     joinmission: "미션 수행하러 가기",
     // ok: "확인",
