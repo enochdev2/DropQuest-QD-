@@ -242,12 +242,19 @@ function AirDrop() {
             {showDropdown && (
               <div className="absolute top-full left-0 right-0 mt-2 bg-main text-white rounded-lg shadow-lg z-10">
                 <div className="p-2">
-                  <button
-                    className="px-3 py-2 text-base font-bold text-gray-100 border-b border-slate-500"
-                    onClick={() => setIsOpen(true)}
-                  >
-                    {t("depositCoin")}
-                  </button>
+                  {!tokenSlots || tokenSlots.length === 0 ? (
+                    <button className="px-3 py-2 text-base font-bold text-gray-100 border-b border-slate-500">
+                      {t("depositCoin")}
+                    </button>
+                  ) : (
+                    <button
+                      className="px-3 py-2 text-base font-bold text-gray-100 border-b border-slate-500"
+                      onClick={() => setIsOpen(true)}
+                    >
+                      {t("depositCoin")}
+                    </button>
+                  )}
+
                   <div className="px-3 py-2 text-sm text-gray-100">SOON</div>
                 </div>
               </div>
@@ -346,13 +353,15 @@ function AirDrop() {
                       );
                     })}
                   </div>
-                  {!tokenSlots || tokenSlots.length === 0 ? ( <button
+                  {!tokenSlots || tokenSlots.length === 0 ? (
+                    <button
                       className=" text-xs rounded-xl h-14 my-auto cursor-pointer bg-gray-600 border-b-2 border-black shadow-2xl px-2  "
                       disabled={true}
                     >
                       {t("mission")} <br />
                       {t("click")}
-                    </button>) : (
+                    </button>
+                  ) : (
                     <button
                       className=" text-xs rounded-xl h-14 my-auto cursor-pointer bg-green-600 border-b-2 border-black shadow-2xl px-2  "
                       onClick={() => setIsOpen(true)}
