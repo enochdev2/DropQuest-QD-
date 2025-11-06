@@ -38,7 +38,11 @@ import {
   UploadCloud,
   Users,
 } from "lucide-react";
-import { getAllUser } from "@/lib/utilityFunction";
+import {
+  getAllUser,
+  getUserReferralList,
+  getUserReferralListByAdmin,
+} from "@/lib/utilityFunction";
 import { SuccessToast } from "../Success";
 
 export default function UserManagement() {
@@ -135,18 +139,48 @@ export default function UserManagement() {
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleViewReferrals = (user) => {
-    console.log("Opening referrals for:", user.email); // Debug log
-    setSelectedInviter(user);
-    const referralsByEmail = users.filter(
-      (u) => u.referredByEmail === user.email
-    );
-    const referralsBy = users.filter((u) => u.referredBy === user.email);
-    const mergedReferrals = [...new Set([...referralsByEmail, ...referralsBy])]; // Merge and remove duplicates
-    console.log("Found referrals:", mergedReferrals); // Debug log
-    setSelectedReferrals(mergedReferrals);
-    setReferralDialogOpen(true);
-  };
+  // const handleViewReferrals = async (user) => {
+  //   console.log("Opening referrals for:", user.email); // Debug log
+  //   setSelectedInviter(user);
+  //   const userReferralLsts = await getUserReferralListByAdmin(user._id);
+  //   console.log(
+  //     "🚀 ~ handleViewReferrals ~ userReferralLsts:",
+  //     userReferralLsts
+  //   );
+  //   const referralsByEmail = users.filter(
+  //     (u) => u.referredByEmail === user.email
+  //   );
+  //   const mergedReferrals = [...new Set([...referralsByEmail, ...referralsBy])]; // Merge and remove duplicates
+  //   console.log("Found referrals:", mergedReferrals); // Debug log
+  //   setSelectedReferrals(mergedReferrals);
+  //   setReferralDialogOpen(true);
+  // };
+
+  const handleViewReferrals = async (user) => {
+  console.log("Opening referrals for:", user.email); // Debug log
+  setSelectedInviter(user);
+  const userReferralLsts = await getUserReferralListByAdmin(user._id);
+  console.log(
+    "🚀 ~ handleViewReferrals ~ userReferralLsts:",
+    userReferralLsts
+  );
+  const referralsByEmail = users.filter(
+    (u) => u.referredByEmail === user.email
+  );
+  
+  // Merge and deduplicate by 'email' (or swap to '_id' if that's your unique key)
+  const mergedMap = new Map();
+  [...userReferralLsts, ...referralsByEmail].forEach((referral) => {
+    if (referral && referral.email) { // Guard against null/undefined
+      mergedMap.set(referral.email, referral);
+    }
+  });
+  const mergedReferrals = Array.from(mergedMap.values());
+  
+  console.log("Found referrals:", mergedReferrals); // Debug log
+  setSelectedReferrals(mergedReferrals);
+  setReferralDialogOpen(true);
+};
 
   const handleEditUser = (user) => {
     setSelectedUser(user);
@@ -801,11 +835,11 @@ export default function UserManagement() {
         <Dialog open={referralDialogOpen} onOpenChange={setReferralDialogOpen}>
           <DialogContent className="max-w-5xl bg-main overflow-x-hidden overflow-y-auto h-[600px]">
             <button
-                className="cursor-pointer text-white text-right z-50"
-                onClick={() => setReferralDialogOpen(false)}
-              >
-                X
-              </button>
+              className="cursor-pointer text-white text-right z-50"
+              onClick={() => setReferralDialogOpen(false)}
+            >
+              X
+            </button>
             <DialogHeader>
               <DialogTitle className="-mt-8 text-gray-400 text-sm text-center ">
                 Referrals for <br />
@@ -833,26 +867,20 @@ export default function UserManagement() {
                     <p> Inviter Name</p>
                     <p>Invitee Name</p>
                   </div>
-                  
+
                   {selectedReferrals.map((ref) => (
-                      <div
-                        key={ref._id}
-                        className=" w-full flex justify-between  px-4 py-2 hover:bg-gradient-to-r hover:from-cyan-700 hover:to-blue-50/5 transition-all duration-300 text-white font-semib text-[16px] bg-black/20 mb-1"
-                      >
-                    
-                        <p className="font-semibold text-slate-100">
-                          {selectedInviter.name}
-                        </p>
-                        <p className="font-semibold px">
-                          {ref.name}
-                        </p>
-                      
-                       
-                    
-                      </div>
-                    ))}
+                    <div
+                      key={ref._id}
+                      className=" w-full flex justify-between  px-4 py-2 hover:bg-gradient-to-r hover:from-cyan-700 hover:to-blue-50/5 transition-all duration-300 text-white font-semib text-[16px] bg-black/20 mb-1"
+                    >
+                      <p className="font-semibold text-slate-100">
+                        {selectedInviter.name}
+                      </p>
+                      <p className="font-semibold px">{ref.name}</p>
+                    </div>
+                  ))}
                 </div>
-                
+
                 // <Table>
                 //   <TableHeader className="">
                 //     <TableRow className="bg-gradient-to-r from-blue-500 to-slate-100  ">
