@@ -29,20 +29,8 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import {
-  Search,
-  Plus,
-  Edit,
-  Trash2,
-  Loader,
-  UploadCloud,
-  Users,
-} from "lucide-react";
-import {
-  getAllUser,
-  getUserReferralList,
-  getUserReferralListByAdmin,
-} from "@/lib/utilityFunction";
+import { Search, Plus, Edit, Trash2, Loader, UploadCloud } from "lucide-react";
+import { getAllUser } from "@/lib/utilityFunction";
 import { SuccessToast } from "../Success";
 
 export default function UserManagement() {
@@ -50,10 +38,7 @@ export default function UserManagement() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [referralDialogOpen, setReferralDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedInviter, setSelectedInviter] = useState(null);
-  const [selectedReferrals, setSelectedReferrals] = useState([]);
   const [rawFile, setRawFile] = useState(null);
   const [newRawFile, setNewRawFile] = useState(null);
   const [newImagePreview, setNewImagePreview] = useState("");
@@ -63,7 +48,7 @@ export default function UserManagement() {
     email: "",
     phone: "",
     telegramId: "",
-    referralEmail: "",
+    referredByEmail: "",
     walletAddress: "",
     img: "",
   });
@@ -85,7 +70,6 @@ export default function UserManagement() {
       points: 1000000,
       joinDate: "2024-01-10",
       walletAddress: "",
-      referralEmail: "",
     },
     {
       id: 2,
@@ -96,7 +80,6 @@ export default function UserManagement() {
       points: 6000,
       joinDate: "2024-01-12",
       walletAddress: "",
-      referralEmail: "kim@example.com",
     },
     {
       id: 3,
@@ -107,7 +90,6 @@ export default function UserManagement() {
       points: 4500,
       joinDate: "2024-01-15",
       walletAddress: "",
-      referralEmail: "park@example.com",
     },
     {
       id: 4,
@@ -118,7 +100,6 @@ export default function UserManagement() {
       points: 3200,
       joinDate: "2024-01-18",
       walletAddress: "",
-      referralEmail: "",
     },
   ]);
 
@@ -139,49 +120,6 @@ export default function UserManagement() {
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // const handleViewReferrals = async (user) => {
-  //   console.log("Opening referrals for:", user.email); // Debug log
-  //   setSelectedInviter(user);
-  //   const userReferralLsts = await getUserReferralListByAdmin(user._id);
-  //   console.log(
-  //     "🚀 ~ handleViewReferrals ~ userReferralLsts:",
-  //     userReferralLsts
-  //   );
-  //   const referralsByEmail = users.filter(
-  //     (u) => u.referredByEmail === user.email
-  //   );
-  //   const mergedReferrals = [...new Set([...referralsByEmail, ...referralsBy])]; // Merge and remove duplicates
-  //   console.log("Found referrals:", mergedReferrals); // Debug log
-  //   setSelectedReferrals(mergedReferrals);
-  //   setReferralDialogOpen(true);
-  // };
-
-  const handleViewReferrals = async (user) => {
-  console.log("Opening referrals for:", user.email); // Debug log
-  setSelectedInviter(user);
-  const userReferralLsts = await getUserReferralListByAdmin(user._id);
-  console.log(
-    "🚀 ~ handleViewReferrals ~ userReferralLsts:",
-    userReferralLsts
-  );
-  const referralsByEmail = users.filter(
-    (u) => u.referredByEmail === user.email
-  );
-  
-  // Merge and deduplicate by 'email' (or swap to '_id' if that's your unique key)
-  const mergedMap = new Map();
-  [...userReferralLsts, ...referralsByEmail].forEach((referral) => {
-    if (referral && referral.email) { // Guard against null/undefined
-      mergedMap.set(referral.email, referral);
-    }
-  });
-  const mergedReferrals = Array.from(mergedMap.values());
-  
-  console.log("Found referrals:", mergedReferrals); // Debug log
-  setSelectedReferrals(mergedReferrals);
-  setReferralDialogOpen(true);
-};
-
   const handleEditUser = (user) => {
     setSelectedUser(user);
     setEditFormData({
@@ -189,7 +127,7 @@ export default function UserManagement() {
       email: user.email,
       phone: user.phone,
       telegramId: user.telegramId,
-      referralEmail: user.referralEmail || "",
+      referredByEmail: user.referredByEmail,
       walletAddress: user.walletAddress || "",
       img: user.img || "",
     });
@@ -269,7 +207,6 @@ export default function UserManagement() {
       const updatedUser = {
         ...editFormData,
         img: imageUrl,
-        referralEmail: editFormData.referralEmail,
       };
 
       // ✅ Call your backend API to update user
@@ -300,7 +237,7 @@ export default function UserManagement() {
       //     user.id === selectedUser.id ? updatedUserFromServer : user
       //   )
       // );
-      await getTotalUsers();
+       await getTotalUsers();
 
       SuccessToast("updated user successfully");
 
@@ -310,7 +247,7 @@ export default function UserManagement() {
         email: "",
         phone: "",
         telegramId: "",
-        referralEmail: "",
+        referredByEmail: "",
         walletAddress: "",
         img: "",
       });
@@ -699,15 +636,15 @@ export default function UserManagement() {
                   htmlFor="edit-telegram"
                   className="text-right font-medium"
                 >
-                  Referral Email
+                  referred By Email
                 </Label>
                 <Input
-                  id="edit-referralEmail"
-                  value={editFormData.referralEmail}
+                  id="edit-referredByEmail"
+                  value={editFormData.referredByEmail}
                   onChange={(e) =>
                     setEditFormData({
                       ...editFormData,
-                      referralEmail: e.target.value,
+                      referredByEmail: e.target.value,
                     })
                   }
                   className="col-span-3 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500"
@@ -832,136 +769,6 @@ export default function UserManagement() {
           </DialogContent>
         </Dialog>
 
-        <Dialog open={referralDialogOpen} onOpenChange={setReferralDialogOpen}>
-          <DialogContent className="max-w-5xl bg-main overflow-x-hidden overflow-y-auto h-[600px]">
-            <button
-              className="cursor-pointer text-white text-right z-50"
-              onClick={() => setReferralDialogOpen(false)}
-            >
-              X
-            </button>
-            <DialogHeader>
-              <DialogTitle className="-mt-8 text-gray-400 text-sm text-center ">
-                Referrals for <br />
-                <span className=" text-white text-2xl">
-                  {selectedInviter?.name}
-                </span>{" "}
-              </DialogTitle>
-              <DialogTitle className="text-white text-xl text-center">
-                <span className=" text-white text-2xl">
-                  {selectedInviter?.email}
-                </span>{" "}
-              </DialogTitle>
-              <DialogDescription className="text-gray-300 text-lg text-center ">
-                List of users referred by this user.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="py-2 pt-0 flex justify-center ">
-              {selectedReferrals.length === 0 ? (
-                <p className="text-center text-slate-500">
-                  No referrals found.
-                </p>
-              ) : (
-                <div className="w-full px-4">
-                  <div className="w-full border-b-4 px-4 flex justify-between item-center text-white font-bold text-lg border-b border-slate-300 pb-2  mb-4 ">
-                    <p> Inviter Name</p>
-                    <p>Invitee Name</p>
-                  </div>
-
-                  {selectedReferrals.map((ref) => (
-                    <div
-                      key={ref._id}
-                      className=" w-full flex justify-between  px-4 py-2 hover:bg-gradient-to-r hover:from-cyan-700 hover:to-blue-50/5 transition-all duration-300 text-white font-semib text-[16px] bg-black/20 mb-1"
-                    >
-                      <p className="font-semibold text-slate-100">
-                        {selectedInviter.name}
-                      </p>
-                      <p className="font-semibold px">{ref.name}</p>
-                    </div>
-                  ))}
-                </div>
-
-                // <Table>
-                //   <TableHeader className="">
-                //     <TableRow className="bg-gradient-to-r from-blue-500 to-slate-100  ">
-                //       {/* <TableHead className="font-semibold text-slate-900 text-lg bg-black/20">
-                //         ID
-                //       </TableHead> */}
-                //       <TableHead className="font-semibold text-slate-900 text-lg bg-black/20">
-                //         Inviter
-                //       </TableHead>
-                //       <TableHead className="font-semibold text-slate-900 text-lg bg-black/20">
-                //         Invitee Name
-                //       </TableHead>
-                //       {/* <TableHead className="font-semibold text-slate-900 text-lg bg-black/20">
-                //         Email
-                //       </TableHead> */}
-                //       {/* <TableHead className="font-semibold text-slate-900 text-lg bg-black/20">Join Date</TableHead> */}
-                //       {/* <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">Points</TableHead> */}
-                //       {/* <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">Actions</TableHead> */}
-                //     </TableRow>
-                //   </TableHeader>
-                //   <TableBody className="w-[50px]">
-                //     {selectedReferrals.map((ref) => (
-                //       <TableRow
-                //         key={ref._id}
-                //         className="hover:bg-gradient-to-r hover:from-cyan-700 hover:to-blue-50/5 transition-all duration-300 text-white font-semib text-[16px]"
-                //       >
-                //         {/* <TableCell className="font-semibold">
-                //           {ref._id?.slice(20, 23)}
-                //         </TableCell> */}
-                //         <TableCell className="font-semibold text-slate-100">
-                //           {selectedInviter.name}
-                //         </TableCell>
-                //         <TableCell className="font-semibold">
-                //           {ref.name}
-                //         </TableCell>
-                //         {/* <TableCell className="font-semibold text-xs">
-                //           {ref.email}
-                //         </TableCell> */}
-                //         {/* <TableCell className="font-semibold">
-                //           {new Date(ref.createdAt ?? ref.joinDate).toLocaleDateString("en-US")}
-                //         </TableCell> */}
-                //         {/* <TableCell className="font-bold text-lg">
-                //           {ref?.points?.totalPoints || 0}
-                //         </TableCell> */}
-                //         {/* <TableCell>
-                //           <div className="flex items-center gap-2">
-                //             <Button
-                //               size="sm"
-                //               variant="outline"
-                //               onClick={() => handleEditUser(ref)}
-                //               className="hover:bg-cyan-50 hover:border-cyan-300 transition-all duration-300 bg-transparent"
-                //             >
-                //               <Edit className="w-3 h-3" />
-                //             </Button>
-                //             <Button
-                //               size="sm"
-                //               variant="outline"
-                //               onClick={() => handleDeleteUser(ref)}
-                //               className="hover:bg-red-50 hover:border-red-300 text-red-600 transition-all duration-300 bg-transparent"
-                //             >
-                //               <Trash2 className="w-3 h-3" />
-                //             </Button>
-                //           </div>
-                //         </TableCell> */}
-                //       </TableRow>
-                //     ))}
-                //   </TableBody>
-                // </Table>
-              )}
-            </div>
-            <DialogFooter>
-              <Button
-                className="border cursor-pointer"
-                onClick={() => setReferralDialogOpen(false)}
-              >
-                Close
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-
         <div className="rounded-xl border border-slate-200 overflow-hidden shadow-lg h-screen overflow-y-auto">
           <Table>
             <TableHeader>
@@ -1024,14 +831,6 @@ export default function UserManagement() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => handleViewReferrals(user)}
-                        className="hover:bg-blue-50 hover:border-blue-300 text-blue-600 transition-all duration-300 bg-transparent cursor-pointer"
-                      >
-                        <Users className="w-3 h-3" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
                         onClick={() => handleEditUser(user)}
                         className="hover:bg-cyan-50 hover:border-cyan-300 transition-all duration-300 bg-transparent"
                       >
@@ -1056,6 +855,43 @@ export default function UserManagement() {
     </Card>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // "use client";
 
@@ -1088,8 +924,20 @@ export default function UserManagement() {
 // } from "@/components/ui/dialog";
 // import { Label } from "@/components/ui/label";
 // import { Badge } from "@/components/ui/badge";
-// import { Search, Plus, Edit, Trash2, Loader, UploadCloud } from "lucide-react";
-// import { getAllUser } from "@/lib/utilityFunction";
+// import {
+//   Search,
+//   Plus,
+//   Edit,
+//   Trash2,
+//   Loader,
+//   UploadCloud,
+//   Users,
+// } from "lucide-react";
+// import {
+//   getAllUser,
+//   getUserReferralList,
+//   getUserReferralListByAdmin,
+// } from "@/lib/utilityFunction";
 // import { SuccessToast } from "../Success";
 
 // export default function UserManagement() {
@@ -1097,7 +945,10 @@ export default function UserManagement() {
 //   const [editDialogOpen, setEditDialogOpen] = useState(false);
 //   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 //   const [addDialogOpen, setAddDialogOpen] = useState(false);
+//   const [referralDialogOpen, setReferralDialogOpen] = useState(false);
 //   const [selectedUser, setSelectedUser] = useState(null);
+//   const [selectedInviter, setSelectedInviter] = useState(null);
+//   const [selectedReferrals, setSelectedReferrals] = useState([]);
 //   const [rawFile, setRawFile] = useState(null);
 //   const [newRawFile, setNewRawFile] = useState(null);
 //   const [newImagePreview, setNewImagePreview] = useState("");
@@ -1107,7 +958,7 @@ export default function UserManagement() {
 //     email: "",
 //     phone: "",
 //     telegramId: "",
-//     referredByEmail: "",
+//     referralEmail: "",
 //     walletAddress: "",
 //     img: "",
 //   });
@@ -1129,6 +980,7 @@ export default function UserManagement() {
 //       points: 1000000,
 //       joinDate: "2024-01-10",
 //       walletAddress: "",
+//       referralEmail: "",
 //     },
 //     {
 //       id: 2,
@@ -1139,6 +991,7 @@ export default function UserManagement() {
 //       points: 6000,
 //       joinDate: "2024-01-12",
 //       walletAddress: "",
+//       referralEmail: "kim@example.com",
 //     },
 //     {
 //       id: 3,
@@ -1149,6 +1002,7 @@ export default function UserManagement() {
 //       points: 4500,
 //       joinDate: "2024-01-15",
 //       walletAddress: "",
+//       referralEmail: "park@example.com",
 //     },
 //     {
 //       id: 4,
@@ -1159,6 +1013,7 @@ export default function UserManagement() {
 //       points: 3200,
 //       joinDate: "2024-01-18",
 //       walletAddress: "",
+//       referralEmail: "",
 //     },
 //   ]);
 
@@ -1179,6 +1034,49 @@ export default function UserManagement() {
 //       user.email.toLowerCase().includes(searchTerm.toLowerCase())
 //   );
 
+//   // const handleViewReferrals = async (user) => {
+//   //   console.log("Opening referrals for:", user.email); // Debug log
+//   //   setSelectedInviter(user);
+//   //   const userReferralLsts = await getUserReferralListByAdmin(user._id);
+//   //   console.log(
+//   //     "🚀 ~ handleViewReferrals ~ userReferralLsts:",
+//   //     userReferralLsts
+//   //   );
+//   //   const referralsByEmail = users.filter(
+//   //     (u) => u.referredByEmail === user.email
+//   //   );
+//   //   const mergedReferrals = [...new Set([...referralsByEmail, ...referralsBy])]; // Merge and remove duplicates
+//   //   console.log("Found referrals:", mergedReferrals); // Debug log
+//   //   setSelectedReferrals(mergedReferrals);
+//   //   setReferralDialogOpen(true);
+//   // };
+
+//   const handleViewReferrals = async (user) => {
+//   console.log("Opening referrals for:", user.email); // Debug log
+//   setSelectedInviter(user);
+//   const userReferralLsts = await getUserReferralListByAdmin(user._id);
+//   console.log(
+//     "🚀 ~ handleViewReferrals ~ userReferralLsts:",
+//     userReferralLsts
+//   );
+//   const referralsByEmail = users.filter(
+//     (u) => u.referredByEmail === user.email
+//   );
+  
+//   // Merge and deduplicate by 'email' (or swap to '_id' if that's your unique key)
+//   const mergedMap = new Map();
+//   [...userReferralLsts, ...referralsByEmail].forEach((referral) => {
+//     if (referral && referral.email) { // Guard against null/undefined
+//       mergedMap.set(referral.email, referral);
+//     }
+//   });
+//   const mergedReferrals = Array.from(mergedMap.values());
+  
+//   console.log("Found referrals:", mergedReferrals); // Debug log
+//   setSelectedReferrals(mergedReferrals);
+//   setReferralDialogOpen(true);
+// };
+
 //   const handleEditUser = (user) => {
 //     setSelectedUser(user);
 //     setEditFormData({
@@ -1186,7 +1084,7 @@ export default function UserManagement() {
 //       email: user.email,
 //       phone: user.phone,
 //       telegramId: user.telegramId,
-//       referredByEmail: user.referredByEmail,
+//       referralEmail: user.referralEmail || "",
 //       walletAddress: user.walletAddress || "",
 //       img: user.img || "",
 //     });
@@ -1266,6 +1164,7 @@ export default function UserManagement() {
 //       const updatedUser = {
 //         ...editFormData,
 //         img: imageUrl,
+//         referralEmail: editFormData.referralEmail,
 //       };
 
 //       // ✅ Call your backend API to update user
@@ -1296,7 +1195,7 @@ export default function UserManagement() {
 //       //     user.id === selectedUser.id ? updatedUserFromServer : user
 //       //   )
 //       // );
-//        await getTotalUsers();
+//       await getTotalUsers();
 
 //       SuccessToast("updated user successfully");
 
@@ -1306,7 +1205,7 @@ export default function UserManagement() {
 //         email: "",
 //         phone: "",
 //         telegramId: "",
-//         referredByEmail: "",
+//         referralEmail: "",
 //         walletAddress: "",
 //         img: "",
 //       });
@@ -1695,15 +1594,15 @@ export default function UserManagement() {
 //                   htmlFor="edit-telegram"
 //                   className="text-right font-medium"
 //                 >
-//                   referred By Email
+//                   Referral Email
 //                 </Label>
 //                 <Input
-//                   id="edit-referredByEmail"
-//                   value={editFormData.referredByEmail}
+//                   id="edit-referralEmail"
+//                   value={editFormData.referralEmail}
 //                   onChange={(e) =>
 //                     setEditFormData({
 //                       ...editFormData,
-//                       referredByEmail: e.target.value,
+//                       referralEmail: e.target.value,
 //                     })
 //                   }
 //                   className="col-span-3 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500"
@@ -1828,6 +1727,136 @@ export default function UserManagement() {
 //           </DialogContent>
 //         </Dialog>
 
+//         <Dialog open={referralDialogOpen} onOpenChange={setReferralDialogOpen}>
+//           <DialogContent className="max-w-5xl bg-main overflow-x-hidden overflow-y-auto h-[600px]">
+//             <button
+//               className="cursor-pointer text-white text-right z-50"
+//               onClick={() => setReferralDialogOpen(false)}
+//             >
+//               X
+//             </button>
+//             <DialogHeader>
+//               <DialogTitle className="-mt-8 text-gray-400 text-sm text-center ">
+//                 Referrals for <br />
+//                 <span className=" text-white text-2xl">
+//                   {selectedInviter?.name}
+//                 </span>{" "}
+//               </DialogTitle>
+//               <DialogTitle className="text-white text-xl text-center">
+//                 <span className=" text-white text-2xl">
+//                   {selectedInviter?.email}
+//                 </span>{" "}
+//               </DialogTitle>
+//               <DialogDescription className="text-gray-300 text-lg text-center ">
+//                 List of users referred by this user.
+//               </DialogDescription>
+//             </DialogHeader>
+//             <div className="py-2 pt-0 flex justify-center ">
+//               {selectedReferrals.length === 0 ? (
+//                 <p className="text-center text-slate-500">
+//                   No referrals found.
+//                 </p>
+//               ) : (
+//                 <div className="w-full px-4">
+//                   <div className="w-full border-b-4 px-4 flex justify-between item-center text-white font-bold text-lg border-b border-slate-300 pb-2  mb-4 ">
+//                     <p> Inviter Name</p>
+//                     <p>Invitee Name</p>
+//                   </div>
+
+//                   {selectedReferrals.map((ref) => (
+//                     <div
+//                       key={ref._id}
+//                       className=" w-full flex justify-between  px-4 py-2 hover:bg-gradient-to-r hover:from-cyan-700 hover:to-blue-50/5 transition-all duration-300 text-white font-semib text-[16px] bg-black/20 mb-1"
+//                     >
+//                       <p className="font-semibold text-slate-100">
+//                         {selectedInviter.name}
+//                       </p>
+//                       <p className="font-semibold px">{ref.name}</p>
+//                     </div>
+//                   ))}
+//                 </div>
+
+//                 // <Table>
+//                 //   <TableHeader className="">
+//                 //     <TableRow className="bg-gradient-to-r from-blue-500 to-slate-100  ">
+//                 //       {/* <TableHead className="font-semibold text-slate-900 text-lg bg-black/20">
+//                 //         ID
+//                 //       </TableHead> */}
+//                 //       <TableHead className="font-semibold text-slate-900 text-lg bg-black/20">
+//                 //         Inviter
+//                 //       </TableHead>
+//                 //       <TableHead className="font-semibold text-slate-900 text-lg bg-black/20">
+//                 //         Invitee Name
+//                 //       </TableHead>
+//                 //       {/* <TableHead className="font-semibold text-slate-900 text-lg bg-black/20">
+//                 //         Email
+//                 //       </TableHead> */}
+//                 //       {/* <TableHead className="font-semibold text-slate-900 text-lg bg-black/20">Join Date</TableHead> */}
+//                 //       {/* <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">Points</TableHead> */}
+//                 //       {/* <TableHead className="font-semibold text-slate-100 text-lg bg-black/20">Actions</TableHead> */}
+//                 //     </TableRow>
+//                 //   </TableHeader>
+//                 //   <TableBody className="w-[50px]">
+//                 //     {selectedReferrals.map((ref) => (
+//                 //       <TableRow
+//                 //         key={ref._id}
+//                 //         className="hover:bg-gradient-to-r hover:from-cyan-700 hover:to-blue-50/5 transition-all duration-300 text-white font-semib text-[16px]"
+//                 //       >
+//                 //         {/* <TableCell className="font-semibold">
+//                 //           {ref._id?.slice(20, 23)}
+//                 //         </TableCell> */}
+//                 //         <TableCell className="font-semibold text-slate-100">
+//                 //           {selectedInviter.name}
+//                 //         </TableCell>
+//                 //         <TableCell className="font-semibold">
+//                 //           {ref.name}
+//                 //         </TableCell>
+//                 //         {/* <TableCell className="font-semibold text-xs">
+//                 //           {ref.email}
+//                 //         </TableCell> */}
+//                 //         {/* <TableCell className="font-semibold">
+//                 //           {new Date(ref.createdAt ?? ref.joinDate).toLocaleDateString("en-US")}
+//                 //         </TableCell> */}
+//                 //         {/* <TableCell className="font-bold text-lg">
+//                 //           {ref?.points?.totalPoints || 0}
+//                 //         </TableCell> */}
+//                 //         {/* <TableCell>
+//                 //           <div className="flex items-center gap-2">
+//                 //             <Button
+//                 //               size="sm"
+//                 //               variant="outline"
+//                 //               onClick={() => handleEditUser(ref)}
+//                 //               className="hover:bg-cyan-50 hover:border-cyan-300 transition-all duration-300 bg-transparent"
+//                 //             >
+//                 //               <Edit className="w-3 h-3" />
+//                 //             </Button>
+//                 //             <Button
+//                 //               size="sm"
+//                 //               variant="outline"
+//                 //               onClick={() => handleDeleteUser(ref)}
+//                 //               className="hover:bg-red-50 hover:border-red-300 text-red-600 transition-all duration-300 bg-transparent"
+//                 //             >
+//                 //               <Trash2 className="w-3 h-3" />
+//                 //             </Button>
+//                 //           </div>
+//                 //         </TableCell> */}
+//                 //       </TableRow>
+//                 //     ))}
+//                 //   </TableBody>
+//                 // </Table>
+//               )}
+//             </div>
+//             <DialogFooter>
+//               <Button
+//                 className="border cursor-pointer"
+//                 onClick={() => setReferralDialogOpen(false)}
+//               >
+//                 Close
+//               </Button>
+//             </DialogFooter>
+//           </DialogContent>
+//         </Dialog>
+
 //         <div className="rounded-xl border border-slate-200 overflow-hidden shadow-lg h-screen overflow-y-auto">
 //           <Table>
 //             <TableHeader>
@@ -1890,6 +1919,14 @@ export default function UserManagement() {
 //                       <Button
 //                         size="sm"
 //                         variant="outline"
+//                         onClick={() => handleViewReferrals(user)}
+//                         className="hover:bg-blue-50 hover:border-blue-300 text-blue-600 transition-all duration-300 bg-transparent cursor-pointer"
+//                       >
+//                         <Users className="w-3 h-3" />
+//                       </Button>
+//                       <Button
+//                         size="sm"
+//                         variant="outline"
 //                         onClick={() => handleEditUser(user)}
 //                         className="hover:bg-cyan-50 hover:border-cyan-300 transition-all duration-300 bg-transparent"
 //                       >
@@ -1914,3 +1951,4 @@ export default function UserManagement() {
 //     </Card>
 //   );
 // }
+
