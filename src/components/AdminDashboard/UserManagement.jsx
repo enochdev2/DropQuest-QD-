@@ -60,7 +60,6 @@ export default function UserManagement() {
     phone: "",
     telegramId: "",
     referredByEmail: "",
-    referredBy: "",
     walletAddress: "",
     img: "",
   });
@@ -172,7 +171,6 @@ export default function UserManagement() {
       phone: user.phone,
       telegramId: user.telegramId,
       referredByEmail: user.referredByEmail,
-      referredBy: user?.referredBy?.email,
       walletAddress: user.walletAddress || "",
       img: user.img || "",
     });
@@ -293,7 +291,6 @@ export default function UserManagement() {
         phone: "",
         telegramId: "",
         referredByEmail: "",
-        referredBy: "",
         walletAddress: "",
         img: "",
       });
@@ -705,11 +702,11 @@ export default function UserManagement() {
                 </Label>
                 <Input
                   id="edit-referredByEmail"
-                  value={editFormData.referredBy}
+                  value={editFormData.referredByEmail}
                   onChange={(e) =>
                     setEditFormData({
                       ...editFormData,
-                      referredBy: e.target.value,
+                      referredByEmail: e.target.value,
                     })
                   }
                   className="col-span-3 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500"
