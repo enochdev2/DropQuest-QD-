@@ -150,6 +150,11 @@ export default function UserManagement() {
     setReferralDialogOpen(true);
   };
 
+  const findReferralsByEmail = (name) => {
+    setSearchTerm(name);
+    setReferralDialogOpen(false);
+  }
+
   const handleEditUser = (user) => {
     setSelectedUser(user);
     setEditFormData({
@@ -830,7 +835,7 @@ export default function UserManagement() {
                 </p>
               ) : (
                 <div className="w-full px-4">
-                  <div className="w-full border-b-4 px-4 flex justify-between item-center text-white font-bold text-lg border-b border-slate-300 pb-2  mb-4 ">
+                  <div className="w-full border-b-4 px-4 flex justify-between item-center text-white font-bold text-lg  border-slate-300 pb-2  mb-4 ">
                     <p> Inviter Name</p>
                     <p>Invitee Name</p>
                   </div>
@@ -838,12 +843,14 @@ export default function UserManagement() {
                   {selectedReferrals.map((ref) => (
                     <div
                       key={ref._id}
-                      className=" w-full flex justify-between  px-4 py-2 hover:bg-gradient-to-r hover:from-cyan-700 hover:to-blue-50/5 transition-all duration-300 text-white font-semib text-[16px] bg-black/20 mb-1"
+                      className=" w-full flex justify-between  px-4 py-2 hover:bg-gradient-to-r hover:from-cyan-700 hover:to-blue-50/5 transition-all duration-300 text-white font-semib text-[16px] bg-black/20 mb-1 cursor-pointer"
+                      onClick={()=> findReferralsByEmail(ref.name)}
                     >
                       <p className="font-semibold text-slate-100">
                         {selectedInviter.name}
                       </p>
-                      <p className="font-semibold px">{ref.name}</p>
+                      <p className="font-semibold "
+                      >{ref.name}</p>
                     </div>
                   ))}
                 </div>
@@ -931,7 +938,7 @@ export default function UserManagement() {
                         size="sm"
                         variant="outline"
                         onClick={() => handleEditUser(user)}
-                        className="hover:bg-cyan-50 hover:border-cyan-300 transition-all duration-300 bg-transparent"
+                        className="hover:bg-cyan-50 hover:border-cyan-300 transition-all duration-300 bg-transparent cursor-pointer"
                       >
                         <Edit className="w-3 h-3" />
                       </Button>
@@ -939,7 +946,7 @@ export default function UserManagement() {
                         size="sm"
                         variant="outline"
                         onClick={() => handleDeleteUser(user)}
-                        className="hover:bg-red-50 hover:border-red-300 text-red-600 transition-all duration-300 bg-transparent"
+                        className="hover:bg-red-50 hover:border-red-300 text-red-600 transition-all duration-300 bg-transparent cursor-pointer"
                       >
                         <Trash2 className="w-3 h-3" />
                       </Button>
