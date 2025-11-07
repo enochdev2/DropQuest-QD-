@@ -135,7 +135,6 @@ export default function AnnouncementsManagement() {
 
   const handleAnnouncementClick = async () => {
     const announcementDetails = await getAnnouncement();
-    console.log("🚀 ~ getUserProfileDetails ~ :", announcementDetails);
     setAnnouncements(announcementDetails);
   };
 
@@ -191,8 +190,8 @@ export default function AnnouncementsManagement() {
   };
 
   const deleteAnnouncement = async (announcementId) => {
-    console.log("🚀 ~ deleteAnnouncement ~ announcementId:", announcementId);
     const announce = await removeannouncement(announcementId);
+    console.log("🚀 ~ deleteAnnouncement ~ announce:", announce)
     handleAnnouncementClick();
   };
 

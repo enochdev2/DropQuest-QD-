@@ -263,8 +263,7 @@ const SignIn = () => {
         throw new Error(errorData.error || "Something went wrong");
       }
 
-      const userData = await response.json();
-      console.log("🚀 ~ handleFindIdSubmit ~ userData:", userData.message);
+      await response.json();
 
       setSuccessMessage(t("passwordChanged"));
       setTimeout(() => {

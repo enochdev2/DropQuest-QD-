@@ -5,7 +5,6 @@ import { useNavigate, useParams } from "react-router-dom"; // To extract paramet
 const AnnouncementDetail = () => {
   const { id } = useParams();
   const [announcement, setAnnouncement] = useState(null);
-  console.log("🚀 ~ AnnouncementDetail ~ announcement:", announcement);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [active, setActive] = useState("English");

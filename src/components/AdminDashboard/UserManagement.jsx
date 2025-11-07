@@ -60,6 +60,7 @@ export default function UserManagement() {
     phone: "",
     telegramId: "",
     referredByEmail: "",
+    referredBy: "",
     walletAddress: "",
     img: "",
   });
@@ -120,7 +121,6 @@ export default function UserManagement() {
 
   const getTotalUsers = async () => {
     const user = await getAllUser();
-    console.log("🚀 ~ getUserProfileDetails ~ user:", user);
     setUsers(user);
     // setTotalPoints(user.totalPoints);
   };
@@ -132,13 +132,9 @@ export default function UserManagement() {
   );
 
   const handleViewReferrals = async (user) => {
-    console.log("Opening referrals for:", user.email); // Debug log
     setSelectedInviter(user);
     const userReferralLsts = await getUserReferralListByAdmin(user._id);
-    console.log(
-      "🚀 ~ handleViewReferrals ~ userReferralLsts:",
-      userReferralLsts
-    );
+    
     const referralsByEmail = users.filter(
       (u) => u.referredByEmail === user.email
     );
@@ -152,8 +148,6 @@ export default function UserManagement() {
       }
     });
     const mergedReferrals = Array.from(mergedMap.values());
-
-    console.log("Found referrals:", mergedReferrals); // Debug log
     setSelectedReferrals(mergedReferrals);
     setReferralDialogOpen(true);
   };
@@ -171,6 +165,7 @@ export default function UserManagement() {
       phone: user.phone,
       telegramId: user.telegramId,
       referredByEmail: user.referredByEmail,
+      referredBy: user?.referredBy?.email,
       walletAddress: user.walletAddress || "",
       img: user.img || "",
     });
@@ -243,7 +238,6 @@ export default function UserManagement() {
 
         const imageData = await imageRes.json();
         imageUrl = imageData.url; // use Cloudinary URL
-        console.log("🚀 ~ handleSaveEdit ~ imageUrl:", imageUrl);
       }
 
       // ✅ Build the updated user object
@@ -253,7 +247,6 @@ export default function UserManagement() {
       };
 
       // ✅ Call your backend API to update user
-      console.log("🚀 ~ handleSaveEdit ~ selectedUser.id:", selectedUser);
       const token = localStorage.getItem("token");
       const response = await fetch(
         `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${selectedUser.email}`,
@@ -272,7 +265,8 @@ export default function UserManagement() {
         throw new Error("Failed to update user on server");
       }
 
-      const updatedUserFromServer = await response.json();
+      await response.json();
+      // const updatedUserFromServer = await response.json();
 
       // ✅ Update the local state (so UI stays in sync)
       // setUsers((prevUsers) =>
@@ -291,6 +285,7 @@ export default function UserManagement() {
         phone: "",
         telegramId: "",
         referredByEmail: "",
+        referredBy: "",
         walletAddress: "",
         img: "",
       });
@@ -341,7 +336,6 @@ export default function UserManagement() {
 
         const imageData = await imageRes.json();
         imageUrl = imageData.url;
-        console.log("🚀 ~ handleCreateUser ~ imageUrl:", imageUrl);
       }
 
       SuccessToast("Creating user, please wait...");
@@ -702,11 +696,11 @@ export default function UserManagement() {
                 </Label>
                 <Input
                   id="edit-referredByEmail"
-                  value={editFormData.referredByEmail}
+                  value={editFormData?.referredBy}
                   onChange={(e) =>
                     setEditFormData({
                       ...editFormData,
-                      referredByEmail: e.target.value,
+                      referredBy: e.target.value,
                     })
                   }
                   className="col-span-3 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500"
