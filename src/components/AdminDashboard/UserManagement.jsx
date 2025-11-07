@@ -29,8 +29,8 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, Edit, Trash2, Loader, UploadCloud } from "lucide-react";
-import { getAllUser } from "@/lib/utilityFunction";
+import { Search, Plus, Edit, Trash2, Loader, UploadCloud, Users } from "lucide-react";
+import { getAllUser, getUserReferralListByAdmin } from "@/lib/utilityFunction";
 import { SuccessToast } from "../Success";
 
 export default function UserManagement() {
@@ -38,7 +38,10 @@ export default function UserManagement() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [referralDialogOpen, setReferralDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedInviter, setSelectedInviter] = useState(null);
+  const [selectedReferrals, setSelectedReferrals] = useState([]);
   const [rawFile, setRawFile] = useState(null);
   const [newRawFile, setNewRawFile] = useState(null);
   const [newImagePreview, setNewImagePreview] = useState("");
@@ -119,6 +122,33 @@ export default function UserManagement() {
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleViewReferrals = async (user) => {
+    console.log("Opening referrals for:", user.email); // Debug log
+    setSelectedInviter(user);
+    const userReferralLsts = await getUserReferralListByAdmin(user._id);
+    console.log(
+      "🚀 ~ handleViewReferrals ~ userReferralLsts:",
+      userReferralLsts
+    );
+    const referralsByEmail = users.filter(
+      (u) => u.referredByEmail === user.email
+    );
+
+    // Merge and deduplicate by 'email' (or swap to '_id' if that's your unique key)
+    const mergedMap = new Map();
+    [...userReferralLsts, ...referralsByEmail].forEach((referral) => {
+      if (referral && referral.email) {
+        // Guard against null/undefined
+        mergedMap.set(referral.email, referral);
+      }
+    });
+    const mergedReferrals = Array.from(mergedMap.values());
+
+    console.log("Found referrals:", mergedReferrals); // Debug log
+    setSelectedReferrals(mergedReferrals);
+    setReferralDialogOpen(true);
+  };
 
   const handleEditUser = (user) => {
     setSelectedUser(user);
@@ -237,7 +267,7 @@ export default function UserManagement() {
       //     user.id === selectedUser.id ? updatedUserFromServer : user
       //   )
       // );
-       await getTotalUsers();
+      await getTotalUsers();
 
       SuccessToast("updated user successfully");
 
@@ -769,6 +799,67 @@ export default function UserManagement() {
           </DialogContent>
         </Dialog>
 
+        <Dialog open={referralDialogOpen} onOpenChange={setReferralDialogOpen}>
+          <DialogContent className="max-w-5xl bg-main overflow-x-hidden overflow-y-auto h-[600px]">
+            <button
+              className="cursor-pointer text-white text-right z-50"
+              onClick={() => setReferralDialogOpen(false)}
+            >
+              X
+            </button>
+            <DialogHeader>
+              <DialogTitle className="-mt-8 text-gray-400 text-sm text-center ">
+                Referrals for <br />
+                <span className=" text-white text-2xl">
+                  {selectedInviter?.name}
+                </span>{" "}
+              </DialogTitle>
+              <DialogTitle className="text-white text-xl text-center">
+                <span className=" text-white text-2xl">
+                  {selectedInviter?.email}
+                </span>{" "}
+              </DialogTitle>
+              <DialogDescription className="text-gray-300 text-lg text-center ">
+                List of users referred by this user.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-2 pt-0 flex justify-center ">
+              {selectedReferrals.length === 0 ? (
+                <p className="text-center text-slate-500">
+                  No referrals found.
+                </p>
+              ) : (
+                <div className="w-full px-4">
+                  <div className="w-full border-b-4 px-4 flex justify-between item-center text-white font-bold text-lg border-b border-slate-300 pb-2  mb-4 ">
+                    <p> Inviter Name</p>
+                    <p>Invitee Name</p>
+                  </div>
+
+                  {selectedReferrals.map((ref) => (
+                    <div
+                      key={ref._id}
+                      className=" w-full flex justify-between  px-4 py-2 hover:bg-gradient-to-r hover:from-cyan-700 hover:to-blue-50/5 transition-all duration-300 text-white font-semib text-[16px] bg-black/20 mb-1"
+                    >
+                      <p className="font-semibold text-slate-100">
+                        {selectedInviter.name}
+                      </p>
+                      <p className="font-semibold px">{ref.name}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <DialogFooter>
+              <Button
+                className="border cursor-pointer"
+                onClick={() => setReferralDialogOpen(false)}
+              >
+                Close
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
         <div className="rounded-xl border border-slate-200 overflow-hidden shadow-lg h-screen overflow-y-auto">
           <Table>
             <TableHeader>
@@ -831,6 +922,14 @@ export default function UserManagement() {
                       <Button
                         size="sm"
                         variant="outline"
+                        onClick={() => handleViewReferrals(user)}
+                        className="hover:bg-blue-50 hover:border-blue-300 text-blue-600 transition-all duration-300 bg-transparent cursor-pointer"
+                      >
+                        <Users className="w-3 h-3" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
                         onClick={() => handleEditUser(user)}
                         className="hover:bg-cyan-50 hover:border-cyan-300 transition-all duration-300 bg-transparent"
                       >
@@ -855,43 +954,6 @@ export default function UserManagement() {
     </Card>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // "use client";
 
@@ -1062,7 +1124,7 @@ export default function UserManagement() {
 //   const referralsByEmail = users.filter(
 //     (u) => u.referredByEmail === user.email
 //   );
-  
+
 //   // Merge and deduplicate by 'email' (or swap to '_id' if that's your unique key)
 //   const mergedMap = new Map();
 //   [...userReferralLsts, ...referralsByEmail].forEach((referral) => {
@@ -1071,7 +1133,7 @@ export default function UserManagement() {
 //     }
 //   });
 //   const mergedReferrals = Array.from(mergedMap.values());
-  
+
 //   console.log("Found referrals:", mergedReferrals); // Debug log
 //   setSelectedReferrals(mergedReferrals);
 //   setReferralDialogOpen(true);
@@ -1951,4 +2013,3 @@ export default function UserManagement() {
 //     </Card>
 //   );
 // }
-
