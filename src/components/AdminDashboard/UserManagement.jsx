@@ -29,7 +29,15 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, Edit, Trash2, Loader, UploadCloud, Users } from "lucide-react";
+import {
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  Loader,
+  UploadCloud,
+  Users,
+} from "lucide-react";
 import { getAllUser, getUserReferralListByAdmin } from "@/lib/utilityFunction";
 import { SuccessToast } from "../Success";
 
@@ -52,6 +60,7 @@ export default function UserManagement() {
     phone: "",
     telegramId: "",
     referredByEmail: "",
+    referredBy: "",
     walletAddress: "",
     img: "",
   });
@@ -153,7 +162,7 @@ export default function UserManagement() {
   const findReferralsByEmail = (name) => {
     setSearchTerm(name);
     setReferralDialogOpen(false);
-  }
+  };
 
   const handleEditUser = (user) => {
     setSelectedUser(user);
@@ -163,6 +172,7 @@ export default function UserManagement() {
       phone: user.phone,
       telegramId: user.telegramId,
       referredByEmail: user.referredByEmail,
+      referredBy: user?.referredBy?.email,
       walletAddress: user.walletAddress || "",
       img: user.img || "",
     });
@@ -283,6 +293,7 @@ export default function UserManagement() {
         phone: "",
         telegramId: "",
         referredByEmail: "",
+        referredBy: "",
         walletAddress: "",
         img: "",
       });
@@ -597,7 +608,7 @@ export default function UserManagement() {
         </div>
 
         <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-md h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="text-xl font-semibold text-slate-800">
                 Edit User
@@ -671,7 +682,7 @@ export default function UserManagement() {
                   htmlFor="edit-telegram"
                   className="text-right font-medium"
                 >
-                  referred By Email
+                  referred By <br /> Email (Manager)
                 </Label>
                 <Input
                   id="edit-referredByEmail"
@@ -685,6 +696,26 @@ export default function UserManagement() {
                   className="col-span-3 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500"
                 />
               </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label
+                  htmlFor="edit-telegram"
+                  className="text-right font-medium"
+                >
+                  referred By <br /> Email (User)
+                </Label>
+                <Input
+                  id="edit-referredByEmail"
+                  value={editFormData.referredBy}
+                  onChange={(e) =>
+                    setEditFormData({
+                      ...editFormData,
+                      referredBy: e.target.value,
+                    })
+                  }
+                  className="col-span-3 border-slate-300 focus:border-cyan-500 focus:ring-cyan-500"
+                />
+              </div>
+
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="edit-wallet" className="text-right font-medium">
                   Wallet Address
@@ -844,13 +875,12 @@ export default function UserManagement() {
                     <div
                       key={ref._id}
                       className=" w-full flex justify-between  px-4 py-2 hover:bg-gradient-to-r hover:from-cyan-700 hover:to-blue-50/5 transition-all duration-300 text-white font-semib text-[16px] bg-black/20 mb-1 cursor-pointer"
-                      onClick={()=> findReferralsByEmail(ref.name)}
+                      onClick={() => findReferralsByEmail(ref.name)}
                     >
                       <p className="font-semibold text-slate-100">
                         {selectedInviter.name}
                       </p>
-                      <p className="font-semibold "
-                      >{ref.name}</p>
+                      <p className="font-semibold ">{ref.name}</p>
                     </div>
                   ))}
                 </div>
