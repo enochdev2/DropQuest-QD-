@@ -171,7 +171,6 @@ const SignIn = () => {
 
       // ✅ Success
       const userData = await response.json();
-      console.log("🚀 ~ handleFindIdSubmit ~ userData:", userData);
 
       if (userData.email) {
         setFoundEmail(userData.email);
@@ -209,11 +208,11 @@ const SignIn = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
+        toast.error(errorData.error || "Something went wrong");
         throw new Error(errorData.error || "Something went wrong");
       }
 
       const userData = await response.json();
-      console.log("🚀 ~ handleFindIdSubmit ~ userData:", userData);
 
       if (userData) {
         setShowFindPasswordDialog(false);

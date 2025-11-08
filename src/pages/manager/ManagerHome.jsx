@@ -78,7 +78,6 @@ export default function ManagerDashboard() {
           throw new Error("Failed to fetch my referrals");
         }
         const data = await response.json();
-        console.log("🚀 ~ fetchMyReferrals ~ data:", data);
         if (!data.users || data.users.length === 0) break;
         fetchedReferrals = [...fetchedReferrals, ...data.users];
         if (data.users.length < 10) break;
@@ -114,7 +113,6 @@ export default function ManagerDashboard() {
           throw new Error("Failed to fetch my referrals");
         }
         const data = await response.json();
-        console.log("🚀 ~ fetchMyReferrals ~ data:", data);
         if (!data.users || data.users.length === 0) break;
         fetchedReferrals = [...fetchedReferrals, ...data.users];
         if (data.users.length < 10) break;
@@ -128,7 +126,6 @@ export default function ManagerDashboard() {
 
   // CHANGED: New function to fetch referrals for a specific manager
   const fetchManagerReferrals = async (managerEmail) => {
-    console.log("🚀 ~ fetchManagerReferrals ~ managerEmail:", managerEmail);
     setLoadingManDel(true);
     // if (managerReferrals[managerEmail]) return; // Already fetched
     setManagerReferralLoading((prev) => ({ ...prev, [managerEmail]: true }));
@@ -153,11 +150,6 @@ export default function ManagerDashboard() {
         }
         setLoadingManDel(false);
         const data = await response.json();
-        console.log("🚀 ~ fetchManagerReferrals ~ data:", data);
-        console.log(
-          `🚀 ~ fetchManagerReferrals ~ data for ${managerEmail}:`,
-          data
-        );
         if (!data.users || data.users.length === 0) break;
         fetchedReferrals = [...fetchedReferrals, ...data.users];
         if (data.users.length < 10) break;
@@ -206,7 +198,6 @@ export default function ManagerDashboard() {
           throw new Error("Failed to fetch managers");
         }
         const data = await response.json();
-        console.log("🚀 ~ fetchAllManagers ~ managers:", data.managers);
         if (!data.managers || data.managers.length === 0) break;
         fetchedManagers = [
           ...fetchedManagers,
@@ -254,7 +245,6 @@ export default function ManagerDashboard() {
   const handleOk = () => {
     const enteredPassword = password.join("");
     if (enteredPassword === "99dq") {
-      console.log("Password entered:", enteredPassword);
       setUnlocked(true);
       setShowManagers(true);
       setPassword(["", "", "", ""]);

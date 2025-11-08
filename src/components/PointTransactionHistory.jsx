@@ -66,7 +66,6 @@ const telegramSteps = [
 ];
 
 export default function PointTransactionHistory({ tokenSlot }) {
-  console.log("🚀 ~ PointTransactionHistory ~ tokenSlots:", tokenSlot);
   const { language } = useLanguage();
   const [showTelegramGuide, setShowTelegramGuide] = useState(false);
 

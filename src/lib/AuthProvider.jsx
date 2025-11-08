@@ -113,8 +113,6 @@ export const AuthProvider = ({ children }) => {
       setUser(data);
       localStorage.setItem("user", JSON.stringify(data)); // Store in localStorage
 
-      console.log("User successfully registered:", data);
-
       return response;
     } catch (error) {
       console.error("Error during sign-up:", error);

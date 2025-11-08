@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 
 // Fetch Token Slots
 export const getTokenSlots = async (userId) => {
-  console.log("🚀 ~ getTokenSlots ~ userId:", userId);
   try {
     const token = localStorage.getItem("token");
 
@@ -36,7 +35,6 @@ export const getTokenSlots = async (userId) => {
 };
 
 export const getUserTokenSlots = async (userId) => {
-  console.log("🚀 ~ getTokenSlots ~ userId:", userId);
   try {
     const token = localStorage.getItem("token");
 
@@ -66,7 +64,6 @@ export const getUserTokenSlots = async (userId) => {
   }
 };
 export const updateTokenSlotsOrder = async (userId) => {
-  console.log("🚀 ~ getTokenSlots ~ userId:", userId);
   try {
     const token = localStorage.getItem("token");
 
@@ -134,7 +131,6 @@ export const submitPointExchange = async (
   imageUrl
 ) => {
   const userId = JSON.parse(localStorage.getItem("user"))._id;
-  console.log("🚀 ~ submitPointExchange ~ userId:", userId);
   try {
     // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${email}`,
     const token = localStorage.getItem("token");
@@ -180,7 +176,6 @@ export const updatePoints = async (
   points,
   imageUrl
 ) => {
-  console.log("🚀 ~ updatePoints ~ slotId, name:", slotId, name);
   try {
     // `https://dropquest-qd-backend.onrender.com/api/v1/user/users/${email}`,
     const token = localStorage.getItem("token");
@@ -284,7 +279,6 @@ export const getUserReferralList = async (referralCode) => {
 };
 
 export const getUserReferralListByAdmin = async (userId) => {
-  console.log("🚀 ~ getUserReferralListByAdmin ~ userId:", userId)
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(

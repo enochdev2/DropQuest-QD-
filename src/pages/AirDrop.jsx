@@ -29,7 +29,6 @@ function AirDrop() {
   const [todayReward, setTodayReward] = useState(100); // Computed dynamically
   const [isOpen, setIsOpen] = useState(false); // Set to false initially if needed
   const [tokenSlots, setTokenSlots] = useState([]);
-  console.log("🚀 ~ AirDrop ~ tokenSlots:", tokenSlots);
 
   // Rewards per streak day (1-based: Day 1=100, ..., Day 7=300)
   const dayRewards = [100, 100, 100, 100, 100, 200, 300];
@@ -90,7 +89,6 @@ function AirDrop() {
     try {
       const userInfo = JSON.parse(localStorage.getItem("user"));
       const response = await claimPoints(userInfo._id || userInfo.id); // Pass userId
-      console.log("🚀 ~ handleCheck ~ response:", response);
 
       // Update state with backend response
       setCurrentStreak(response.day); // New streak after claim
@@ -130,7 +128,6 @@ function AirDrop() {
     try {
       const userInfo = JSON.parse(localStorage.getItem("user"));
       const user = await getUserProfile(userInfo.email);
-      console.log("🚀 ~ getUserProfileDetails ~ user:", user);
       // setUserProfile(user);
 
       const points = user?.points;

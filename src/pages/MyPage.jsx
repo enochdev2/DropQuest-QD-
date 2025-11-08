@@ -19,7 +19,6 @@ function MyPage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [, setCopySuccess] = useState(false);
   const [tokenSlots, setTokenSlots] = useState([]);
-  console.log("🚀 ~ MyPage ~ tokenSlots:", tokenSlots)
 
   useEffect(() => {
     getUserProfileDetails();

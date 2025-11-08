@@ -222,7 +222,6 @@ export default function PointExchangeManagement() {
 
         const imageData = await imageRes.json();
         imageUrl = imageData.url;
-        console.log("🚀 ~ handleSaveConfig ~ imageUrl:", imageUrl);
       }
 
       if (!configData.link) {
@@ -271,10 +270,7 @@ export default function PointExchangeManagement() {
 
   const handleReset = async () => {
     setSubmitting(true);
-    console.log(
-      "   🚀 ~ handleReset ~ configData.tokenName:",
-      configData.tokenName
-    );
+   
     await updatePoints(" ", "???", selectedSlot, Number(tokensAmount), Number(points));
 
     await getUserProfileDetails();

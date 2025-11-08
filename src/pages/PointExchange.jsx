@@ -40,7 +40,6 @@ function PointExchange() {
   const [, setUserPoints] = useState(0);
   const [exchangeAmount, setExchangeAmount] = useState("");
   const [selectedToken, setSelectedToken] = useState(null);
-  console.log("🚀 ~ PointExchange ~ selectedToken:", selectedToken);
   const [showExchangeModal, setShowExchangeModal] = useState(false);
   const [tokenSlots, setTokenSlots] = useState(initialSlots);
   // const [tokenSlots, setTokenSlots] = useState([]);
@@ -75,7 +74,6 @@ function PointExchange() {
   // };
 
   const handleExchange = async (slotId) => {
-    console.log("🚀 ~ handleExchange ~ slotId:", selectedToken);
     if (!selectedToken) return;
 
     const amount = Number.parseInt(exchangeAmount);

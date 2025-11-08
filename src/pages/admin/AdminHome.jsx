@@ -32,7 +32,6 @@ export default function AdminDashboard() {
 
   const getTotalUsers = async () => {
     const user = await getTotalUser();
-    console.log("🚀 ~ getUserProfileDetails ~ user:", user);
     setTotalUsers(user.totalUsers);
     setTotalPoints(user.totalPoints);
   };

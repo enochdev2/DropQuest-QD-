@@ -14,7 +14,6 @@ function AnnouncementsPage() {
 
   const handleAnnouncementClick = async () => {
     const announcementDetails = await getAnnouncement();
-    console.log("🚀 ~ getUserProfileDetails ~ :", announcementDetails);
     setSelectedAnnouncement(announcementDetails);
     setLoading(false);
   };

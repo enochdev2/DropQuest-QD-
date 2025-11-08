@@ -52,7 +52,6 @@ const SignUp = () => {
   const [telegramError, setTelegramError] = useState("");
 
   // const referralCode = getReferralCodeFromUrl();
-  // console.log("🚀 ~ SignUp ~ referralCode:", referralCode);
 
   const debounceRef = useRef(null);
 
@@ -180,7 +179,6 @@ const SignUp = () => {
           `https://dropquest-qd-backend.onrender.com/api/v1/user/check-telegram/${value}`
         );
         const data = await response.json();
-        console.log("🚀 ~ validateTelegramId ~ data:", data);
         setIsLoading3(false);
 
         if (data.exists) {
@@ -301,7 +299,6 @@ const SignUp = () => {
         imageUrl = imageData.url; // Get the Cloudinary URL
       }
       SuccessToast(t("imageuploaded"));
-      console.log("🚀 ~ handleSaveConfig ~ imageUrl:", imageUrl);
       // Build new user data
       const newUser = {
         email: formData.email,

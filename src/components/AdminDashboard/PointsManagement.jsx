@@ -85,7 +85,6 @@ export default function PointsManagement() {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log("🚀 ~ PointsManagement ~ users:", users);
 
   useEffect(() => {
     getTotalUsers();
@@ -93,7 +92,6 @@ export default function PointsManagement() {
 
   const getTotalUsers = async () => {
     const user = await getAllUser();
-    console.log("🚀 ~ getUserProfileDetails ~ user:", user);
     setUsers(user);
     // setTotalPoints(user.totalPoints);
   };
@@ -103,7 +101,6 @@ export default function PointsManagement() {
     const user = await modifyuserPoints(selectedUser, points);
 
     const users = await getTotalUsers();
-    console.log("🚀 ~ getUserProfileDetails ~ user:", users);
     if (users || user) {
       SuccessToast("Points updated successfully");
     }
